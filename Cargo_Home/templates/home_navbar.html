@@ -1,98 +1,82 @@
 <nav class="navbar navbar-expand-lg bg-transparent">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#"><span class="fw-bold fs-4 text-danger">Cargo</span></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About Us</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Services
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Air Cargo</a></li>
-              <li><a class="dropdown-item" href="#">Sea Cargo</a></li>
-              <li><a class="dropdown-item" href="#">Road</a></li>
-              <li><a class="dropdown-item" href="#">Door to Door Services</a></li>
-              
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">Tracking</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">Gallery & Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">Blogs and News</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Other
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Offers</a></li>
-              <li><a class="dropdown-item" href="#">Volume Calculator</a></li>
-              <li><a class="dropdown-item" href="#">Terms & Conditions</a></li>
-              <li><a class="dropdown-item" href="#">FAQ</a></li>
-              <li><a class="dropdown-item" href="#">Contact Us</a></li>
-              
-            </ul>
-          </li>
-          
-        </ul>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><span class="header fw-bold fs-4">Cargo</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About Us</a>
+        </li>
         
-      </div>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#">Gallery</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#">Blogs</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Other
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Offers</a></li>
+            <li><a class="dropdown-item" href="#">Volume Calculator</a></li>
+            <li><a class="dropdown-item" href="#">Terms & Conditions</a></li>
+            <li><a class="dropdown-item" href="#">FAQ</a></li>
+            <li><a class="dropdown-item" href="#">Contact Us</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-dark ms-lg-3 ms-0" aria-current="page" href="#">Tracking</a>
+        </li>
+        
+      </ul>
+      
     </div>
+  </div>
 </nav>
+
+<!-- <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Services
+  </a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Air Cargo</a></li>
+    <li><a class="dropdown-item" href="#">Sea Cargo</a></li>
+    <li><a class="dropdown-item" href="#">Road</a></li>
+    <li><a class="dropdown-item" href="#">Door to Door Services</a></li>
+    
+  </ul>
+</li> -->
 
 
 <!-- /* Common styles for all screen sizes */ -->
 <style>
-    .navbar-nav .nav-item .active {
-        color: rgb(220, 53, 69);
-    }
-    .navbar-nav .nav-item .nav-link {
-       font-weight: 600;
-          
-    }
-    .navbar-nav .nav-item .nav-link:hover {
-        color: rgb(220, 53, 69);
+  .navbar-nav .nav-item .active {
+    color:rgb(254, 171, 120);
+  }
+  .navbar-nav .nav-item .nav-link {
+    font-weight: 600;
         
-    }
+  }
+  .navbar-nav .nav-item .nav-link:hover {
+    color:rgb(254, 171, 120);
+      
+  }
+  .header{
+    color:rgb(254, 171, 120);
+  }
    
 </style>
 
 
 <!-- /* Styles specific to screens smaller than 768px (typical mobile devices) */ -->
-<!-- <style>
-    
-    @media (max-width: 767.98px) {
-        .navbar-nav .nav-item .active {
-            color: rgb(220, 53, 69);
-        }
-        
-        
-
-    }
-    @media (max-width: 767.98px) {
-        .navbar-nav .nav-item .nav-link {
-            font-weight: 600;
-            
-          
-        }
-    }
-    @media (max-width: 767.98px) {
-        .navbar-nav .nav-item .nav-link:hover {
-            color: rgb(220, 53, 69);
-            
-        }
-    }
-</style> -->
