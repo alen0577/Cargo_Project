@@ -25,7 +25,7 @@ Cargo Home
             </div>
         </div>
         <div class="row mt-3 mt-lg-5">
-            <div class="col-md-6 mt-lg-5 mt-0">
+            <div class="col-lg-6 mt-lg-5 mt-0">
                 <h2 class="fw-bold text-white">Breaking Down Barriers in Logistics</h2>
                 <h6 class="mt-lg-3 mt-0 lh-base" style="text-align: justify;color: rgba(255, 255, 255, 0.8);">
                     Experience the efficiency of Streamlined Shipping Across Global Boundaries with our Cargo Management System. 
@@ -34,7 +34,7 @@ Cargo Home
                 </h6>
                 <button class="btn btn-dark mt-lg-3 mt-1">Book Now</button>
             </div>
-            <div class="col-md-6 mt-lg-5 mt-3">
+            <div class="col-lg-6 mt-lg-5 mt-3">
                 <img src="{% static 'images/home_page/cargo_home.png' %}" class="img-fluid rounded-start mt-lg-5 mt-2" alt="img">
             </div>
         </div>
@@ -66,9 +66,9 @@ Cargo Home
             <div class="col-md-5 mt-lg-3 mt-0">
                 <h3 class="text-black fw-bold mt-lg-3 mt-0">We offer the</h3>
                 <h3><span class="fw-bold s2header">Highest Quality Services</span></h3>
-                <div class="row mt-lg-5 mt-3">
-                    <div class="col-md-4">
-                        <div class="rounded-image">
+                <div class="row mt-lg-5 mt-3 justify-content-center">
+                    <div class="col-md-4 text-center">
+                        <div class="rounded-image d-inline-block mt-lg-1 mt-3">
                             <img src="{% static 'images/home_page/s2aeroplane.png' %}" alt="Image">
                             <div class="overlay">
                               <div class="overlay-text">
@@ -77,8 +77,8 @@ Cargo Home
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="rounded-image">
+                    <div class="col-md-4 text-center">
+                        <div class="rounded-image d-inline-block mt-lg-1 mt-3">
                             <img src="{% static 'images/home_page/s2ship.png' %}" alt="Image">
                             <div class="overlay">
                               <div class="overlay-text">
@@ -87,8 +87,8 @@ Cargo Home
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="rounded-image">
+                    <div class="col-md-4 text-center">
+                        <div class="rounded-image d-inline-block mt-lg-1 mt-3">
                             <img src="{% static 'images/home_page/s2truck.png' %}" alt="Image">
                             <div class="overlay">
                               <div class="overlay-text">
@@ -136,9 +136,17 @@ Cargo Home
 <!-- end section 2 -->
 
 
+<!-- start footer section -->
+<section id="footer">
+    <div class="container mt-5">
+        {% include 'footer.html' %}
+        
+    </div>
+    
+</section>
 
 
-
+<!-- end footer section -->
 
 
 <style>
@@ -155,6 +163,9 @@ Cargo Home
     .s2header{
         color:rgb(66, 28, 82);
         
+    }
+    #footer{
+        background-color: rgb(66, 28, 82);
     }
 </style>
 
@@ -221,7 +232,7 @@ Cargo Home
       padding-left: 20px; /* Adjust as needed */
       margin-bottom: 5px; /* Adjust as needed */
     }
-  </style>
+</style>
 
 
 {% endblock %}
