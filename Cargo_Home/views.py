@@ -4,9 +4,9 @@ from django.shortcuts import render
 
 # Landing page of cargo
 def cargo_home(request):
-    return render(request, 'cargo_home.html')
+    return render(request, 'home/cargo_home.html')
 
 
 # aboutus page of cargo
 def aboutus(request):
-    return render(request, 'aboutus.html')
+    return render(request, 'aboutus/aboutus.html')
