@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<!-- title for the home page -->
+<!-- title for the about page -->
 {% block title %}
 AboutUs - Cargo
 {% endblock %}
 
-<!-- css link for home page -->
+<!-- css link for about page -->
 {% block link %}
 <link rel="stylesheet"  href="{% static 'css/aboutus.css' %}">
 {% endblock %}
@@ -48,7 +48,7 @@ AboutUs - Cargo
                 to deliver excellence every step of the way and make shipping easier for everyone. 
                 Get to know us and discover how we're shaping the future of logistics.
               </h6>
-              <button class="btn btn-dark mt-lg-3 mt-1">Book Now</button>
+              
             </div>
             <div class="col-lg-6 mt-lg-5 mt-3">
               <img src="{% static 'images/aboutus/aboutus.png' %}" class="img-fluid  mt-lg-5 mt-2" alt="img">
@@ -65,24 +65,62 @@ AboutUs - Cargo
 
 <section id="section2">
     <div class="container">
-        <div class="row mt-5">
+        <div class="row mt-5 mb-5">
             <div class="col-lg-5">
-                <div class="card text-center mb-3" style="width: 100%">
+                <div class="card card1 text-center mb-3 w-100 h-100" >
                     <div class="card-body">
-                      <h5 class="card-title">Special title treatment</h5>
-                      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                      <h5 class="card-title main-heading">Our Mission</h5>
+                      <p class="card-text" style="text-align: justify;">
+                        At Cargo, our mission is to simplify and elevate the shipping experience for businesses worldwide. 
+                        We strive to provide innovative solutions that streamline logistics processes, reduce costs, and exceed customer expectations. 
+                        Through cutting-edge technology, personalized support, and a commitment to sustainability, 
+                        we empower businesses of all sizes to thrive in the global marketplace.
+                      </p>
+                      
                     </div>
                 </div>
             </div>
             <div class="col-lg-2"></div>
-            <div class="col-lg-5"></div>
+            <div class="col-lg-5">
+                <div class="card card1 text-center mb-3 w-100 h-100">
+                    <div class="card-body">
+                      <h5 class="card-title main-heading">Our Vision</h5>
+                      <p class="card-text" style="text-align: justify;">
+                        Our vision at Cargo is to revolutionize the world of shipping by fostering a seamless and interconnected logistics ecosystem. 
+                        We envision a future where businesses can effortlessly navigate the complexities of global trade, with access to real-time data, 
+                        efficient delivery networks, and sustainable practices.  
+                        We aim to be the leading provider of comprehensive shipping solutions, for businesses worldwide.
+                      </p>
+                      
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
 </section>
 
 <!-- end abouts-section  -->
+
+
+
+
+
+
+<!-- start footer section -->
+<section id="footer">
+    <div class="container">
+      {% include 'footer.html' %}
+        
+    </div>
+      
+</section>
+  
+<!-- end footer section -->
+  
+
+
+
 
 
 <style>
@@ -96,6 +134,24 @@ AboutUs - Cargo
     }
     .aboutus_section{
         background-color: white;
+    }
+    .card1 {
+    
+        background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(253, 244, 239), rgb(254, 238, 254));
+        color: rgb(0, 0, 0);
+        transition: box-shadow 0.3s ease-in-out;
+        
+    }
+
+    .card1:hover {
+        transform: scale3d(1.02,1.02,1.02);
+        box-shadow: 0px 0px 10px rgba(5, 0, 7, 0.6);
+        
+        cursor: pointer;
+
+    }
+    #footer{
+        background-color: rgb(66, 28, 82);
     }
 </style>
 

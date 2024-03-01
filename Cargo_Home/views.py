@@ -10,3 +10,7 @@ def cargo_home(request):
 # aboutus page of cargo
 def aboutus(request):
     return render(request, 'aboutus/aboutus.html')
+
+# contactus page of cargo
+def contactus(request):
+    return render(request, 'contactus/contactus.html')
