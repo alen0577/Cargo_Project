@@ -14,3 +14,8 @@ def aboutus(request):
 # contactus page of cargo
 def contactus(request):
     return render(request, 'contactus/contactus.html')
+
+
+# service page of cargo
+def services(request):
+    return render(request, 'services/services.html')
