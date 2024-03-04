@@ -19,3 +19,7 @@ def contactus(request):
 # service page of cargo
 def services(request):
     return render(request, 'services/services.html')
+
+# career page of cargo
+def careers(request):
+    return render(request, 'careers/careers.html')
