@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- title for the book request page -->
+{% block title %}
+Book your Pickup - Cargo
+{% endblock %}
+
+<!-- css link for book request -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'css/aboutus.css' %}">
+{% endblock %}
+
+
+<!-- contents for book request -->
+{% block content %}
+
+<!-- start nav-section  -->
+<div class="nav-section">
+    <div class="container">
+        <div class="row">
+            <!-- include home navbar section -->
+            <div class="col-lg-12 mt-lg-5 mt-1">
+                {% include 'cusmod_navbar.html' %}
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+
+<!-- end nav-section  -->
+
+
+<!-- start booking-section  -->
+
+<section id="contactus-section">
+    <div class="container">
+        <div class="row mt-3 mt-lg-5">
+            <div class="col-lg-6 mt-lg-5 mt-0">
+              <h2 class="main-heading fw-bold ">Schedule a Pickup</h2>
+              <h6 class="mt-lg-3 mt-0 lh-base" style="text-align: justify;color: rgba(31, 31, 31, 0.8);">
+                Streamline your shipping process with our convenient pickup service at Cargo. 
+                Whether you're sending a single package or managing multiple shipments, scheduling a pickup has never been easier. 
+                Simply fill out the form below with your pickup details, including the pickup address, preferred pickup date and time, 
+                and delivery address. Our dedicated team will handle the rest, 
+                ensuring that your packages are collected promptly and securely. 
+
+              </h6>
+              
+            </div>
+            <div class="col-lg-6 mt-lg-5 mt-3">
+              <img src="{% static 'images/customer-module/pickup.png' %}" class="img-fluid  mt-lg-5 mt-2" alt="img">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- end booking-section  -->
+
+
+<!-- start booking_request-section  -->
+<section id="booking_request_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-1"></div>
+        </div>
+    </div>
+</section>
+
+<!-- end booking_request-section  -->
+
+
+<!-- start footer section -->
+<section id="footer">
+    <div class="container">
+      {% include 'footer.html' %}
+        
+    </div>
+      
+</section>
+  
+<!-- end footer section -->
+
+
+
+
+
+
+
+
+
+
+<style>
+    .main-heading{
+      color:rgb(66, 28, 82);
+      
+    }
+    .nav-section{
+      background-color: rgb(66, 28, 82);
+        
+    }
+    .booking_request_section{
+      background-color: white;
+    }
+  
+    .card1 {
+    
+      background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(253, 244, 239), rgb(254, 238, 254));
+      color: rgb(0, 0, 0);
+      transition: box-shadow 0.3s ease-in-out;
+        
+    }
+  
+    .card1:hover {
+      transform: scale3d(1.02,1.02,1.02);
+      box-shadow: 0px 0px 10px rgba(5, 0, 7, 0.6);
+      transition: all .8s;
+      cursor: pointer;
+  
+    }
+    #footer{
+      background-color: rgb(66, 28, 82);
+    }
+</style>
+
+
+
+{% endblock %}
