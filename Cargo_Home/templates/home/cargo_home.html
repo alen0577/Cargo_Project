@@ -29,15 +29,17 @@ Cargo Home
     <div class="row mt-3 mt-lg-5">
       <div class="col-lg-6 mt-lg-5 mt-0">
         <h2 class="fw-bold text-white">Breaking Down Barriers in Logistics</h2>
-        <h6 class="mt-lg-3 mt-0 lh-base" style="text-align: justify;color: rgba(255, 255, 255, 0.8);">
+        <h6 class="mt-lg-3 mt-1 lh-base" style="text-align: justify;color: rgba(255, 255, 255, 0.8);">
           Experience the efficiency of Streamlined Shipping Across Global Boundaries with our Cargo Management System. 
           Our platform simplifies the complexities of international logistics, ensuring smooth and seamless transportation of goods across borders. 
           From customs clearance to delivery, we optimize every step of the process, empowering your business to thrive in the global marketplace.
         </h6>
-        <button class="btn btn-dark mt-lg-3 mt-1">Book Now</button>
+        
+        <a href="{% url 'booking_request' %}"><button class="button1 mt-lg-4 mt-3" ><span class="ms-1">Book Now</span></button></a>
+          
       </div>
-      <div class="col-lg-6 mt-lg-5 mt-3">
-        <img src="{% static 'images/home_page/cargo_home.png' %}" class="img-fluid  mt-lg-5 mt-2" alt="img">
+      <div class="col-lg-6 mt-lg-5 mt-2 mb-lg-5">
+        <img src="{% static 'images/home_page/cargo_home.png' %}" class="img-fluid  mt-lg-5 mt-2 mb-lg-5" alt="img">
       </div>
     </div>
   </div>
@@ -61,8 +63,8 @@ Cargo Home
           Experience the power of seamless cross-border logistics with us.
 
         </p>
-        <button class="btn btn-dark mt-lg-3 mt-1">Book Now</button>
-        <img src="{% static 'images/home_page/s2img.webp' %}" class="img-fluid rounded-start mt-lg-3 mt-1" alt="img">
+        <a href="{% url 'booking_request' %}"><button class="button2 mt-lg-4 mt-3" ><span class="ms-1">Book Now</span></button></a>
+        <img src="{% static 'images/home_page/s2img.jpg' %}" class="img-fluid rounded-start mt-lg-3 mt-1" alt="img">
           
       </div>
       <div class="col-lg-2 mt-lg-3 mt-0"></div>
@@ -149,8 +151,8 @@ Cargo Home
           Elevate your shipping experience and propel your business forward with ease and confidence.
 
         </p>
-        <button class="btn btn-dark mt-lg-3 mt-1">Book Now</button>
-        <p></p>
+        <a href="{% url 'booking_request' %}"><button class="button2 mt-lg-4 mt-3" ><span class="ms-1">Book Now</span></button></a>
+        
       </div>
       <div class="col-lg-2"></div>
       <div class="col-lg-5 mt-lg-5 mt-3 mb-5">

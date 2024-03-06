@@ -48,8 +48,8 @@ Services - Cargo
               </h6>
               
             </div>
-            <div class="col-lg-6 mt-lg-5 mt-3">
-              <img src="{% static 'images/services/services.webp' %}" class="img-fluid  mt-lg-5 mt-2" alt="img">
+            <div class="col-lg-6 mt-3">
+              <img src="{% static 'images/services/services.jpg' %}" class="img-fluid  mt-lg-5 mt-2" alt="img">
             </div>
         </div>
     </div>
@@ -66,68 +66,7 @@ Services - Cargo
         <div class="row mt-5 mb-5">
             <div class="col-lg-1"></div>
             <div class="col-lg-10">
-
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <div class="col">
-                      <div class="card card1 h-100">
-                        <img src="" class="card-img-top h-100 w-100" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title main-heading">Air Cargo</h5>
-                          <p class="card-text text-black-50" style="text-align: justify;">
-                            Experience the speed and efficiency of air cargo services with Cargo. 
-                            Our air freight solutions offer swift and reliable transportation for your goods... 
-                            
-                          </p>
-                          <a href="" class="text-decoration-none text-black-50">read more...</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="card card1 h-100">
-                        <img src="" class="card-img-top h-100 w-100" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title main-heading">Sea Cargo</h5>
-                          <p class="card-text text-black-50" style="text-align: justify;">
-                            Dive into the world of sea cargo services with Cargo. 
-                            Our comprehensive sea freight solutions offer cost-effective and reliable transportation...
-                            
-                            
-                          </p>
-                          <a href="" class="text-decoration-none text-black-50">read more...</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="card card1 h-100">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title main-heading">Road Cargo</h5>
-                          <p class="card-text text-black-50" style="text-align: justify;">
-                            Hit the road with confidence using our road cargo services at Cargo. 
-                            Our efficient and reliable transportation solutions ensure that your goods are delivered safely...
-                            
-                          </p>
-                          <a href="" class="text-decoration-none text-black-50">read more...</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="card card1 h-100">
-                        <img src="..." class="card-img-top" alt="...">
-                        <div class="card-body">
-                          <h5 class="card-title main-heading">Door to Door Services</h5>
-                          <p class="card-text text-black-50" style="text-align: justify;">
-                            At Cargo, we understand the importance of a seamless supply chain,
-                             which is why we offer comprehensive door-to-door services...
-                            
-                          </p>
-                          <a href="" class="text-decoration-none text-black-50">read more...</a>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-
-
+              {% include 'services/service_card.html' %}
 
             </div>
             <div class="col-lg-1"></div>
@@ -169,7 +108,7 @@ Services - Cargo
   }
   .card1 {
   
-    background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(253, 244, 239), rgb(254, 238, 254));
+    background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(252, 249, 247), rgb(251, 245, 251));
     color: rgb(0, 0, 0);
     transition: box-shadow 0.3s ease-in-out;
       
@@ -181,6 +120,7 @@ Services - Cargo
     cursor: pointer;
 
   }
+  
   #footer{
     background-color: rgb(66, 28, 82);
     }

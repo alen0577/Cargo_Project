@@ -10,7 +10,7 @@
 
 #hero-section{
     background-color: rgb(66, 28, 82);
-    height: 100dvh;
+    
 }
 
 /* hero-section styles end */
@@ -199,7 +199,6 @@
 
 
 
-
 /* footer section styles start */
 
 #footer{
@@ -304,3 +303,90 @@ ul.arrow-list li {
 }
 
 /* benefits-section card styles end */
+
+
+/* hero-section button styles start */
+.button1 {
+    border-radius: 8px;
+    background-color: rgb(254, 171, 120);
+    border: none;
+    color: #000000;
+    text-align: center;
+    font-size: 16px;
+    padding: 6px;
+    width: 150px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+  
+.button1 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button1 span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button1:hover span {
+    padding-right: 20px;
+}
+
+.button1:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+/* hero-section button styles end */
+
+
+
+/* remaining section button styles start */
+.button2 {
+    border-radius: 8px;
+    background-color: rgb(66, 28, 82);
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    padding: 6px;
+    width: 150px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+  
+.button2 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button2 span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button2:hover span {
+    padding-right: 20px;
+}
+
+.button2:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+/* remaining section button styles start */
+
