@@ -1,0 +1,29 @@
+
+/* css styles for aboutus page */
+
+.main-heading{
+    color:rgb(66, 28, 82);
+    
+}
+.nav-section{
+    background-color: rgb(66, 28, 82);
+    
+}
+.aboutus_section{
+    background-color: white;
+}
+.card1 {
+    background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(253, 244, 239), rgb(255, 251, 255));
+    color: rgb(0, 0, 0);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card1:hover {
+    transform: scale3d(1.02,1.02,1.02);
+    box-shadow: 0px 0px 10px rgba(5, 0, 7, 0.6);
+    cursor: pointer;
+    font-weight: 450;
+}
+#footer{
+    background-color: rgb(66, 28, 82);
+}

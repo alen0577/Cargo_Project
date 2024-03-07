@@ -1,4 +1,5 @@
 
+/* css styles for home page */
 
 .main-heading{
     color:rgb(66, 28, 82);
@@ -288,7 +289,7 @@ ul.arrow-list li {
 /* benefits-section card styles start */
 .card1 {
     
-    background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(253, 244, 239), rgb(254, 238, 254));
+    background: linear-gradient(to bottom, rgb(251, 251, 251),rgb(252, 245, 242), rgb(253, 247, 253));
     color: rgb(0, 0, 0);
     transition: box-shadow 0.3s ease-in-out;
     
@@ -318,6 +319,7 @@ ul.arrow-list li {
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
+    font-weight: 500;
 }
   
 .button1 span {
@@ -334,6 +336,7 @@ ul.arrow-list li {
     top: 0;
     right: -20px;
     transition: 0.5s;
+    font-weight: 500;
 }
 
 .button1:hover span {
@@ -362,6 +365,7 @@ ul.arrow-list li {
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
+    font-weight: 500;
 }
   
 .button2 span {
@@ -378,6 +382,7 @@ ul.arrow-list li {
     top: 0;
     right: -20px;
     transition: 0.5s;
+    font-weight: 500;
 }
 
 .button2:hover span {

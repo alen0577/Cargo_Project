@@ -16,17 +16,17 @@ class ShipmentBooking(models.Model):
     contact_number = models.IntegerField()
 
     # shipment details
-    delivery_method_choices = [
+    delivery_option_choices = [
         ('road', 'By Road'),
         ('air', 'By Air'),
         ('sea', 'By Sea')
     ]
-    delivery_method = models.CharField(max_length=10, choices=delivery_method_choices)
-    delivery_speed_choices = [
+    delivery_option = models.CharField(max_length=10, choices=delivery_option_choices)
+    delivery_type_choices = [
         ('normal', 'Normal'),
         ('speed', 'Speed')
     ]
-    delivery_speed = models.CharField(max_length=10, choices=delivery_speed_choices)
+    delivery_type = models.CharField(max_length=10, choices=delivery_type_choices)
     pickup_date = models.DateField(auto_now_add=True)
     pickup_time = models.TimeField(auto_now_add=True)
     package_weight = models.DecimalField(max_digits=5, decimal_places=5)

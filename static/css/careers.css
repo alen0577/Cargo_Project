@@ -1,0 +1,54 @@
+
+/* css styles for career page */
+
+.main-heading{
+    color:rgb(66, 28, 82);
+    
+}
+.nav-section{
+    background-color: rgb(66, 28, 82);
+    
+}
+#career-section{
+    background-color: white;
+}
+
+/* styles for show more, show less in card start */
+#ch{
+    display: none;
+}
+#ch:checked ~ .card-content{
+    display: block;
+}
+#ch:checked ~ label{
+    display: none;
+}
+.labelch{
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(66, 28, 82);
+    padding: 3px 13px;
+    border-radius: 3px;
+}
+.card-content{
+    display: none;
+}
+/* styles for show more, show less in card end */
+.card1 {
+
+    background: linear-gradient(to bottom, rgb(251, 251, 251),rgb(252, 245, 242), rgb(253, 247, 253));
+    color: rgb(0, 0, 0);
+    transition: box-shadow 0.3s ease-in-out;
+    
+}
+
+.card1:hover {
+    
+    box-shadow: 0px 0px 10px rgba(5, 0, 7, 0.6);
+    cursor: pointer;
+
+}
+#footer{
+    background-color: rgb(66, 28, 82);
+}
