@@ -288,8 +288,6 @@ ul.arrow-list li {
 
 /* benefits-section card styles start */
 .card1 {
-    
-    background: linear-gradient(to bottom, rgb(251, 251, 251),rgb(252, 245, 242), rgb(253, 247, 253));
     color: rgb(0, 0, 0);
     transition: box-shadow 0.3s ease-in-out;
     
