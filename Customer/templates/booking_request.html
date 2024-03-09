@@ -62,13 +62,39 @@ Book your Pickup - Cargo
 <!-- start booking_form-section  -->
 <section id="booking_form_section">
   <div class="container">
-      <div class="row mt-5 mb-5">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10">
-          {% include 'shipment_booking_form.html' %}
+    <div class="row mt-5 mb-5">
+      <div class="col-lg-4"></div>
+      <div class="col-lg-4">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="radiobtn" id="homepickup" value="Home Pickup" checked>
+          <label class="form-check-label fw-bold" for="homepickup">Home Pickup</label>
         </div>
-        <div class="col-lg-1"></div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="radiobtn" id="shippingcenter" value="Drop-off at Shipping Center">
+          <label class="form-check-label fw-bold" for="shippingcenter">Drop-off at Shipping Center</label>
+        </div>
       </div>
+      <div class="col-lg-4"></div>
+    </div>
+
+    <!-- include form for shipment booking -->
+    <div class="row mt-5 mb-5" >
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10">
+        <!-- include form for home pickup option -->
+        <div id="form1">
+          {% include 'shipment_booking_form1.html' %}
+        </div>
+
+        <!-- include form for drop off at shipping center option -->
+        <div id="form2" style="display: none;">
+          {% include 'shipment_booking_form2.html' %}
+        </div>
+      </div>
+      <div class="col-lg-1"></div>
+    </div>
+
+
   </div>
 </section>
 
@@ -86,7 +112,22 @@ Book your Pickup - Cargo
   
 <!-- end footer section -->
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+  // Initially hide the second form
+  $('#shippingcenter').change(function() {
+    $('#form1').hide();
+    $('#form2').show();
+  });
 
+  // Initially show the first form
+  $('#homepickup').change(function() {
+    $('#form1').show();
+    $('#form2').hide();
+  });
+});
+</script>
 
 
 
