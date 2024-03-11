@@ -10,6 +10,9 @@ class ShipmentBooking(models.Model):
     # tracking code
     tracking_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
+    # Shipment type field
+    shipment_type = models.CharField(max_length=30, default='Home Pickup')
+
     # customer details
     full_name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(max_length = 254, null=True, blank=True)
@@ -21,12 +24,12 @@ class ShipmentBooking(models.Model):
         ('air', 'By Air'),
         ('sea', 'By Sea')
     ]
-    delivery_option = models.CharField(max_length=10, choices=delivery_option_choices)
+    delivery_option = models.CharField(max_length=10, choices=delivery_option_choices, null=True, blank=True)
     delivery_type_choices = [
         ('normal', 'Normal'),
         ('speed', 'Speed')
     ]
-    delivery_type = models.CharField(max_length=10, choices=delivery_type_choices)
+    delivery_type = models.CharField(max_length=10, choices=delivery_type_choices, null=True, blank=True)
     pickup_date = models.DateField(null=True, blank=True)
     pickup_time = models.TimeField(null=True, blank=True)
     package_weight = models.DecimalField(max_digits=5, decimal_places=5, null=True, blank=True)
@@ -50,4 +53,5 @@ class ShipmentBooking(models.Model):
     receiver_country = models.CharField(max_length=254, null=True, blank=True)
     receiver_contact_no = models.IntegerField(null=True, blank=True)
 
-    
+    is_confirmed = models.BooleanField(default=0, null=True, blank=True)
+    is_active = models.BooleanField(default=0, null=True, blank=True)

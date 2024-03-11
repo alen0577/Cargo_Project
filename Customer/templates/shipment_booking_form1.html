@@ -7,7 +7,7 @@
       </div>
     </div>
     <!-- form section -->
-    <form action="" method="post">
+    <form action="{% url 'home_pickup_booking' %}" method="post">
         {% csrf_token %}
         <div class="customer-details p-5">
             <h5 class="main-heading fw-bold">Your Information</h5>
@@ -33,15 +33,15 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-options" id="road" value="road">
+                        <input class="form-check-input" type="radio" name="delivery_option" id="road" value="road">
                         <label class="form-check-label" for="road">Road</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-options" id="air" value="air">
+                        <input class="form-check-input" type="radio" name="delivery_option" id="air" value="air">
                         <label class="form-check-label" for="air">Air</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-options" id="sea" value="sea">
+                        <input class="form-check-input" type="radio" name="delivery_option" id="sea" value="sea">
                         <label class="form-check-label" for="sea">Sea</label>
                     </div>
                 </div>
