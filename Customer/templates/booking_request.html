@@ -36,7 +36,22 @@ Book your Pickup - Cargo
 
 <section id="contactus-section">
   <div class="container">
-    <div class="row mt-3 mt-lg-5">
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">Your order is placed, please wait for confirmation.</span>
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row mt-3 mt-lg-4">
       <div class="col-lg-6 mt-lg-5 mt-0">
         <h2 class="main-heading fw-bold ">Schedule a Pickup</h2>
         <h6 class="mt-lg-3 mt-0 lh-base" style="text-align: justify;color: rgba(31, 31, 31, 0.8);">
@@ -142,6 +157,7 @@ $(document).ready(function() {
     background-color: rgb(66, 28, 82);
       
   }
+  
   .booking_request_section{
     background-color: white;
   }
@@ -229,6 +245,30 @@ $(document).ready(function() {
   .form-check-input[type="radio"]:checked {
       background-color: rgb(66, 28, 82); /* Set your desired background color here */
   }
+</style>
+
+<!-- styles for success messages -->
+<style>
+  .alert {
+    background-color: rgba(66, 28, 82, 0.95);
+    color: white;
+    animation: slideInRight 0.5s forwards;
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  .icon{
+    color: rgb(254, 171, 120);
+  }
+
 </style>
 
 

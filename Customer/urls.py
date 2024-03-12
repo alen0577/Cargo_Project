@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path('book/shipment-order/', views.booking_request, name='booking_request'),
     path('pickup/', views.home_pickup_booking, name='home_pickup_booking'),
+    path('dropoff/', views.shipping_center_booking, name='shipping_center_booking'),
 ]

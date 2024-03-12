@@ -8,19 +8,19 @@
       </div>
     </div>
     <!-- form section -->
-    <form action="" method="post">
+    <form action="{% url 'shipping_center_booking' %}" method="post"  class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="customer-details p-5">
             <h5 class="main-heading fw-bold">Your Information</h5>
             <div class="row g-3 mt-3">
                 <div class="col-lg-4 mt-2">
-                    <input type="text" class="form-control mt-1 mb-1" name="full_name" placeholder="Full Name">
+                    <input type="text" class="form-control mt-1 mb-1" name="full_name" placeholder="Full Name" required>
                 </div>
                 <div class="col-lg-4 mt-2">
-                    <input type="email" class="form-control mt-1 mb-1" name="email" placeholder="Email">
+                    <input type="email" class="form-control mt-1 mb-1" name="email" placeholder="Email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Email should be in the format 'example@gmail.com'" required>
                 </div>
                 <div class="col-lg-4 mt-2">
-                    <input type="text" class="form-control mt-1 mb-1" name="contact_number" placeholder="Contact No.">
+                    <input type="text" class="form-control mt-1 mb-1" name="contact_number" placeholder="Contact No."  pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
                 </div>
             </div>
         </div>
@@ -34,15 +34,15 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-options" id="road" value="road">
+                        <input class="form-check-input" type="radio" name="delivery_option" id="road" value="road" required>
                         <label class="form-check-label" for="road">Road</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-options" id="air" value="air">
+                        <input class="form-check-input" type="radio" name="delivery_option" id="air" value="air">
                         <label class="form-check-label" for="air">Air</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-options" id="sea" value="sea">
+                        <input class="form-check-input" type="radio" name="delivery_option" id="sea" value="sea">
                         <label class="form-check-label" for="sea">Sea</label>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                     <label for="">Package Weight</label>
                 </div>
                 <div class="col-lg-4">
-                    <input type="number" class="form-control mt-1 mb-1" name="package_weight">
+                    <input type="number" step=".01" class="form-control mt-1 mb-1" name="package_weight">
                 </div>
             </div>
             <div class="row g-0 mt-3">
@@ -73,11 +73,11 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-type" id="normal" value="normal">
+                        <input class="form-check-input" type="radio" name="delivery_type" id="normal" value="normal" required>
                         <label class="form-check-label" for="normal">Normal</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="delivery-type" id="speed" value="speed">
+                        <input class="form-check-input" type="radio" name="delivery_type" id="speed" value="speed">
                         <label class="form-check-label" for="speed">Speed</label>
                     </div>
                       
@@ -95,35 +95,35 @@
                     <h5 class="main-heading fw-bold">Delivery Address</h5>
                     <div class="row g-3 mt-3">
                         <div class="col-lg-12">
-                            <input type="text" class="form-control mt-1 mb-1" name="receiver_name" placeholder="Receiver's Name">
+                            <input type="text" class="form-control mt-1 mb-1" name="receiver_name" placeholder="Receiver's Name" required>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
                         <div class="col-lg-12">
-                            <input type="text" class="form-control mt-1 mb-1" name="receiver_address" placeholder="Shipment Delivery Address">
+                            <input type="text" class="form-control mt-1 mb-1" name="receiver_address" placeholder="Shipment Delivery Address" required>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
                         <div class="col-lg-6">
-                            <input type="text" class="form-control mt-1 mb-1" name="receiver_city" placeholder="City">
+                            <input type="text" class="form-control mt-1 mb-1" name="receiver_city" placeholder="City" required>
                         </div>
                         <div class="col-lg-6">
-                            <input type="number" class="form-control mt-1 mb-1" name="receiver_pincode" placeholder="Pincode">
+                            <input type="number" class="form-control mt-1 mb-1" name="receiver_pincode" placeholder="Pincode" required>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
                         <div class="col-lg-12">
-                            <input type="text" class="form-control mt-1 mb-1" name="receiver_state" placeholder="State">
+                            <input type="text" class="form-control mt-1 mb-1" name="receiver_state" placeholder="State" required>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
                         <div class="col-lg-12">
-                            <input type="text" class="form-control mt-1 mb-1" name="receiver_country" placeholder="Country">
+                            <input type="text" class="form-control mt-1 mb-1" name="receiver_country" placeholder="Country" required>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
                         <div class="col-lg-12">
-                            <input type="number" class="form-control mt-1 mb-1" name="receiver_contact_no" placeholder="Contact No.">
+                            <input type="text" class="form-control mt-1 mb-1" name="receiver_contact_no" placeholder="Contact No."  pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
                         </div>
                     </div>
                 </div>
@@ -146,3 +146,25 @@
     
     
 </div>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+    })
+    })()
+</script>

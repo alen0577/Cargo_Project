@@ -16,7 +16,7 @@ class ShipmentBooking(models.Model):
     # customer details
     full_name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(max_length = 254, null=True, blank=True)
-    contact_number = models.IntegerField()
+    contact_number = models.CharField(max_length=100, null=True, blank=True)
 
     # shipment details
     delivery_option_choices = [
@@ -32,7 +32,7 @@ class ShipmentBooking(models.Model):
     delivery_type = models.CharField(max_length=10, choices=delivery_type_choices, null=True, blank=True)
     pickup_date = models.DateField(null=True, blank=True)
     pickup_time = models.TimeField(null=True, blank=True)
-    package_weight = models.DecimalField(max_digits=5, decimal_places=5, null=True, blank=True)
+    package_weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     number_of_packages = models.IntegerField(null=True, blank=True)
 
     # pickup address details
@@ -42,7 +42,7 @@ class ShipmentBooking(models.Model):
     sender_pincode = models.IntegerField(null=True, blank=True)
     sender_state = models.CharField(max_length=254, null=True, blank=True)
     sender_country = models.CharField(max_length=254, null=True, blank=True)
-    sender_contact_no = models.IntegerField(null=True, blank=True)
+    sender_contact_no = models.CharField(max_length=100, null=True, blank=True)
 
     # delivery address details
     receiver_name = models.CharField(max_length=254, null=True, blank=True)
@@ -51,7 +51,7 @@ class ShipmentBooking(models.Model):
     receiver_pincode = models.IntegerField(null=True, blank=True)
     receiver_state = models.CharField(max_length=254, null=True, blank=True)
     receiver_country = models.CharField(max_length=254, null=True, blank=True)
-    receiver_contact_no = models.IntegerField(null=True, blank=True)
+    receiver_contact_no = models.CharField(max_length=100, null=True, blank=True)
 
     is_confirmed = models.BooleanField(default=0, null=True, blank=True)
     is_active = models.BooleanField(default=0, null=True, blank=True)
