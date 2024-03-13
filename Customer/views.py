@@ -13,7 +13,7 @@ def booking_request(request):
 def home_pickup_booking(request):
     if request.method == 'POST':
         # If the form has been submitted
-        code = uuid.uuid4()
+        
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
         contact_number = request.POST.get('contact_number')
@@ -40,7 +40,6 @@ def home_pickup_booking(request):
         
         # Create an instance of the ShipmentBooking model
         shipment = ShipmentBooking(
-            tracking_code=code,
             full_name=full_name,
             email=email,
             contact_number=contact_number,
@@ -71,7 +70,7 @@ def home_pickup_booking(request):
         
         # Redirect to a success page
         messages.success(request, 'Success')
-        return redirect('booking_request')
+        return redirect('booking_details', shipment.uid)
     else:
         return render(request, 'shipment_booking_form.html')
 
@@ -79,7 +78,7 @@ def home_pickup_booking(request):
 def shipping_center_booking(request):
     if request.method == 'POST':
         # If the form has been submitted
-        code = uuid.uuid4()
+        
         shipment_type = 'Shipping Center'
         full_name = request.POST.get('full_name')
         email = request.POST.get('email')
@@ -98,7 +97,6 @@ def shipping_center_booking(request):
         
         # Create an instance of the ShipmentBooking model
         shipment = ShipmentBooking(
-            tracking_code=code,
             shipment_type=shipment_type,
             full_name=full_name,
             email=email,
@@ -121,6 +119,18 @@ def shipping_center_booking(request):
         
         # Redirect to a success page
         messages.success(request, 'Success')
-        return redirect('booking_request')
+        return redirect('booking_details', shipment.uid)
     else:
         return render(request, 'shipment_booking_form.html')
+
+
+def booking_details(request,pk):
+    try:
+        uid=pk
+        shipment = ShipmentBooking.objects.get(uid=uid)
+        context={
+            'data': shipment
+        }
+        return render(request, 'booking_details.html', context)
+    except ShipmentBooking.DoesNotExist:
+        return HttpResponseNotFound('Shipment booking not found')

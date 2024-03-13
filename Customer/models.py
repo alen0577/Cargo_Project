@@ -7,8 +7,10 @@ import uuid
 
 class ShipmentBooking(models.Model):
 
-    # tracking code
-    tracking_code = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    # unique id 
+    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    date = models.DateField(auto_now_add=True,null=True, blank=True)
+    time = models.TimeField(auto_now_add=True,null=True, blank=True)
 
     # Shipment type field
     shipment_type = models.CharField(max_length=30, default='Home Pickup')

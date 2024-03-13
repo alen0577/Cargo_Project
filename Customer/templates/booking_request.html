@@ -8,7 +8,7 @@ Book your Pickup - Cargo
 
 <!-- css link for book request -->
 {% block link %}
-<link rel="stylesheet"  href="{% static 'css/aboutus.css' %}">
+<link rel="stylesheet"  href="{% static 'css/booking.css' %}">
 {% endblock %}
 
 
@@ -51,13 +51,13 @@ Book your Pickup - Cargo
     </div>
     {% endif %}
 
-    <div class="row mt-3 mt-lg-4">
+    <div class="row mt-3 mt-lg-5">
       <div class="col-lg-6 mt-lg-5 mt-0">
-        <h2 class="main-heading fw-bold ">Schedule a Pickup</h2>
+        <h2 class="main-heading fw-bold ">Book a Pickup</h2>
         <h6 class="mt-lg-3 mt-0 lh-base" style="text-align: justify;color: rgba(31, 31, 31, 0.8);">
           Streamline your shipping process with our convenient pickup service at Cargo. 
           Whether you're sending a single package or managing multiple shipments, scheduling a pickup has never been easier. 
-          Simply fill out the form below with your pickup details, including the pickup address, preferred pickup date and time, 
+          Simply fill out the form below with your pickup details, including the pickup address,  
           and delivery address. Our dedicated team will handle the rest, 
           ensuring that your packages are collected promptly and securely. 
 
@@ -129,147 +129,20 @@ Book your Pickup - Cargo
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function() {
-  // Initially hide the second form
-  $('#shippingcenter').change(function() {
-    $('#form1').hide();
-    $('#form2').show();
-  });
+  $(document).ready(function() {
+    // Initially hide the second form
+    $('#shippingcenter').change(function() {
+      $('#form1').hide();
+      $('#form2').show();
+    });
 
-  // Initially show the first form
-  $('#homepickup').change(function() {
-    $('#form1').show();
-    $('#form2').hide();
+    // Initially show the first form
+    $('#homepickup').change(function() {
+      $('#form1').show();
+      $('#form2').hide();
+    });
   });
-});
 </script>
-
-
-
-
-
-<style>
-  .main-heading{
-    color:rgb(66, 28, 82);
-    
-  }
-  .nav-section{
-    background-color: rgb(66, 28, 82);
-      
-  }
-  
-  .booking_request_section{
-    background-color: white;
-  }
-
-  .card1 {
-  
-    background: linear-gradient(to bottom, rgb(242, 241, 241),rgb(253, 244, 239), rgb(254, 238, 254));
-    color: rgb(0, 0, 0);
-    transition: box-shadow 0.3s ease-in-out;
-      
-  }
-
-  .card1:hover {
-    transform: scale3d(1.02,1.02,1.02);
-    box-shadow: 0px 0px 10px rgba(5, 0, 7, 0.6);
-    transition: all .8s;
-    cursor: pointer;
-
-  }
-  .header{
-    background-color: rgb(66, 28, 82);
-    color: white;
-  }
-  #footer{
-    background-color: rgb(66, 28, 82);
-  }
-
-  .button2 {
-    border-radius: 8px;
-    background-color: rgb(66, 28, 82);
-    border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 16px;
-    padding: 6px;
-    width: 150px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin: 5px;
-    font-weight: 500;
-  }
-  
-  .button2 span {
-      cursor: pointer;
-      display: inline-block;
-      position: relative;
-      transition: 0.5s;
-  }
-
-  .button2 span:after {
-      content: '\00bb';
-      position: absolute;
-      opacity: 0;
-      top: 0;
-      right: -20px;
-      transition: 0.5s;
-      font-weight: 500;
-  }
-
-  .button2:hover span {
-      padding-right: 20px;
-  }
-
-  .button2:hover span:after {
-      opacity: 1;
-      right: 0;
-  }
-</style>
-<style>
-  /* CSS for input boxes */
-  .form-control {
-      border-color: rgb(66, 28, 82); /* Set your desired border color here */
-  }
-
-  /* CSS for checkboxes */
-  .form-check-input[type="checkbox"] {
-      border-color: rgb(66, 28, 82); /* Set your desired border color here */
-  }
-
-  /* CSS for radio buttons */
-  .form-check-input[type="radio"] {
-      border-color: rgb(66, 28, 82); /* Set your desired border color here */
-  }
-  /* CSS for radio buttons */
-  .form-check-input[type="radio"]:checked {
-      background-color: rgb(66, 28, 82); /* Set your desired background color here */
-  }
-</style>
-
-<!-- styles for success messages -->
-<style>
-  .alert {
-    background-color: rgba(66, 28, 82, 0.95);
-    color: white;
-    animation: slideInRight 0.5s forwards;
-  }
-
-  @keyframes slideInRight {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  .icon{
-    color: rgb(254, 171, 120);
-  }
-
-</style>
 
 
 
