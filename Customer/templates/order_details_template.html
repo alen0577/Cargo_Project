@@ -1,0 +1,117 @@
+<!-- order details template -->
+
+<div class="orderdetails-template" id="orderdetails-template">
+    <div class="card mb-3" style="max-width: 100%;">
+    
+        <div class="header-section p-4">
+            <div class="row g-0 mt-3">
+                <div class="col-4">
+                    <h5 class="main-heading fw-bold">Cargo</h5>
+                </div>
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <h5 class="main-heading fw-bold">Order Details</h5>
+                </div>
+            </div>
+            <div class="row g-0 mt-3">
+                <div class="col-4">
+                   <p>Cargo</p>
+
+
+                </div>
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <div class="details">
+                        <p class="">CAROD{{data.id}}</p>
+                        <p class="mt-1">{{data.date}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+
+
+
+
+
+<style>
+    .details{
+        line-height: 10px;
+    }
+</style>
+
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+        .order-info {
+            margin-bottom: 30px;
+        }
+        .order-info p {
+            margin: 10px 0;
+            color: #666;
+        }
+        .download-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .download-link a {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .download-link a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Details</h1>
+        <div class="order-info">
+            <h2>Shipment Information</h2>
+            <p><strong>Tracking Code:</strong> {{ shipment.tracking_code }}</p>
+            <p><strong>Sender Name:</strong> {{ shipment.sender_name }}</p>
+            <p><strong>Sender Address:</strong> {{ shipment.sender_address }}</p>
+            <p><strong>Receiver Name:</strong> {{ shipment.receiver_name }}</p>
+            <p><strong>Receiver Address:</strong> {{ shipment.receiver_address }}</p>
+            <p><strong>Package Weight:</strong> {{ shipment.package_weight }} kg</p>
+            <p><strong>Number of Packages:</strong> {{ shipment.number_of_packages }}</p>
+            <p><strong>Delivery Method:</strong> {{ shipment.get_delivery_method_display }}</p>
+            <p><strong>Delivery Speed:</strong> {{ shipment.get_delivery_speed_display }}</p>
+            <p><strong>Pickup Address:</strong> {{ shipment.pickup_address }}</p>
+            <p><strong>Pickup Date:</strong> {{ shipment.pickup_date }}</p>
+            <p><strong>Pickup Time:</strong> {{ shipment.pickup_time }}</p>
+            <p><strong>Additional Instructions:</strong> {{ shipment.additional_instructions }}</p>
+        </div>
+        <div class="download-link">
+            <a href="{% url 'download_order_details' shipment.id %}" download>Download Order Details</a>
+        </div>
+    </div>
+</body>
+</html>
