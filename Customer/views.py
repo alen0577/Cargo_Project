@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from . models import *
 import uuid
 from django.contrib import messages
+import pdfkit
 
 # Create your views here.
 
@@ -67,6 +68,10 @@ def home_pickup_booking(request):
         
         # Save the instance to the database
         shipment.save()
+
+        # Assign the shipping order number
+        shipment.booking_order_number = f'CARSO{shipment.id}'
+        shipment.save()
         
         # Redirect to a success page
         messages.success(request, 'Success')
@@ -116,6 +121,10 @@ def shipping_center_booking(request):
         
         # Save the instance to the database
         shipment.save()
+
+        # Assign the shipping order number
+        shipment.booking_order_number = f'CARSO{shipment.id}'
+        shipment.save()
         
         # Redirect to a success page
         messages.success(request, 'Success')
@@ -134,3 +143,26 @@ def booking_details(request,pk):
         return render(request, 'booking_details.html', context)
     except ShipmentBooking.DoesNotExist:
         return HttpResponseNotFound('Shipment booking not found')
+
+
+def download_pdf(request):
+    # Render the HTML template
+    rendered_template = render(request, 'order_details_template.html',)
+
+    # PDFkit options for A4 size
+    options = {
+        'page-size': 'A4',
+        'margin-top': '0.75in',
+        'margin-right': '0.75in',
+        'margin-bottom': '0.75in',
+        'margin-left': '0.75in',
+    }
+
+    # Convert the rendered HTML to PDF with specified options
+    pdf = pdfkit.from_string(rendered_template.content, False, options=options)
+
+    # Prepare HTTP response with the PDF file as attachment
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="order_details.pdf"'
+    
+    return response

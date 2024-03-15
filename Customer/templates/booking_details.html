@@ -57,21 +57,31 @@ Booking Details - Cargo
 <!-- start booking details template section -->
 <section id="template-section">
   <div class="container">
-      <div class="row mt-5 mb-5">
-        <div class="col-lg-2"></div>
+    <div class="row mb-5">
+      <div class="col-lg-1"></div>
 
-        <div class="col-lg-8">
-          {% include 'order_details_template.html' %}
-        </div>
+      <div class="col-lg-10 mt-5 mb-5">
+        
+        
+        <!-- booking details template added -->
+        {% include 'order_details_template.html' %}
 
-
-        <div class="col-lg-2"></div>
+        <!-- reminder note -->
+        {% if data.shipment_type == "Home Pickup" %}
+        <p style="text-align: justify;">Note*- <span class="text-warning-emphasis">Your booking order is placed, but we are checking our service is available at your pickup and delivery address. If available you receive a confirmation mail as soon as possible.</span></p>
+        {% else %}
+        <p style="text-align: justify;">Note*- <span class="text-warning-emphasis">Your booking order is placed, but we are checking our service is available at your delivery address. If available you receive a confirmation mail as soon as possible.</span></p>
+        {% endif %}
       </div>
+
+
+      <div class="col-lg-1"></div>
+    </div>
     
   </div>
 </section>
 
-<!-- start booking details template section -->
+<!-- end booking details template section -->
 
 <!-- start footer section -->
 
@@ -83,6 +93,8 @@ Booking Details - Cargo
 </section>
     
 <!-- end footer section -->
+
+
 
 
 {% endblock %}
