@@ -1,29 +1,68 @@
+<style>
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    .orderdetails-template {
+        margin: 0;
+        font-family: Arial, sans-serif; /* Change the font family as needed */
+        font-size: 16px; /* Adjust the font size as needed */
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+    .card {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        color: black;
+        font-weight: 549;
+        border: 1px solid rgb(66, 28, 82);
+    }
+    .header-section,
+    .shipment-details-section,
+    .address-details {
+        box-sizing: border-box;
+        padding: 15px;
+    }
+    /* Adjust other styles as needed */
+</style>
+
+<style>
+    
+    .line{
+        color: rgb(66, 28, 82);
+    }
+    
+</style>
+
+<style>
+    /* Media query for mobile devices */
+    @media only screen and (max-width: 768px) {
+        .details1 {
+            line-height: 20px; /* Adjust the line height as per your preference */
+        }
+        .details2 {
+            line-height: 16px; /* Adjust the line height as per your preference */
+        }
+    }
+</style>
+
+
+
 <!-- order details template -->
 
-<!-- pdf and print buttons -->
-<div class="row">
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4"></div>
-    <div class="col-lg-4">
-      <div class="btn-group mb-2" role="group" aria-label="Buttons">
-        <a href=""><button onclick=window.print() class="button3" type="button"><i  class="fas fa-print"></i><span class="ms-2">Print</span></button></a>
-      <a href="{% url 'download_pdf' %}"><button class="button3" type="button"><i class="fas fa-file-pdf"></i><span class="ms-2">Pdf</span></button></a>
-        
-      </div>
-    </div>
-</div>
-
 <div class="orderdetails-template" id="orderdetails-template">
-    <div class="card mb-3 shadow p-3  bg-body-tertiary rounded" style="max-width: 100%;">
+    <div class="card shadow bg-body-tertiary rounded" style="max-width: 100%;">
     
-        <div class="header-section p-4">
+        <div class="header-section p-5">
             <div class="row g-0 mt-3">
                 <div class="col-4">
-                    <h5 class="main-heading fw-bold">Cargo</h5>
+                    <h4 class="main-heading fw-bold">Cargo</h4>
                 </div>
                 <div class="col-4"></div>
                 <div class="col-4">
-                    <h5 class="main-heading fw-bold text-end">Order Details</h5>
+                    <h4 class="main-heading fw-bold text-end">Order Details</h4>
                 </div>
             </div>
             <div class="row g-0 mt-3">
@@ -48,121 +87,121 @@
             </div>
         </div>
         <hr class="line">
-        <div class="shipment-details-section p-4">
+        <div class="shipment-details-section p-5 ">
             <div class="row g-0">
                 <div class="col-12">
                     <h5 class="main-heading fw-bold">Shipment Order Details</h5>
                 </div>
             </div>
-            <div class="row g-0 mt-3">
+            <div class="row g-0 mt-3 lh-large">
                 <div class="col-6">
                     <div class="row">
-                        <div class="col-4">Name</div>
-                        <div class="col-8 fw-bold">{{data.full_name}}</div>
+                        <div class="col-5">Name</div>
+                        <div class="col-7 ">{{data.full_name}}</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">Email</div>
-                        <div class="col-8 fw-bold">{{data.email}}</div>
+                        <div class="col-5">Email</div>
+                        <div class="col-7 ">{{data.email}}</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">Phone No.</div>
-                        <div class="col-8 fw-bold">{{data.contact_number}}</div>
+                        <div class="col-5">Phone No.</div>
+                        <div class="col-7 ">{{data.contact_number}}</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">Delivery Option</div>
-                        <div class="col-8 fw-bold">By {{data.delivery_option}}</div>
+                        <div class="col-5">Delivery Option</div>
+                        <div class="col-7 ">By {{data.delivery_option}}</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">Delivery Type</div>
-                        <div class="col-8 fw-bold">{{data.delivery_type}} Delivery</div>
+                        <div class="col-5">Delivery Type</div>
+                        <div class="col-7 ">{{data.delivery_type}} Delivery</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">Package Weight</div>
-                        <div class="col-8 fw-bold">{{data.package_weight}} Kg</div>
+                        <div class="col-5">Package Weight</div>
+                        <div class="col-7 ">{{data.package_weight}} Kg</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">No. of Packages</div>
-                        <div class="col-8 fw-bold">{{data.number_of_packages}}</div>
+                        <div class="col-5">No. of Packages</div>
+                        <div class="col-7 ">{{data.number_of_packages}}</div>
                     </div>
                     <div class="row">
-                        <div class="col-4">Order Status</div>
-                        <div class="col-8 fw-bold text-warning-emphasis">Pending</div>
+                        <div class="col-5">Order Status</div>
+                        <div class="col-7 text-warning-emphasis">Pending</div>
                     </div>
                 </div>
                 <div class="col-6"></div>
             </div>
         </div>
-        <div class="address-details p-4 mb-5">
+        <div class="address-details p-5">
             {% if data.shipment_type == "Home Pickup" %}
             <div class="row g-0">
-                <div class="col-4">
-                    <h6 class="main-heading fw-bold">Pickup Address</h6>
-                    <div class="row g-0 mt-3">
+                <div class="col-5">
+                    <h5 class="main-heading fw-bold">Pickup Address</h5>
+                    <div class="row g-0 mt-2">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-4">Name</div>
-                                <div class="col-8 ">{{data.sender_name}}</div>
+                                <div class="col-5">Name</div>
+                                <div class="col-7 ">{{data.sender_name}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Address</div>
-                                <div class="col-8 ">{{data.sender_address}}</div>
+                                <div class="col-5">Address</div>
+                                <div class="col-7 ">{{data.sender_address}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">City</div>
-                                <div class="col-8 ">{{data.sender_city}}</div>
+                                <div class="col-5">City</div>
+                                <div class="col-7 ">{{data.sender_city}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Pincode</div>
-                                <div class="col-8 ">{{data.sender_pincode}}</div>
+                                <div class="col-5">Pincode</div>
+                                <div class="col-7 ">{{data.sender_pincode}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">State</div>
-                                <div class="col-8 ">{{data.sender_state}}</div>
+                                <div class="col-5">State</div>
+                                <div class="col-7 ">{{data.sender_state}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Country</div>
-                                <div class="col-8 ">{{data.sender_country}}</div>
+                                <div class="col-5">Country</div>
+                                <div class="col-7 ">{{data.sender_country}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Contact No.</div>
-                                <div class="col-8 ">{{data.sender_contact_no}}</div>
+                                <div class="col-5">Contact No.</div>
+                                <div class="col-7">{{data.sender_contact_no}}</div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                <div class="col-4"></div>
-                <div class="col-4">
-                    <h6 class="main-heading fw-bold">Delivery Address</h6>
-                    <div class="row g-0 mt-3">
+                <div class="col-2"></div>
+                <div class="col-5">
+                    <h5 class="main-heading fw-bold">Delivery Address</h5>
+                    <div class="row g-0 mt-2">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-4">Name</div>
-                                <div class="col-8 ">{{data.receiver_name}}</div>
+                                <div class="col-5">Name</div>
+                                <div class="col-7">{{data.receiver_name}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Address</div>
-                                <div class="col-8 ">{{data.receiver_address}}</div>
+                                <div class="col-5">Address</div>
+                                <div class="col-7 ">{{data.receiver_address}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">City</div>
-                                <div class="col-8 ">{{data.receiver_city}}</div>
+                                <div class="col-5">City</div>
+                                <div class="col-7 ">{{data.receiver_city}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Pincode</div>
-                                <div class="col-8 ">{{data.receiver_pincode}}</div>
+                                <div class="col-5">Pincode</div>
+                                <div class="col-7 ">{{data.receiver_pincode}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">State</div>
-                                <div class="col-8 ">{{data.receiver_state}}</div>
+                                <div class="col-5">State</div>
+                                <div class="col-7 ">{{data.receiver_state}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Country</div>
-                                <div class="col-8 ">{{data.receiver_country}}</div>
+                                <div class="col-5">Country</div>
+                                <div class="col-7 ">{{data.receiver_country}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Contact No.</div>
-                                <div class="col-8 ">{{data.receiver_contact_no}}</div>
+                                <div class="col-5">Contact No.</div>
+                                <div class="col-7 ">{{data.receiver_contact_no}}</div>
                             </div>
                         </div>
                     </div>
@@ -171,44 +210,44 @@
             </div>
             {% else %}
             <div class="row">
-                <div class="col-4">
-                    <h6 class="main-heading fw-bold">Delivery Address</h6>
-                    <div class="row g-0 mt-3">
+                <div class="col-6">
+                    <h5 class="main-heading fw-bold">Delivery Address</h5>
+                    <div class="row g-0 mt-2">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-4">Name</div>
-                                <div class="col-8 ">{{data.receiver_name}}</div>
+                                <div class="col-5">Name</div>
+                                <div class="col-7 ">{{data.receiver_name}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Address</div>
-                                <div class="col-8 ">{{data.receiver_address}}</div>
+                                <div class="col-5">Address</div>
+                                <div class="col-7 ">{{data.receiver_address}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">City</div>
-                                <div class="col-8 ">{{data.receiver_city}}</div>
+                                <div class="col-5">City</div>
+                                <div class="col-7 ">{{data.receiver_city}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Pincode</div>
-                                <div class="col-8 ">{{data.receiver_pincode}}</div>
+                                <div class="col-5">Pincode</div>
+                                <div class="col-7 ">{{data.receiver_pincode}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">State</div>
-                                <div class="col-8 ">{{data.receiver_state}}</div>
+                                <div class="col-5">State</div>
+                                <div class="col-7 ">{{data.receiver_state}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Country</div>
-                                <div class="col-8 ">{{data.receiver_country}}</div>
+                                <div class="col-5">Country</div>
+                                <div class="col-7 ">{{data.receiver_country}}</div>
                             </div>
                             <div class="row">
-                                <div class="col-4">Contact No.</div>
-                                <div class="col-8 ">{{data.receiver_contact_no}}</div>
+                                <div class="col-5">Contact No.</div>
+                                <div class="col-7 ">{{data.receiver_contact_no}}</div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                <div class="col-4"></div>
-                <div class="col-4"></div>
+                <div class="col-2"></div>
+                <div class="col-5"></div>
             </div>
             {% endif %}
         </div>
@@ -221,56 +260,9 @@
 
 
 
-<style>
-    .card{
-        color: black;
-        font-weight: 500;
-        border: 1px solid rgb(66, 28, 82);
-    }
-    .details1{
-        line-height: 10px;
-    }
-    .details2{
-        line-height: 8px;
-    }
-    .pickp-details{
-        line-height: 10px;
-    }
-    .line{
-        border: none; 
-        border-top: 2px solid rgb(66, 28, 82);
-    }
-</style>
 
-<style>
-    /* Media query for mobile devices */
-    @media only screen and (max-width: 768px) {
-        .details1 {
-            line-height: 20px; /* Adjust the line height as per your preference */
-        }
-        .details2 {
-            line-height: 16px; /* Adjust the line height as per your preference */
-        }
-    }
-</style>
 
-<script>
-    // Function to print only the order details template in A4 size
-    function printOrderDetails() {
-      // Create a new window with A4 size dimensions
-      var printWindow = window.open('', '_blank');
-      printWindow.document.write('<html><head><title>Order Details</title></head><body style="width: 210mm; height: 297mm;">');
-      
-      // Write only the order details template content to the new window
-      printWindow.document.write('<div class="orderdetails-template" id="orderdetails-template">');
-      printWindow.document.write(document.getElementById('orderdetails-template').innerHTML);
-      printWindow.document.write('</div></body></html>');
-      
-      // Print the content
-      printWindow.print();
-      
-      // Close the new window
-      printWindow.close();
-    }
-  
-  </script>
+
+
+
+

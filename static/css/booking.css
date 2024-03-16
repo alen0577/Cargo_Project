@@ -101,3 +101,17 @@
 .icon{
     color: rgb(254, 171, 120);
 }
+
+
+/* style for print templates */
+
+/* @page {
+    size: A4;
+    margin: 0;
+}
+body {
+    margin: 0;
+}
+#printable-content {
+    padding: 20px; 
+} */

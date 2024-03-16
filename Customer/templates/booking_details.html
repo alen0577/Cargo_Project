@@ -62,15 +62,29 @@ Booking Details - Cargo
 
       <div class="col-lg-10 mt-5 mb-5">
         
+        <!-- pdf and print buttons -->
+        <div class="row">
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4"></div>
+          <div class="col-lg-4">
+            <div class="btn-group mb-2" role="group" aria-label="Buttons">
+              <a href=""><button onclick="printDiv('printable-content')" class="button3" type="button"><i  class="fas fa-print"></i><span class="ms-2">Print</span></button></a>
+            <a href="{% url 'download_pdf' %}"><button class="button3" type="button"><i class="fas fa-file-pdf"></i><span class="ms-2">Pdf</span></button></a>
+              
+            </div>
+          </div>
+        </div>
         
         <!-- booking details template added -->
-        {% include 'order_details_template.html' %}
+        <div id="printable-content">
+          {% include 'order_details_template.html' %}
+        </div>
 
         <!-- reminder note -->
         {% if data.shipment_type == "Home Pickup" %}
-        <p style="text-align: justify;">Note*- <span class="text-warning-emphasis">Your booking order is placed, but we are checking our service is available at your pickup and delivery address. If available you receive a confirmation mail as soon as possible.</span></p>
+        <p style="text-align: justify;">Note* - <span class="text-warning-emphasis">Your booking order is placed, but we are checking our service is available at your pickup and delivery address. If available you receive a confirmation mail as soon as possible.</span></p>
         {% else %}
-        <p style="text-align: justify;">Note*- <span class="text-warning-emphasis">Your booking order is placed, but we are checking our service is available at your delivery address. If available you receive a confirmation mail as soon as possible.</span></p>
+        <p style="text-align: justify;">Note* - <span class="text-warning-emphasis">Your booking order is placed, but we are checking our service is available at your delivery address. If available you receive a confirmation mail as soon as possible.</span></p>
         {% endif %}
       </div>
 
@@ -93,6 +107,18 @@ Booking Details - Cargo
 </section>
     
 <!-- end footer section -->
+
+
+
+<script>
+  function printDiv(divId) {
+      var printContents = document.getElementById(divId).innerHTML;
+      var originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+  }
+</script>
 
 
 
