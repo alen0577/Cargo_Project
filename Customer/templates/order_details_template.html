@@ -97,7 +97,7 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col-5">Name</div>
-                        <div class="col-7 ">{{data.full_name}}</div>
+                        <div class="col-7 ">{{data.full_name|title}}</div>
                     </div>
                     <div class="row">
                         <div class="col-5">Email</div>
@@ -109,11 +109,11 @@
                     </div>
                     <div class="row">
                         <div class="col-5">Delivery Option</div>
-                        <div class="col-7 ">By {{data.delivery_option}}</div>
+                        <div class="col-7 ">By {{data.delivery_option|title}}</div>
                     </div>
                     <div class="row">
                         <div class="col-5">Delivery Type</div>
-                        <div class="col-7 ">{{data.delivery_type}} Delivery</div>
+                        <div class="col-7 ">{{data.delivery_type|title}} Delivery</div>
                     </div>
                     <div class="row">
                         <div class="col-5">Package Weight</div>
@@ -136,19 +136,19 @@
             <div class="row g-0">
                 <div class="col-5">
                     <h5 class="main-heading fw-bold">Pickup Address</h5>
-                    <div class="row g-0 mt-2">
+                    <div class="row g-0 mt-3">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-5">Name</div>
-                                <div class="col-7 ">{{data.sender_name}}</div>
+                                <div class="col-7 ">{{data.sender_name|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Address</div>
-                                <div class="col-7 ">{{data.sender_address}}</div>
+                                <div class="col-7 ">{{data.sender_address|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">City</div>
-                                <div class="col-7 ">{{data.sender_city}}</div>
+                                <div class="col-7 ">{{data.sender_city|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Pincode</div>
@@ -156,11 +156,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-5">State</div>
-                                <div class="col-7 ">{{data.sender_state}}</div>
+                                <div class="col-7 ">{{data.sender_state|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Country</div>
-                                <div class="col-7 ">{{data.sender_country}}</div>
+                                <div class="col-7 ">{{data.sender_country|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Contact No.</div>
@@ -173,19 +173,19 @@
                 <div class="col-2"></div>
                 <div class="col-5">
                     <h5 class="main-heading fw-bold">Delivery Address</h5>
-                    <div class="row g-0 mt-2">
+                    <div class="row g-0 mt-3">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-5">Name</div>
-                                <div class="col-7">{{data.receiver_name}}</div>
+                                <div class="col-7">{{data.receiver_name|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Address</div>
-                                <div class="col-7 ">{{data.receiver_address}}</div>
+                                <div class="col-7 ">{{data.receiver_address|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">City</div>
-                                <div class="col-7 ">{{data.receiver_city}}</div>
+                                <div class="col-7 ">{{data.receiver_city|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Pincode</div>
@@ -193,11 +193,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-5">State</div>
-                                <div class="col-7 ">{{data.receiver_state}}</div>
+                                <div class="col-7 ">{{data.receiver_state|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Country</div>
-                                <div class="col-7 ">{{data.receiver_country}}</div>
+                                <div class="col-7 ">{{data.receiver_country|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Contact No.</div>
@@ -212,19 +212,19 @@
             <div class="row">
                 <div class="col-6">
                     <h5 class="main-heading fw-bold">Delivery Address</h5>
-                    <div class="row g-0 mt-2">
+                    <div class="row g-0 mt-3">
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-5">Name</div>
-                                <div class="col-7 ">{{data.receiver_name}}</div>
+                                <div class="col-7 ">{{data.receiver_name|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Address</div>
-                                <div class="col-7 ">{{data.receiver_address}}</div>
+                                <div class="col-7 ">{{data.receiver_address|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">City</div>
-                                <div class="col-7 ">{{data.receiver_city}}</div>
+                                <div class="col-7 ">{{data.receiver_city|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Pincode</div>
@@ -232,11 +232,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-5">State</div>
-                                <div class="col-7 ">{{data.receiver_state}}</div>
+                                <div class="col-7 ">{{data.receiver_state|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Country</div>
-                                <div class="col-7 ">{{data.receiver_country}}</div>
+                                <div class="col-7 ">{{data.receiver_country|title}}</div>
                             </div>
                             <div class="row">
                                 <div class="col-5">Contact No.</div>

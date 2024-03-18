@@ -68,15 +68,14 @@ Booking Details - Cargo
           <div class="col-lg-4"></div>
           <div class="col-lg-4">
             <div class="btn-group mb-2" role="group" aria-label="Buttons">
-              <a href=""><button onclick="printDiv('printable-content')" class="button3" type="button"><i  class="fas fa-print"></i><span class="ms-2">Print</span></button></a>
-            <a href="{% url 'download_pdf' %}"><button class="button3" type="button"><i class="fas fa-file-pdf"></i><span class="ms-2">Pdf</span></button></a>
-              
+              <button onclick="printDiv('template-content')" class="button3" type="button"><i  class="fas fa-print"></i><span class="ms-2">Print</span></button>
+              <button id="PdfButton" class="button3"  type="button"><i class="fas fa-file-pdf"></i><span class="ms-2">Pdf</span></button>
             </div>
           </div>
         </div>
         
         <!-- booking details template added -->
-        <div id="printable-content">
+        <div id="template-content">
           {% include 'order_details_template.html' %}
         </div>
 
@@ -108,18 +107,36 @@ Booking Details - Cargo
     
 <!-- end footer section -->
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
   function printDiv(divId) {
-      var printContents = document.getElementById(divId).innerHTML;
-      var originalContents = document.body.innerHTML;
-      document.body.innerHTML = printContents;
-      window.print();
-      document.body.innerHTML = originalContents;
-  }
-</script>
+    var printContents = document.getElementById(divId).innerHTML;
+    var originalContents = document.body.innerHTML;
 
+    document.body.innerHTML = printContents;
+    window.print();
+    
+    // Restore the original HTML content
+    document.body.innerHTML = originalContents;
+    // Reload the page after printing
+    location.reload();
+  }
+
+  jQuery(document).ready(function(){
+    $('#PdfButton').click(function(){
+      html2canvas(document.querySelector('#template-content')).then((canvas) => {
+        let base64image = canvas.toDataURL('image/png');
+        
+        let pdf = new jsPDF('p', 'px', [canvas.width, canvas.height]);
+        pdf.addImage(base64image, 'PNG', 0, 0, canvas.width, canvas.height);
+        pdf.save('order-details.pdf');
+      });
+    });
+  });
+</script>
 
 
 

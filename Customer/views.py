@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from . models import *
 import uuid
 from django.contrib import messages
-import pdfkit
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+
 
 # Create your views here.
 
@@ -142,27 +146,44 @@ def booking_details(request,pk):
         }
         return render(request, 'booking_details.html', context)
     except ShipmentBooking.DoesNotExist:
-        return HttpResponseNotFound('Shipment booking not found')
+        return redirect('/')
 
 
-def download_pdf(request):
-    # Render the HTML template
-    rendered_template = render(request, 'order_details_template.html',)
 
-    # PDFkit options for A4 size
-    options = {
+def download_pdf(request,pk):
+    # Get the template file path
+    template_path = 'order_details_template.html'
+    
+    # Create a Django template object
+    template = get_template(template_path)
+    
+    # Render the template with context data
+    shipment = ShipmentBooking.objects.get(id=pk)
+    context = {'data': shipment}  # Replace with your actual context data
+    html = template.render(context)
+
+    # Create a BytesIO buffer to store the PDF
+    buffer = BytesIO()
+
+    # Set the paper size to A4 (210mm x 297mm)
+    pdf_options = {
         'page-size': 'A4',
-        'margin-top': '0.75in',
-        'margin-right': '0.75in',
-        'margin-bottom': '0.75in',
-        'margin-left': '0.75in',
+        'margin-top': '20mm',  # Adjust margins as needed
+        'margin-right': '20mm',
+        'margin-bottom': '20mm',
+        'margin-left': '20mm',
     }
 
-    # Convert the rendered HTML to PDF with specified options
-    pdf = pdfkit.from_string(rendered_template.content, False, options=options)
+    # Generate PDF using xhtml2pdf with specified options
+    pdf = pisa.CreatePDF(BytesIO(html.encode('utf-8')), dest=buffer, encoding='utf-8', show_error_as_pdf=True, **pdf_options)
 
-    # Prepare HTTP response with the PDF file as attachment
-    response = HttpResponse(pdf, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="order_details.pdf"'
-    
-    return response
+    if not pdf.err:
+        # Set the buffer's file pointer to the beginning for reading
+        buffer.seek(0)
+        
+        # Create an HttpResponse with PDF content type and attachment header
+        response = HttpResponse(buffer, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="order_details.pdf"'
+        return response
+
+    return HttpResponse('Error generating PDF: {}'.format(pdf.err), status=500)
