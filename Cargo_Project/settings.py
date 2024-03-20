@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     # myapps
     'Cargo_Home',
     'Customer',
+    'Register_Login',
+    'Admin',
     'Cargo_Team',
     'Executive',
 ]

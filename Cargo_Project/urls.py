@@ -23,8 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Cargo_Home.urls')),
     path('', include('Customer.urls')),
+    path('', include('Register_Login.urls')),
+    path('', include('Admin.urls')),
     path('', include('Cargo_Team.urls')),
-    path('', include('Executive.urls')),
+    path('', include('Executive.urls')),   
 ]
 
 # Serve static files and media files during development (for production, web server configuration is recommended)
