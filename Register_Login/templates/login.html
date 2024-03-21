@@ -32,7 +32,7 @@ Login - Cargo
                       </div>
                       <div class="col-md-6 sec2">
                         <div class="card-body">
-                            <h1 class="card-title fw-bold text-center">Cargo</h1>
+                            <h1 class="card-title fw-bold text-center font-monospace">Cargo</h1>
                             <h3 class="font-monospace fw-bold mt-3">Sign In</h3>
                             <h4 class="font-monospace fw-bold">Hello! let's get started</h4>
                             <h5 class="font-monospace">Sign in to continue.</h5>
@@ -40,11 +40,11 @@ Login - Cargo
                                 <form action="{% url 'login_save' %}" method="post">
                                     {% csrf_token %}
                                     <div class="input-group flex-nowrap mt-1 mb-1">
-                                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-user"></i></span>
+                                        <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-user"></i></span>
                                         <input type="text" name="username" class="form-control " placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" required>
                                     </div>
                                     <div class="input-group flex-nowrap  mt-3 mb-1">
-                                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-lock"></i></span>
+                                        <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-lock"></i></span>
                                         <input type="password" name="password" class="form-control " placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" required>
                                     </div>
                                     
@@ -93,6 +93,9 @@ Login - Cargo
     .sec2{
         background: rgb(66, 28, 82);
        
+    }
+    .icon{
+        color: rgb(66, 28, 82);
     }
     .signup{
         color:  rgb(254, 171, 120);
