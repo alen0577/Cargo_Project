@@ -2,119 +2,135 @@
 <!-- navbar -->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-    <div class="container">
-      <!-- logo -->
-      <a class="navbar-brand" href="#"><span class="header fw-bold fs-3">Cargo</span></a>
-      <!-- toggler button -->
-      <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <!-- sidebar -->
-      <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <!-- sidebar header -->
-        <div class="offcanvas-header text-white border-bottom">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cargo</h5>
-          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <!-- sidebar body -->
-        <div class="offcanvas-body d-flex flex-column flex-lg-row fs-6 p-3">
-          <ul class="navbar-nav justify-content-center  flex-grow-1 pe-3">
-            <li class="nav-item">
-              <a class="nav-link mx-2" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-2" href="{% url 'services' %}">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-2" href="{% url 'aboutus' %}">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-2" href="#">Blogs</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-2" href="{% url 'contactus' %}">Contact Us</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Other
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Offers</a></li>
-                <li><a class="dropdown-item" href="{% url 'careers' %}">Careers</a></li>
-                <li><a class="dropdown-item" href="#">Volume Calculator</a></li>
-                <li><a class="dropdown-item" href="{% url 'login_page' %}">Sign In</a></li>
-                <li><a class="dropdown-item" href="#">Team</a></li>
-                <li><a class="dropdown-item" href="#">Executive</a></li>
-                <li><a class="dropdown-item" href="#">Terms & Conditions</a></li>
-                <li><a class="dropdown-item" href="#">Gallery</a></li>
-                <li><a class="dropdown-item" href="#">FAQ</a></li>
-                
-                
-              </ul>
-            </li>
-            
-          </ul>
-          <!-- tracking and booking buttons -->
-          <div class="d-flex flex-column flex-lg-row justify-content-center  gap-3">
-            <a href="#tracking" class="btn btn-dark w-100 text-white text-decoration-none ">Tracking</a>
-            <a href="{% url 'booking_request' %}" class="btn btn-dark w-100  text-white text-decoration-none">Booking</a>
-  
-          </div>
+  <div class="container">
+    <!-- logo -->
+    <a class="navbar-brand" href="#"><span class="header fw-bold fs-3">Cargo</span></a>
+    <!-- toggler button -->
+    <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- sidebar -->
+    <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <!-- sidebar header -->
+      <div class="offcanvas-header text-white border-bottom">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Cargo</h5>
+        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <!-- sidebar body -->
+      <div class="offcanvas-body d-flex flex-column flex-lg-row fs-6 p-3">
+        <ul class="navbar-nav justify-content-center  flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link mx-2" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="{% url 'services' %}">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="{% url 'aboutus' %}">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="#">Blogs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link mx-2" href="{% url 'contactus' %}">Contact Us</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle mx-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Other
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Offers</a></li>
+              <li><a class="dropdown-item" href="{% url 'careers' %}">Careers</a></li>
+              <li><a class="dropdown-item" href="#">Volume Calculator</a></li>
+              <li><a class="dropdown-item" href="{% url 'login_page' %}">Sign In</a></li>
+              <li><a class="dropdown-item" href="#">Team</a></li>
+              <li><a class="dropdown-item" href="#">Executive</a></li>
+              <li><a class="dropdown-item" href="#">Terms & Conditions</a></li>
+              <li><a class="dropdown-item" href="#">Gallery</a></li>
+              <li><a class="dropdown-item" href="#">FAQ</a></li>
+              
+              
+            </ul>
+          </li>
           
+        </ul>
+        <!-- tracking and booking buttons -->
+        <div class="d-flex flex-column flex-lg-row justify-content-center  gap-3">
+          <a href="{% url 'booking_request' %}" class="nav-btn w-100 fw-bold  text-decoration-none">Booking</a>
+          <a href="#tracking" class="nav-btn  w-100 fw-bold  text-decoration-none ">Tracking</a>
+
         </div>
+        
       </div>
     </div>
+  </div>
 </nav>
   
   
 <style>
-    @media(max-width:991px) {
-    .sidebar{
-        background-color: rgba(66, 28, 82, 0.218);
-        backdrop-filter: blur(10px);
-    }
-    
-    
-    }
+  @media(max-width:991px) {
+  .sidebar{
+    background-color: rgba(66, 28, 82, 0.218);
+    backdrop-filter: blur(10px);
+  }
+  
+  
+  }
 </style>
 
 <!-- /* Common styles for all screen sizes */ -->
 <style>
-    .navbar-nav .nav-item .nav-link.active {
-        color:rgb(254, 171, 120);
-    }
-    .navbar-nav .nav-item .nav-link {
-        font-weight: 600;
-        color:rgb(255, 255, 255);
-            
-    }
-    .navbar-nav .nav-item .nav-link:hover {
-        color:rgb(254, 171, 120);
-        
-    }
-    .header{
-        color:rgb(254, 171, 120);
-    }
-    .offcanvas-header .offcanvas-title{
-        color:rgb(254, 171, 120);
-    }
-    /* Custom CSS for dropdown hover */
-    .dropdown:hover .dropdown-menu {
-        display: block;
-        width: 180px;
+  .navbar-nav .nav-item .nav-link.active {
+    color:rgb(254, 171, 120);
+  }
+  .navbar-nav .nav-item .nav-link {
+    font-weight: 600;
+    color:rgb(255, 255, 255);
+          
+  }
+  .navbar-nav .nav-item .nav-link:hover {
+    color:rgb(254, 171, 120);
+      
+  }
+  .header{
+    color:rgb(254, 171, 120);
+  }
+  .offcanvas-header .offcanvas-title{
+    color:rgb(254, 171, 120);
+  }
+  /* Custom CSS for dropdown hover */
+  .dropdown:hover .dropdown-menu {
+    display: block;
+    width: 180px;
+  
+  }
+  
+  .dropdown-item{
+    color: black;
+    font-weight: 500;
+    transition: transform 0.3s ease; /* Smooth transition for transform property */
+  }
+  .dropdown-item:hover{
+    background-color: white;
+    color:rgb(254, 171, 120);
+    border-left: 5px solid rgb(254, 171, 120);
+    transform: scale(1);
+  }
+  .nav-btn{
+    background-color: rgb(255, 255, 255);
+    color: rgba(0, 0, 0, 0.9);
+    border-radius: 7px;
+    padding: 9px;
+    width: 100%;
+    text-align: center;
     
-    }
     
-    .dropdown-item{
-        color: black;
-        font-weight: 500;
-        transition: transform 0.3s ease; /* Smooth transition for transform property */
-    }
-    .dropdown-item:hover{
-        background-color: white;
-        color:rgb(254, 171, 120);
-        border-left: 5px solid rgb(254, 171, 120);
-        transform: scale(1);
-    }
+  }
+  .nav-btn:hover{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border: none;
+    transform: scale(1.04); 
+  }
 </style>
   

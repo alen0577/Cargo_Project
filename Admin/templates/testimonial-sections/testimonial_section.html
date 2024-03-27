@@ -1,0 +1,88 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+<!-- title for the testimonial page -->
+{% block title %}
+Admin-Testimonial Hub
+{% endblock %}
+
+<!-- css link for testimonial page -->
+{% block link %}
+<link rel="stylesheet"  href="">
+{% endblock %}
+
+
+<!-- contents for testimonial page -->
+{% block content %}
+<div class="container-fluid px-4">
+    <!-- breadcrumb section -->
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Testimonial Hub</li>
+    </ol>
+
+    <div class="row mt-5">
+        <div class="col-lg-4">
+            <button class="btn1 w-25" data-bs-toggle="modal" data-bs-target="#addmodal">Add <i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
+<!--create Modal -->
+<div class="modal fade" id="addmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Testimonials</h1>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+<style>
+   
+    .breadcrumb-item.active{
+        color: rgba(66, 28, 82, 0.7);
+    }
+    .breadcrumb-item a{
+        color: rgb(66, 28, 82);
+    }
+    .breadcrumb-item a:hover{
+        color: rgb(66, 28, 82);
+    }
+
+    .main-heading{
+        color: rgb(66, 28, 82);
+    }
+    .btn1{
+        background-color: rgb(66, 28, 82);
+        color: white;
+        padding: 5px;
+        border-radius: 8px;
+    }
+    .btn1:hover{
+        background-color: rgb(83, 36, 103);
+        color: white;
+    }
+    .modal-header{
+        background-color: rgb(66, 28, 82);
+        color: white;
+    }
+    .modal-body{
+        background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
+        background-blend-mode: normal,color-burn;
+    }
+
+</style>
+
+{% endblock %}
