@@ -4,7 +4,9 @@ from django.contrib.auth import authenticate, logout, login
 
 
 
-# login page
+
+#------------------ Login Section-------------------------
+
 def login_page(request):
     return render(request,'login.html')
 
@@ -17,3 +19,14 @@ def login_save(request):
         if user is not None and user.is_staff:
             login(request, user)
             return redirect('admin_dashboard')
+
+
+#------------------ Logout Section-------------------------
+
+def admin_logout(request):
+  auth.logout(request)
+  return redirect('login_page')
+
+# def logout(request):
+#   request.session.pop('login_id', None)
+#   return redirect('login_page')

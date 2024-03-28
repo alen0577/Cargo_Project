@@ -1,0 +1,45 @@
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for i in data %}
+  <div class="col">
+    <div class="card h-100 shadow-lg  rounded" draggable="true">
+      
+      <div class="card-body">
+        <div class="row">
+          <div class="col-9"></div>
+          <div class="col-3 text-end">
+            <div class="dropdown ">
+              <h6 class="">
+                <i class="fas fa-ellipsis-h"></i>
+              </h6>
+              <div class="dropdown-content text-start">
+                <a href="#">Edit</a>
+                <a href="#" class="archive-link">Archive</a>
+                <a href="#">Delete</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2">
+            {% if i.image %}
+            <img src="{{ i.image.url }}" width="40" height="40" class="rounded-circle" alt="">
+          
+            {% endif %}
+          </div>
+          <div class="col-10">
+            <div><strong>{{i.client_name}}</strong></div>
+            <div class="text-white-50">({{i.position}})</div>
+            
+          </div>
+        </div>
+        <div class="row mt-3 mb-3">
+          <div class="col-12">
+            <div class="content lh-base">" {{i.content}} "</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+    
+</div>
