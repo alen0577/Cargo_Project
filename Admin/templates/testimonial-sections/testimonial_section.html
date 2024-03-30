@@ -46,7 +46,12 @@ Admin-Testimonial Hub
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="pills-archive" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">Profile</div>
+                <!-- inactive testimonials -->
+                <div class="tab-pane fade" id="pills-archive" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                    <div class="inactive-testimonials mt-5">
+                        
+                    </div>
+                </div>
             </div>
     
         </div>
@@ -64,13 +69,13 @@ Admin-Testimonial Hub
     <div class="modal-dialog ">
       <div class="modal-content ">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Testimonials</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Testimonials</h1>
         </div>
         <div class="modal-body rounded-2 shadow">
-            <form action="{% url 'testimonial_save' %}" method="post">
+            <form action="{% url 'testimonial_save' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Client Name" required>
-                <input type="text" name="position" class="form-control mt-2 mb-2" placeholder="Position" title="Eg : CEO of ABC Company" required>
+                <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Client Name"  required>
+                <input type="text" name="position" class="form-control mt-2 mb-2" placeholder="Position" title="Eg : CEO of ABC Company"  required>
                 <textarea type="text" name="content" class="form-control mt-2 mb-2" placeholder="Testimonial content" required></textarea>
                 <input type="file"  name="picture" class="form-control mt-2 mb-2" accept="image/*"  required>
                 <div class="row">
@@ -87,6 +92,38 @@ Admin-Testimonial Hub
       </div>
     </div>
 </div>
+
+<!--edit Modal -->
+{% for i in data %}
+<div class="modal fade " id="editmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Testimonial</h1>
+        </div>
+        <div class="modal-body rounded-2 shadow">
+            <form action="{% url 'testimonial_edit' i.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Client Name" value="{{i.client_name}}" required>
+                <input type="text" name="position" class="form-control mt-2 mb-2" placeholder="Position" title="Eg : CEO of ABC Company" value="{{i.position}}" required>
+                <textarea type="text" name="content" class="form-control mt-2 mb-2" placeholder="Testimonial content" required>{{i.content}}</textarea>
+                <input type="file"  name="image" class="form-control mt-2 mb-2" accept="image/*">
+                <div class="row">
+                    <div class="col-lg-8"></div>
+                    <div class="col-lg-4">
+                        <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+                    </div>
+                </div>
+            </form>
+            
+          
+        </div>
+        
+      </div>
+    </div>
+</div>
+{% endfor %}
+
 
 <style>
    
@@ -150,37 +187,22 @@ Admin-Testimonial Hub
     .content{
         text-align: justify;
     }
-    .dropdown {
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-    }
 
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #ffffff;
-        min-width: 160px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-       
-    }
 
-    .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
+    /* Style dropdown items */
+    
+    /* Style hover effect for dropdown items */
+    .card-dropdown .dropdown-item:focus{
+        color:  rgb(66, 28, 82);
+        background-color: white;
     }
-
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-    .dropdown-content a:hover{
+    .card-dropdown .dropdown-item:hover {
         border-left: 4px solid rgb(254, 171, 120);
         color:  rgb(66, 28, 82);
-       
+        background-color: white;
     }
+
+
 </style>
 
 {% endblock %}
