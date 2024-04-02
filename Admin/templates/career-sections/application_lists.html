@@ -1,0 +1,47 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+<!-- title for the Application list page -->
+{% block title %}
+Admin-Testimonial Hub
+{% endblock %}
+
+<!-- css link for Application list page -->
+{% block link %}
+<link rel="stylesheet"  href="">
+{% endblock %}
+
+
+<!-- contents for Application list page -->
+{% block content %}
+
+<div class="container-fluid px-4">
+
+    <!-- breadcrumb section -->
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'career_section' %}">Career Corner</a></li>
+        <li class="breadcrumb-item active">Applications</li>
+    </ol>
+
+</div>
+
+
+<style>
+    .breadcrumb-item.active{
+        color: rgba(66, 28, 82, 0.7);
+    }
+    .breadcrumb-item a{
+        color: rgb(66, 28, 82);
+    }
+    .breadcrumb-item a:hover{
+        color: rgb(66, 28, 82);
+    }
+
+    .main-heading{
+        color: rgb(66, 28, 82);
+    }
+</style>
+
+
+{% endblock  %}

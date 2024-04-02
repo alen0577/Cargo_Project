@@ -11,4 +11,10 @@ urlpatterns = [
 
     # career section urls
     path('career-corner/', views.career_section, name='career_section'),
+    path('currentopening-save/', views.current_opening_save, name='current_opening_save'),
+    path('opening-edit/<int:pk>/', views.opening_edit, name='opening_edit'),
+    path('opening-delete/<int:pk>/', views.opening_delete, name='opening_delete'),
+    path('applications/<int:pk>/', views.application_lists, name='application_lists'),
+
+
 ]

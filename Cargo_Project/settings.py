@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Other apps
-    'ckeditor',
+
     # myapps
     'Cargo_Home',
     'Customer',

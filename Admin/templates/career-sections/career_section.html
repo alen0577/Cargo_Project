@@ -3,7 +3,7 @@
 
 <!-- title for the career section page -->
 {% block title %}
-Admin-Testimonial Hub
+Admin-Career Corner
 {% endblock %}
 
 <!-- css link for career section page -->
@@ -28,6 +28,54 @@ Admin-Testimonial Hub
         </div>
     </div>
 
+    <div class="row mt-4 mb-5">
+        <div class="col-lg-12">
+            <!-- table to listout current openings -->
+            <h6 class="main-heading fw-bold">Current Openings</h6>
+            <div class="table-responsive mt-5">
+                <table class="table tablestyle">
+                    <thead >
+                        <tr>
+                            <th class="text-white">Sl.No</th>
+                            <th class="text-white">Job Title</th>
+                            <th class="text-white">Location</th>
+                            <th class="text-white">Type</th>
+                            <th class="text-white">Experience</th>
+                            <th class="text-white">Apply Email</th>
+                            <th class="text-white">Details</th>
+                            <th class="text-white">Applications</th>
+                            <th class="text-white">Actions</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td class="text-white">{{forloop.counter}}</td>
+                            <td class="text-white">{{i.job_title}}</td>
+                            <td class="text-white">{{i.job_location}}</td>
+                            <td class="text-white">{{i.job_type}}</td>
+                            <td class="text-white">{{i.experience}}</td>
+                            <td class="text-white">{{i.apply_email}}</td>
+                            <td>
+                                <a href="" data-bs-toggle="modal" data-bs-target="#detailmodal{{i.id}}" class="btn2 w-25 "><i class="fas fa-info-circle"></i> Details</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'application_lists' i.id %}" class="btn2 w-25"><i class="fas fa-file-alt"></i> Applications</a>
+                            </td>
+                            <td>
+                                <a href="" data-bs-toggle="modal" data-bs-target="#editmodal{{i.id}}" class="btn2 w-25 "><i class="fas fa-edit"></i></a>
+                                <a href="{% url 'opening_delete' i.id %}" class="btn2 w-25"><i class="fas fa-trash"></i></a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 
 
 </div>
@@ -42,10 +90,11 @@ Admin-Testimonial Hub
           <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Current Openings</h1>
         </div>
         <div class="modal-body rounded-2 shadow">
-            <form action="{% url 'testimonial_save' %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'current_opening_save' %}" method="post">
                 {% csrf_token %}
                 <input type="text" name="title" class="form-control mt-2 mb-2" placeholder="Job Title"  required>
                 <input type="text" name="location" class="form-control mt-2 mb-2" placeholder="Job Location"  required>
+                <input type="text" name="type" class="form-control mt-2 mb-2" placeholder="Job Type" title="Eg: Full Time, Part Time or Contract" required>
                 <input type="text" name="experience" class="form-control mt-2 mb-2" placeholder="Year of experience required" title="Type 'Freshers' or number of years required"  required>
                 <textarea type="text" name="responsibilities" class="form-control mt-2 mb-2" placeholder="Responsibilities" required></textarea>
                 <textarea type="text" name="requirements" class="form-control mt-2 mb-2" placeholder="Requirements" required></textarea>
@@ -65,6 +114,72 @@ Admin-Testimonial Hub
     </div>
 </div>
 
+<!--More Details Modal -->
+{% for i in data %}
+<div class="modal fade " id="detailmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-info-circle"></i> More Details</h1>
+        </div>
+        <div class="modal-body rounded-2 shadow">
+            <form action="" method="post">
+                {% csrf_token %}
+                
+                <label for="responsibilities">Responsibilities</label>
+                <textarea type="text" name="responsibilities" rows="8" class="form-control mt-2 mb-2" placeholder="Responsibilities" required>{{i.responsibilities}}</textarea>
+                <label for="requirements">Requirements</label>
+                <textarea type="text" name="requirements" rows="8" class="form-control mt-2 mb-2" placeholder="Requirements" required>{{i.requirements}}</textarea>
+                
+            </form>
+            
+          
+        </div>
+        
+      </div>
+    </div>
+</div>
+{% endfor %}
+
+
+
+<!--edit Modal -->
+{% for i in data %}
+<div class="modal fade " id="editmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Current Openings</h1>
+        </div>
+        <div class="modal-body rounded-2 shadow">
+            <form action="{% url 'opening_edit' i.id %}" method="post">
+                {% csrf_token %}
+                
+                <input type="text" name="title" class="form-control mt-2 mb-2" placeholder="Job Title" value="{{i.job_title}}"  required>
+                <input type="text" name="location" class="form-control mt-2 mb-2" placeholder="Job Location" value="{{i.job_location}}"  required>
+                <input type="text" name="type" class="form-control mt-2 mb-2" placeholder="Job Type" value="{{i.job_type}}" title="Eg: Full Time, Part Time or Contract" required>
+                <input type="text" name="experience" class="form-control mt-2 mb-2" placeholder="Year of experience required" value="{{i.experience}}" title="Type 'Freshers' or number of years required"  required>
+                <textarea type="text" rows="8" name="responsibilities" class="form-control mt-2 mb-2" placeholder="Responsibilities" required>{{i.responsibilities}}</textarea>
+                <textarea type="text" rows="8" name="requirements" class="form-control mt-2 mb-2" placeholder="Requirements" required>{{i.requirements}}</textarea>
+                <input type="email"  name="email" class="form-control mt-2 mb-2" placeholder="Apply email" value="{{i.apply_email}}" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" required>
+                <div class="row">
+                    <div class="col-lg-8"></div>
+                    <div class="col-lg-4">
+                        <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+                    </div>
+                </div>
+                
+            </form>
+            
+          
+        </div>
+        
+      </div>
+    </div>
+</div>
+{% endfor %}
+
+
 <style>
     .breadcrumb-item.active{
         color: rgba(66, 28, 82, 0.7);
@@ -79,6 +194,7 @@ Admin-Testimonial Hub
     .main-heading{
         color: rgb(66, 28, 82);
     }
+    
     .btn1{
         background-color: rgb(66, 28, 82);
         color: white;
@@ -88,6 +204,19 @@ Admin-Testimonial Hub
     .btn1:hover{
         background-color: rgb(83, 36, 103);
         color: white;
+    }
+    .btn2{
+        background-color: rgb(255, 255, 255);
+        color: rgb(66, 28, 82);
+        padding: 5px;
+        border-radius: 3px;
+        text-decoration: none;
+    }
+    .btn2:hover{
+        background-color: rgb(255, 255, 255);
+        color: rgb(66, 28, 82);
+        padding: 5px;
+        border-radius: 3px;
     }
     .modal-header{
         background-color: rgb(66, 28, 82);
@@ -104,6 +233,11 @@ Admin-Testimonial Hub
     .form-control:focus {
         box-shadow: none !important; /* Remove box shadow on focus */
         border-color: rgb(66, 28, 82);
+    }
+    .tablestyle{
+        background-color: rgb(66, 28, 82);
+        color: white;
+
     }
 </style>
 

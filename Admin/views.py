@@ -46,7 +46,7 @@ def testimonial_edit(request,pk):
         data.content=request.POST.get('content')
         if img:
             data.image=img
-        print(img)
+       
         data.save()
         return redirect('testimonial_section')
     else:
@@ -64,11 +64,67 @@ def testimonial_delete(request,pk):
 # career section views
 @login_required(login_url='login_page')
 def career_section(request):
-    # data=Testimonials.objects.filter(is_active=1)
-    # archive=Testimonials.objects.filter(is_active=0)
-    # context={
-    #     'data':data,
-    #     'archive':archive,
-    # }
-    return render(request,'career-sections/career_section.html',)
+    data=Currentopenings.objects.filter(is_active=1)
+    context={
+        'data':data,
 
+    }
+    return render(request,'career-sections/career_section.html', context)
+
+
+@login_required(login_url='login_page')
+def current_opening_save(request):
+    if request.method == 'POST':
+        job_title=request.POST.get('title')
+        job_location=request.POST.get('location')
+        job_type=request.POST.get('type')
+        experience=request.POST.get('experience')
+        responsibilities=request.POST.get('responsibilities')
+        requirements=request.POST.get('requirements')
+        apply_email=request.POST.get('email')
+       
+        data=Currentopenings(
+            job_title=job_title,job_location=job_location,job_type=job_type,
+            experience=experience,responsibilities=responsibilities,requirements=requirements,
+            apply_email=apply_email
+        )
+        
+        data.save()
+        return redirect('career_section')
+    else:
+        return redirect('career_section')
+
+
+@login_required(login_url='login_page')
+def opening_edit(request,pk):
+    data=Currentopenings.objects.get(id=pk,is_active=1)
+    if request.method == 'POST':
+        data.job_title=request.POST.get('title')
+        data.job_location=request.POST.get('location')
+        data.job_type=request.POST.get('type')
+        data.experience=request.POST.get('experience')
+        data.responsibilities=request.POST.get('responsibilities')
+        data.requirements=request.POST.get('requirements')
+        data.apply_email=request.POST.get('email')
+       
+        data.save()
+        return redirect('career_section')
+    else:
+        return redirect('career_section')
+
+
+@login_required(login_url='login_page')
+def opening_delete(request,pk):
+    data=Currentopenings.objects.get(id=pk,is_active=1)
+    data.delete()
+    return redirect('career_section')
+
+
+@login_required(login_url='login_page')
+def application_lists(request,pk):
+    data=Currentopenings.objects.filter(id=pk,is_active=1)
+    context={
+        'data':data,
+
+    }
+    return render(request,'career-sections/application_lists.html', context)
