@@ -33,7 +33,7 @@ Admin-Career Corner
             <!-- table to listout current openings -->
             <h6 class="main-heading fw-bold">Current Openings</h6>
             <div class="table-responsive mt-5">
-                <table class="table tablestyle">
+                <table class="table table-hover tablestyle">
                     <thead >
                         <tr>
                             <th class="text-white">Sl.No</th>
@@ -50,7 +50,7 @@ Admin-Career Corner
                     </thead>
                     <tbody>
                         {% for i in data %}
-                        <tr>
+                        <tr class="borderstyle">
                             <td class="text-white">{{forloop.counter}}</td>
                             <td class="text-white">{{i.job_title}}</td>
                             <td class="text-white">{{i.job_location}}</td>
@@ -155,12 +155,19 @@ Admin-Career Corner
             <form action="{% url 'opening_edit' i.id %}" method="post">
                 {% csrf_token %}
                 
-                <input type="text" name="title" class="form-control mt-2 mb-2" placeholder="Job Title" value="{{i.job_title}}"  required>
+                <label for="title">Job Title</label>
+                <input type="text" name="title" class="form-control mt-2 mb-2 col-8" placeholder="Job Title" value="{{i.job_title}}"  required>
+                <label for="location">Location</label>
                 <input type="text" name="location" class="form-control mt-2 mb-2" placeholder="Job Location" value="{{i.job_location}}"  required>
+                <label for="type">Job Type</label>
                 <input type="text" name="type" class="form-control mt-2 mb-2" placeholder="Job Type" value="{{i.job_type}}" title="Eg: Full Time, Part Time or Contract" required>
+                <label for="experience">Experience</label>
                 <input type="text" name="experience" class="form-control mt-2 mb-2" placeholder="Year of experience required" value="{{i.experience}}" title="Type 'Freshers' or number of years required"  required>
+                <label for="responsibilities">Responsibilities</label>
                 <textarea type="text" rows="8" name="responsibilities" class="form-control mt-2 mb-2" placeholder="Responsibilities" required>{{i.responsibilities}}</textarea>
+                <label for="requirements">Requirements</label>
                 <textarea type="text" rows="8" name="requirements" class="form-control mt-2 mb-2" placeholder="Requirements" required>{{i.requirements}}</textarea>
+                <label for="email">Apply Email</label>
                 <input type="email"  name="email" class="form-control mt-2 mb-2" placeholder="Apply email" value="{{i.apply_email}}" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" required>
                 <div class="row">
                     <div class="col-lg-8"></div>
@@ -238,6 +245,9 @@ Admin-Career Corner
         background-color: rgb(66, 28, 82);
         color: white;
 
+    }
+    .borderstyle{
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     }
 </style>
 

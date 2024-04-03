@@ -120,11 +120,14 @@ def opening_delete(request,pk):
     return redirect('career_section')
 
 
+
 @login_required(login_url='login_page')
 def application_lists(request,pk):
-    data=Currentopenings.objects.filter(id=pk,is_active=1)
+    job_opening=Currentopenings.objects.get(id=pk,is_active=1)
+    applications=JobApplications.objects.filter(applied_for=job_opening).order_by('date','time')
     context={
-        'data':data,
+        'job_opening':job_opening,
+        'applications':applications
 
     }
     return render(request,'career-sections/application_lists.html', context)

@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from Admin.models import Currentopenings,JobApplications
+from django.contrib import messages
 
 # Create your views here.
 
@@ -22,4 +24,29 @@ def services(request):
 
 # career page of cargo
 def careers(request):
-    return render(request, 'careers/careers.html')
+    openings=Currentopenings.objects.filter(is_active=1)
+    context = {
+        'openings':openings,
+    }
+    return render(request, 'careers/careers.html', context)
+
+def job_apply(request):
+    if request.method == "POST":
+        job_id=request.POST.get('applied_for')
+        applied_for=Currentopenings.objects.get(id=job_id)
+        first_name=request.POST.get('fname')
+        last_name=request.POST.get('lname')
+        email=request.POST.get('email')
+        contact_number=request.POST.get('number')
+        resume=request.FILES.get('resume')
+
+        if JobApplications.objects.filter(applied_for=applied_for,email=email).exists():
+            messages.warning(request,'Already applied')
+            return redirect('careers')
+        else:
+            application=JobApplications(applied_for=applied_for,first_name=first_name,last_name=last_name,email=email,contact_number=contact_number,resume=resume,)
+            application.save()
+            messages.success(request,'Job Applied')
+            return redirect('careers')
+    else:
+         return redirect('careers')

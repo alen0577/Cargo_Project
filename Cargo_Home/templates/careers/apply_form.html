@@ -8,20 +8,20 @@
       </div>
     </div>
     <!-- form section -->
-    <form action="" method="post">
+    <form action="{% url 'job_apply' %}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="candidate-details p-5">
             
             <div class="row g-3 mt-3">
                 <div class="col-lg-6 mt-2">
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
+                    <div class="form-floating mb-3"> 
+                        <input name="fname" type="text" class="form-control" id="floatingInput" placeholder="First Name" required>
                         <label for="floatingInput">First Name</label>
                     </div>
                 </div>
                 <div class="col-lg-6 mt-2">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
+                        <input name="lname" type="text" class="form-control" id="floatingInput" placeholder="Last Name" required>
                         <label for="floatingInput">Last Name</label>
                     </div>
                 </div>
@@ -30,13 +30,13 @@
             <div class="row g-3 mt-3">
                 <div class="col-lg-6 mt-2">
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="Email">
+                        <input name="email" type="email" class="form-control" id="floatingInput" placeholder="Email" required>
                         <label for="floatingInput">Email</label>
                     </div>
                 </div>
                 <div class="col-lg-6 mt-2">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInput" placeholder="Phone Number">
+                        <input name="number" type="text" class="form-control" id="floatingInput" placeholder="Phone Number" pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
                         <label for="floatingInput">Phone Number</label>
                     </div>
                 </div>
@@ -46,10 +46,12 @@
             <div class="row g-3 mt-3">
                 <div class="col-lg-6 mt-2">
                     <div class="form-floating mb-3">
-                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                        <select name="applied_for" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
                           <option value="" hidden>Select</option>
-                          <option value="1">Logistics Coordinator</option>
-                          <option value="1">Software Developer</option>
+                          {% for opening in openings %}
+                          <option value="{{opening.id}}">{{opening.job_title}}</option>
+                          {% endfor %}
+                          
                           
                         </select>
                         <label for="floatingSelect">Applied for</label>
@@ -57,7 +59,7 @@
                 </div>
                 <div class="col-lg-6 mt-2">
                     <div class="form-floating mb-3">
-                        <input type="file" class="form-control" id="floatingInput" >
+                        <input name="resume" type="file" class="form-control" accept="application/pdf" id="floatingInput" required>
                         <label for="floatingInput">Resume/CV</label>
                     </div>
                 </div>
@@ -84,3 +86,25 @@
     
     
 </div>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (() => {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+    })
+    })()
+</script>
