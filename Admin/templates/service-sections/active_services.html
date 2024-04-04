@@ -1,0 +1,42 @@
+<div class="row row-cols-1 row-cols-md-1 g-3">
+    {% for i in data %}
+    <div class="col">
+      <div class="card h-100 shadow-lg  rounded" draggable="true">
+        
+        <div class="card-body">
+            <div class="row">
+                <div class="col-11"></div>
+                <div class="col-1">
+                
+                <div class="dropdown card-dropdown">
+                    <div  type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#editmodal{{i.id}}"><i class="fas fa-edit"></i> Edit</a></li>
+                    <li><a class="dropdown-item" href="{% url 'service_delete' i.id %}"><i class="fas fa-trash"></i> Delete</a></li>
+                    
+                    </ul>
+                </div>
+                </div>
+            </div>
+          
+            <div class="row">
+                <div class="col-md-4">
+                    {% if i.image %}
+                    <img src="{{ i.image.url }}" class="img-fluid rounded-start mt-4" alt="img">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{i.title}}</h5>
+                        <p class="card-text lh-base content">{{i.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+      
+  </div>

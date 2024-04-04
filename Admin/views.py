@@ -2,12 +2,66 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from Register_Login.views import login_page
 from . models import *
+from django.contrib import messages
 
 # Create your views here.
 
 @login_required(login_url='login_page')
 def admin_dashboard(request):
     return render(request,'admin_dashboard.html')
+
+
+
+# Testimonial section views
+@login_required(login_url='login_page')
+def service_section(request):
+    data=Services.objects.filter(is_active=1)
+    archive=Services.objects.filter(is_active=0)
+    context={
+        'data':data,
+        'archive':archive,
+    }
+    return render(request,'service-sections/service_section.html',context)
+
+
+@login_required(login_url='login_page')
+def service_save(request):
+    if request.method == 'POST':
+        title=request.POST.get('title')
+        description=request.POST.get('description')
+        image=request.FILES.get('picture')
+        
+        data=Services(title=title,description=description,image=image)
+        data.save()
+        messages.success(request,'Service Added')
+        return redirect('service_section')
+    else:
+        return redirect('service_section')
+
+
+@login_required(login_url='login_page')
+def service_edit(request,pk):
+    data=Services.objects.get(id=pk,is_active=1)
+    if request.method == 'POST':
+        img=request.FILES.get('image')
+        data.title=request.POST.get('title')
+        data.description=request.POST.get('description')
+        if img:
+            data.image=img
+       
+        data.save()
+        messages.success(request,'Updated')
+        return redirect('service_section')
+    else:
+        return redirect('service_section')
+
+
+@login_required(login_url='login_page')
+def service_delete(request,pk):
+    data=Services.objects.get(id=pk,is_active=1)
+    data.delete()
+    messages.success(request,'Deleted')
+    return redirect('service_section')
 
 # Testimonial section views
 @login_required(login_url='login_page')

@@ -1,29 +1,49 @@
 {% extends 'admin_base.html' %}
 {% load static %}
 
-<!-- title for the testimonial page -->
+<!-- title for the Service Central page -->
 {% block title %}
-Admin-Testimonial Hub
+Admin-Service Central
 {% endblock %}
 
-<!-- css link for testimonial page -->
+<!-- css link for Service Central page -->
 {% block link %}
 <link rel="stylesheet"  href="">
 {% endblock %}
 
 
-<!-- contents for testimonial page -->
+<!-- contents for Service Central page -->
 {% block content %}
 <div class="container-fluid px-4">
+
     <!-- breadcrumb section -->
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Testimonial Hub</li>
+        <li class="breadcrumb-item active">Service Central</li>
     </ol>
+
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% if message.tags == 'success' %}
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+          {% else %}
+          <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+          {% endif %}
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
     <div class="row mt-5">
         <div class="col-lg-4">
-            <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addmodal"><i class="fas fa-plus"></i> Testimonial</button>
+            <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addmodal"><i class="fas fa-plus"></i> Service</button>
         </div>
     </div>
 
@@ -31,7 +51,7 @@ Admin-Testimonial Hub
         <div class="col-lg-12">
             <ul class="nav nav-underline  mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                  <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-testimonials" type="button" role="tab" aria-controls="pills-testimonials" aria-selected="true">Testimonials</button>
+                  <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-services" type="button" role="tab" aria-controls="pills-testimonials" aria-selected="true">Services</button>
                 </li>
                 <li class="nav-item" role="presentation">
                   <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-archive" type="button" role="tab" aria-controls="pills-archive" aria-selected="false">Archive</button>
@@ -39,14 +59,14 @@ Admin-Testimonial Hub
                 
             </ul>
             <div class="tab-content" id="pills-tabContent">
-                <!-- active testimonials -->
-                <div class="tab-pane fade show active" id="pills-testimonials" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
-                    <div class="active-testimonials mt-5">
-                        {% include 'testimonial-sections/active_testimonials.html' %}
+                <!-- active services -->
+                <div class="tab-pane fade show active" id="pills-services" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                    <div class="active-services mt-5">
+                        {% include 'service-sections/active_services.html' %}
                     </div>
                 </div>
 
-                <!-- inactive testimonials -->
+                <!-- inactive services -->
                 <div class="tab-pane fade" id="pills-archive" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
                     <div class="inactive-testimonials mt-5">
                         
@@ -69,14 +89,13 @@ Admin-Testimonial Hub
     <div class="modal-dialog ">
       <div class="modal-content ">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Testimonials</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Services</h1>
         </div>
         <div class="modal-body rounded-2 shadow">
-            <form action="{% url 'testimonial_save' %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'service_save' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Client Name"  required>
-                <input type="text" name="position" class="form-control mt-2 mb-2" placeholder="Position" title="Eg : CEO of ABC Company"  required>
-                <textarea type="text" name="content" class="form-control mt-2 mb-2" placeholder="Testimonial content" required></textarea>
+                <input type="text" name="title" class="form-control mt-2 mb-2" placeholder="Title"  required>
+                <textarea type="text" name="description" class="form-control mt-2 mb-2" placeholder="Service Description" required></textarea>
                 <input type="file"  name="picture" class="form-control mt-2 mb-2" accept="image/*"  required>
                 <div class="row">
                     <div class="col-lg-8"></div>
@@ -99,14 +118,16 @@ Admin-Testimonial Hub
     <div class="modal-dialog ">
       <div class="modal-content ">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Testimonial</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Service</h1>
         </div>
         <div class="modal-body rounded-2 shadow">
-            <form action="{% url 'testimonial_edit' i.id %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'service_edit' i.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Client Name" value="{{i.client_name}}" required>
-                <input type="text" name="position" class="form-control mt-2 mb-2" placeholder="Position" title="Eg : CEO of ABC Company" value="{{i.position}}" required>
-                <textarea type="text" name="content" class="form-control mt-2 mb-2" placeholder="Testimonial content" required>{{i.content}}</textarea>
+                <label for="title">Title</label>
+                <input type="text" name="title" class="form-control mt-2 mb-2" placeholder="title" value="{{i.title}}" required>
+                <label for="description">Description</label>
+                <textarea type="text" rows="10" name="description" class="form-control mt-2 mb-2" placeholder="description" required>{{i.description}}</textarea>
+                <label for="image">Image</label>
                 <input type="file"  name="image" class="form-control mt-2 mb-2" accept="image/*">
                 <div class="row">
                     <div class="col-lg-8"></div>
@@ -200,6 +221,26 @@ Admin-Testimonial Hub
         border-left: 4px solid rgb(254, 171, 120);
         color:  rgb(66, 28, 82);
         background-color: white;
+    }
+    /* styles for success messages */
+    .alert {
+        background-color: rgba(66, 28, 82, 0.95);
+        color: white;
+        animation: slideInRight 0.5s forwards;
+    }
+    
+    @keyframes slideInRight {
+        from {
+        transform: translateX(100%);
+        opacity: 0;
+        }
+        to {
+        transform: translateX(0);
+        opacity: 1;
+        }
+    }
+    .icon{
+        color: rgb(254, 171, 120);
     }
 
 

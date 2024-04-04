@@ -3,6 +3,13 @@ from . import views
 
 urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+
+    # testimonial urls
+    path('service-central/', views.service_section, name='service_section'),
+    path('service-save/', views.service_save, name='service_save'),
+    path('service-edit/<int:pk>/', views.service_edit, name='service_edit'),
+    path('service-delete/<int:pk>/', views.service_delete, name='service_delete'),
+
     # testimonial urls
     path('testimonial-hub/', views.testimonial_section, name='testimonial_section'),
     path('testimonial-save/', views.testimonial_save, name='testimonial_save'),
@@ -15,6 +22,4 @@ urlpatterns = [
     path('opening-edit/<int:pk>/', views.opening_edit, name='opening_edit'),
     path('opening-delete/<int:pk>/', views.opening_delete, name='opening_delete'),
     path('applications/<int:pk>/', views.application_lists, name='application_lists'),
-
-
 ]
