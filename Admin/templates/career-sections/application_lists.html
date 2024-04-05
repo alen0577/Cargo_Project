@@ -8,7 +8,7 @@ Admin-Testimonial Hub
 
 <!-- css link for Application list page -->
 {% block link %}
-<link rel="stylesheet"  href="">
+<link rel="stylesheet"  href="{% static 'admin/css/applications.css' %}">
 {% endblock %}
 
 
@@ -66,51 +66,7 @@ Admin-Testimonial Hub
     </div>
 
 
-
-
-
-
-
-
 </div>
-
-
-<style>
-    .breadcrumb-item.active{
-        color: rgba(66, 28, 82, 0.7);
-    }
-    .breadcrumb-item a{
-        color: rgb(66, 28, 82);
-    }
-    .breadcrumb-item a:hover{
-        color: rgb(66, 28, 82);
-    }
-
-    .main-heading{
-        color: rgb(66, 28, 82);
-    }
-    .tablestyle{
-        background-color: rgb(66, 28, 82);
-        color: white;
-
-    }
-    .borderstyle{
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    .btn2{
-        background-color: rgb(255, 255, 255);
-        color: rgb(66, 28, 82);
-        padding: 5px;
-        border-radius: 3px;
-        text-decoration: none;
-    }
-    .btn2:hover{
-        background-color: rgb(255, 255, 255);
-        color: rgb(66, 28, 82);
-        padding: 5px;
-        border-radius: 3px;
-    }
-</style>
 
 
 {% endblock  %}

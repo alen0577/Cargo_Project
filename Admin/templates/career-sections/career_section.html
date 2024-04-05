@@ -8,7 +8,7 @@ Admin-Career Corner
 
 <!-- css link for career section page -->
 {% block link %}
-<link rel="stylesheet"  href="">
+<link rel="stylesheet"  href="{% static 'admin/css/career.css' %}">
 {% endblock %}
 
 
@@ -21,6 +21,25 @@ Admin-Career Corner
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
         <li class="breadcrumb-item active">Career Corner</li>
     </ol>
+
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% if message.tags == 'success' %}
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+          {% else %}
+          <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+          {% endif %}
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
     <div class="row mt-5">
         <div class="col-lg-4">
@@ -185,70 +204,5 @@ Admin-Career Corner
     </div>
 </div>
 {% endfor %}
-
-
-<style>
-    .breadcrumb-item.active{
-        color: rgba(66, 28, 82, 0.7);
-    }
-    .breadcrumb-item a{
-        color: rgb(66, 28, 82);
-    }
-    .breadcrumb-item a:hover{
-        color: rgb(66, 28, 82);
-    }
-
-    .main-heading{
-        color: rgb(66, 28, 82);
-    }
-    
-    .btn1{
-        background-color: rgb(66, 28, 82);
-        color: white;
-        padding: 5px;
-        border-radius: 8px;
-    }
-    .btn1:hover{
-        background-color: rgb(83, 36, 103);
-        color: white;
-    }
-    .btn2{
-        background-color: rgb(255, 255, 255);
-        color: rgb(66, 28, 82);
-        padding: 5px;
-        border-radius: 3px;
-        text-decoration: none;
-    }
-    .btn2:hover{
-        background-color: rgb(255, 255, 255);
-        color: rgb(66, 28, 82);
-        padding: 5px;
-        border-radius: 3px;
-    }
-    .modal-header{
-        background-color: rgb(66, 28, 82);
-        color: white;
-    }
-    .modal-body{
-        background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%), linear-gradient(to bottom, rgba(0,0,0,0.02) 50%, rgba(255,255,255,0.02) 61%, rgba(0,0,0,0.02) 73%), linear-gradient(33deg, rgba(255,255,255,0.20) 0%, rgba(0,0,0,0.20) 100%);
-        background-blend-mode: normal,color-burn;
-    }
-    .form-control {
-        border-color: rgb(66, 28, 82);
-        background-color: rgb(250, 250, 250);
-    }
-    .form-control:focus {
-        box-shadow: none !important; /* Remove box shadow on focus */
-        border-color: rgb(66, 28, 82);
-    }
-    .tablestyle{
-        background-color: rgb(66, 28, 82);
-        color: white;
-
-    }
-    .borderstyle{
-        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    }
-</style>
 
 {% endblock %}

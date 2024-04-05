@@ -12,7 +12,7 @@ def admin_dashboard(request):
 
 
 
-# Testimonial section views
+# service section views
 @login_required(login_url='login_page')
 def service_section(request):
     data=Services.objects.filter(is_active=1)
@@ -85,6 +85,7 @@ def testimonial_save(request):
         
         data=Testimonials(client_name=name,position=position,content=content,image=picture)
         data.save()
+        messages.success(request,'Testimonial Added')
         return redirect('testimonial_section')
     else:
         return redirect('testimonial_section')
@@ -102,6 +103,7 @@ def testimonial_edit(request,pk):
             data.image=img
        
         data.save()
+        messages.success(request,'Updated')
         return redirect('testimonial_section')
     else:
         return redirect('testimonial_section')
@@ -111,6 +113,7 @@ def testimonial_edit(request,pk):
 def testimonial_delete(request,pk):
     data=Testimonials.objects.get(id=pk,is_active=1)
     data.delete()
+    messages.success(request,'Deleted')
     return redirect('testimonial_section')
 
 
@@ -144,6 +147,7 @@ def current_opening_save(request):
         )
         
         data.save()
+        messages.success(request,'New Opening Added')
         return redirect('career_section')
     else:
         return redirect('career_section')
@@ -162,6 +166,7 @@ def opening_edit(request,pk):
         data.apply_email=request.POST.get('email')
        
         data.save()
+        messages.success(request,'Updated')
         return redirect('career_section')
     else:
         return redirect('career_section')
@@ -171,6 +176,7 @@ def opening_edit(request,pk):
 def opening_delete(request,pk):
     data=Currentopenings.objects.get(id=pk,is_active=1)
     data.delete()
+    messages.success(request,'Deleted')
     return redirect('career_section')
 
 

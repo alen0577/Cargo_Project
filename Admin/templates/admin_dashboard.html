@@ -8,7 +8,7 @@ Admin Dashboard
 
 <!-- css link for dashboard page -->
 {% block link %}
-<link rel="stylesheet"  href="">
+<link rel="stylesheet"  href="{% static 'admin/css/admin_dashboard.css' %}">
 {% endblock %}
 
 
@@ -106,21 +106,6 @@ Admin Dashboard
     
 </div>
 
-<style>
-    
-    .breadcrumb-item.active{
-        color: rgba(66, 28, 82, 0.8);
-    }
-    .main-heading{
-        color: rgb(66, 28, 82);
-    }
 
-    #sec1{
-        background-color: rgb(66, 28, 82);
-        color: white;
-    }
-    
-
-</style>
 
 {% endblock %}
