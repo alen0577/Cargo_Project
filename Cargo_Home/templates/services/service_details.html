@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- title for the service details page -->
+{% block title %}
+Service Details - Cargo
+{% endblock %}
+
+<!-- css link for service details page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'css/services.css' %}">
+{% endblock %}
+
+
+<!-- contents for service details page -->
+{% block content %}
+
+<!-- start nav-section  -->
+<div class="nav-section">
+    <div class="container">
+        <div class="row">
+            <!-- include home navbar section -->
+            <div class="col-lg-12 mt-lg-5 mt-1">
+                {% include 'navbars/services_navbar.html' %}
+            </div>
+        </div>
+        
+
+    </div>
+</div>
+
+<!-- end nav-section  -->
+
+<!-- start service-section  -->
+
+<section id="service-section">
+    <div class="container">
+        <div class="row mt-3 mb-5 mt-lg-5">
+            <div class="col-lg-6 mt-3">
+              <img src="{{service.image.url}}" class="img-fluid  mt-lg-5 mt-2 rounded" alt="img">
+             
+            </div>
+            <div class="col-lg-6 mt-3">
+                <h2 class="main-heading fw-bold text-center mt-lg-5 mt-2">{{service.title}}</h2>
+                <h6 class="mt-lg-5 mt-3 lh-lg" style="text-align: justify;">{{service.description}}</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- end service-section  -->
+
+
+
+<!-- start footer section -->
+<section id="footer">
+    <div class="container">
+      {% include 'footer.html' %}
+        
+    </div>
+      
+</section>
+  
+<!-- end footer section -->
+
+
+{% endblock %}

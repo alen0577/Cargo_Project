@@ -1,12 +1,18 @@
 from django.shortcuts import render,redirect
-from Admin.models import Currentopenings,JobApplications
+from Admin.models import *
 from django.contrib import messages
 
 # Create your views here.
 
 # Landing page of cargo
 def cargo_home(request):
-    return render(request, 'home/cargo_home.html')
+    atestimonial = Testimonials.objects.filter(is_active=1).first()
+    rtestimonials = Testimonials.objects.filter(is_active=1).exclude(id=atestimonial.id)
+    context={
+        'atestimonial': atestimonial,
+        'rtestimonials': rtestimonials
+    }
+    return render(request, 'home/cargo_home.html',context)
 
 
 # aboutus page of cargo
@@ -20,7 +26,21 @@ def contactus(request):
 
 # service page of cargo
 def services(request):
-    return render(request, 'services/services.html')
+    services=Services.objects.filter(is_active=1)
+    context={
+        'services':services
+    }
+    return render(request, 'services/services.html', context)
+
+
+# service page of cargo
+def service_details(request,pk):
+    service=Services.objects.get(id=pk,is_active=1)
+    context={
+        'service':service
+    }
+    return render(request, 'services/service_details.html', context)
+
 
 # career page of cargo
 def careers(request):
