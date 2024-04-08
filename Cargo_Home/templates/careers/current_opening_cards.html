@@ -2,45 +2,55 @@
 <!-- current openings card section -->
 
 <div class="row row-cols-1 row-cols-md-1 g-4 mt-3">
-
+  {% for job in openings %}
   <div class="col">
     <div class="card h-100 p-3">
       <div class="card-body">
-        <input type="checkbox"  id="ch">
-        <h5 class="card-title ">Logistics Coordinator</h5>
-        <p class="card-text mt-2">Location: Kochi <span class="ms-5">Experience: 1+ years</span></p>
+        <input type="checkbox" id="ch{{ job.id }}" aria-labelledby="ch{{ job.id }}Label">
+        <h5 class="card-title">{{ job.job_title }}</h5>
+        <p class="card-text mt-2">Location: {{ job.job_location }} <span class="ms-5">Experience: {{ job.experience }}</span></p>
         
-        <div class="card-content">
+        <div class="card-content hidden">
           <p class="fw-bold">Responsibilities</p> 
-          <p style="text-align: justify;">
-            Coordinate and monitor shipments from origin to destination.
-            Communicate with carriers, suppliers, and customers to ensure timely delivery of goods.
-            Manage documentation and customs clearance processes.
-            Resolve any shipping-related issues or delays.
-            Optimize logistics operations to improve efficiency and reduce costs.
-          </p>
+          <p style="text-align: justify;">{{ job.responsibilities }}</p>
           <p class="fw-bold">Requirements</p>
-          <p style="text-align: justify;">
-            Bachelor's degree in logistics, supply chain management, or a related field.
-            Proven experience in logistics coordination or freight forwarding.
-            Strong communication and problem-solving skills.
-            Ability to work in a fast-paced environment and prioritize tasks effectively.
-            Knowledge of international shipping regulations and procedures.
-          </p>
-          <p>Interested candidates can forward their resume to <span class="fw-bold">hr@cargo.com</span> or <a class="text-decoration-none main-heading" href="#apply-section"><u>apply here</u></a></p>
+          <p style="text-align: justify;">{{ job.requirements }}</p>
+          <p>Interested candidates can forward their resume to <span class="fw-bold">{{ job.apply_email }}</span> or <a class="text-decoration-none main-heading" href="#apply-section"><u>apply here</u></a></p>
           
-          <label class="labelch mt-3" for="ch">Show less</label>
-              
+          <label class="labelch mt-3" for="ch{{ job.id }}">Show less</label>
         </div>
-        <label class="labelch mt-2" for="ch">Read more</label>
-        
-        
-        
-
+        <label class="labelch mt-2" for="ch{{ job.id }}" >Read more</label>
       </div>
     </div>
   </div>
-
-    
+  {% endfor %}
 </div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('input[type="checkbox"]').change(function() {
+      var content = $(this).closest('.card-body').find('.card-content');
+      content.toggleClass('hidden'); // Toggle the 'hidden' class to show/hide content
+
+      var readMoreLabel = $(this).closest('.card-body').find('.labelch[for="' + this.id + '"]');
+      var showLessLabel = $(this).closest('.card-body').find('.labelch[for="' + this.id + '"]');
+      
+      if (content.hasClass('hidden')) {
+        readMoreLabel.text('Read more'); // Change label text back to "Read more"
+        showLessLabel.hide(); // Hide "Show less"
+      } else {
+        readMoreLabel.text('Show less'); // Change label text to "Show less"
+        showLessLabel.show(); // Show "Show less"
+      }
+    });
+
+    // Initially hide "Read more" label
+    // $('.labelch').hide();
+  });
+</script>
+
 
