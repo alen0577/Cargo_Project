@@ -22,4 +22,7 @@ urlpatterns = [
     path('opening-edit/<int:pk>/', views.opening_edit, name='opening_edit'),
     path('opening-delete/<int:pk>/', views.opening_delete, name='opening_delete'),
     path('applications/<int:pk>/', views.application_lists, name='application_lists'),
+    path('view-resume/<int:pk>/', views.view_resume, name='view_resume'),
+    path('download-resume/<int:pk>/', views.download_resume, name='download_resume'),
+
 ]

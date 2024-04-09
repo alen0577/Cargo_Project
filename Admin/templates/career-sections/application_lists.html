@@ -53,8 +53,8 @@ Admin-Testimonial Hub
                             <td class="text-white">{{i.email}}</td>
                             <td class="text-white">{{i.contact_number}}</td>
                             <td class="text-white">
-                                <a href="" class="btn2 w-25"><i class="fas fa-eye"></i></a>
-                                <a href="" class="btn2 w-25"><i class="fas fa-download"></i></a>
+                                <a href="{% url 'view_resume' i.id %}" class="btn2 w-25"><i class="fas fa-eye"></i></a>
+                                <a href="{% url 'download_resume' i.id %}" class="btn2 w-25"><i class="fas fa-download"></i></a>
                             </td>
                         
                         </tr>

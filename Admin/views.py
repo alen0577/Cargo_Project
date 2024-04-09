@@ -3,6 +3,12 @@ from django.contrib.auth.decorators import login_required
 from Register_Login.views import login_page
 from . models import *
 from django.contrib import messages
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
 
 # Create your views here.
 
@@ -191,3 +197,38 @@ def application_lists(request,pk):
 
     }
     return render(request,'career-sections/application_lists.html', context)
+
+
+def view_resume(request, pk):
+    
+    job_application = get_object_or_404(JobApplications, id=pk)
+    
+    
+    file_path = job_application.resume.name
+    
+   
+    if default_storage.exists(file_path):
+        
+        with default_storage.open(file_path, 'rb') as resume_file:
+            
+            resume_content = resume_file.read()
+        
+        
+        response = HttpResponse(resume_content, content_type='application/pdf')
+        return response
+    else:
+        return HttpResponse("Resume not found.", status=404)
+
+
+def download_resume(request, pk):
+    job_application = get_object_or_404(JobApplications, id=pk)
+    
+    file_path = os.path.join(settings.MEDIA_ROOT, str(job_application.resume))
+    
+    with open(file_path, 'rb') as resume_file:
+        response = HttpResponse(resume_file.read(), content_type='application/pdf')
+        
+        # Set the Content-Disposition header to force download with the original file name
+        response['Content-Disposition'] = f'attachment; filename="{job_application.resume.name}"'
+        
+        return response
