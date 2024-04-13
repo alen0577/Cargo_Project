@@ -18,17 +18,19 @@ Cargo Home
 <!-- start hero-section  -->
 
 <section id="hero-section">
-  <div class="container">
+  <div class="container fadein">
     <!-- Content goes here -->
     <div class="row">
       <!-- include home navbar section -->
       <div class="col-lg-12 mt-lg-5 mt-1">
+       <div class="navbar-section">
         {% include 'navbars/home_navbar.html' %}
+       </div>
       </div>
     </div>
     <div class="row mt-3 mt-lg-5">
-      <div class="col-lg-6 mt-lg-5 mt-0">
-        <h2 class="fw-bold text-white">Breaking Down Barriers in Logistics</h2>
+      <div class="col-lg-6 mt-lg-5 mt-0"  id="heading-description">
+        <h2 class="fw-bold text-white heading">Breaking Down Barriers in Logistics</h2>
         <h6 class="mt-lg-3 mt-1 lh-base" style="text-align: justify;color: rgba(255, 255, 255, 0.8);">
           Experience the efficiency of Streamlined Shipping Across Global Boundaries with our Cargo Management System. 
           Our platform simplifies the complexities of international logistics, ensuring smooth and seamless transportation of goods across borders. 
@@ -38,8 +40,8 @@ Cargo Home
         <a href="{% url 'booking_request' %}"><button class="button1 mt-lg-4 mt-3" ><span class="ms-1">Book Now</span></button></a>
           
       </div>
-      <div class="col-lg-6 mt-lg-5 mt-2 mb-lg-5">
-        <img src="{% static 'images/home_page/cargo_home.png' %}" class="img-fluid  mt-lg-5 mt-2 mb-lg-5" alt="img">
+      <div class="col-lg-6 mt-lg-5 mt-2 mb-lg-5" id="image-section">
+        <img src="{% static 'images/home_page/cargo_home.png' %}" class="img-fluid  mt-lg-5 mt-2 mb-lg-5 slidein" alt="img">
       </div>
     </div>
   </div>
@@ -51,7 +53,7 @@ Cargo Home
 <!-- start service-section -->
 
 <section id="service-section">
-  <div class="container">
+  <div class="container fade">
     <div class="row mt-5 mb-5">
       <div class="col-lg-5 mt-lg-3 mt-0">
         <h3 class="main-heading fw-bold mt-lg-3 mt-0">Why Choose Us..?</h3>
@@ -112,7 +114,7 @@ Cargo Home
 <!-- start section 3 -->
 
 <section id="section3">
-  <div class="container">
+  <div class="container fade">
     <div class="row">
       <div class="col-lg-12 mt-5">
         <h3 class="text-white text-center fw-bold mt-lg-3 mt-0">How It Works</h3>
@@ -136,7 +138,7 @@ Cargo Home
 <!-- start benefits-section  -->
 
 <section id="benefits-section">
-  <div class="container">
+  <div class="container fade">
 
     <div class="row">
       <div class="col-lg-5 mt-5 mb-5">
@@ -209,5 +211,76 @@ Cargo Home
 </section>
 
 <!-- end footer section -->
+
+
+<style>
+/* Define the animation */
+.fadein {
+  animation: fadein 3s forwards;
+}
+.slidein {
+  position: relative;
+  animation: slidein 2s forwards;
+}
+.fade{
+  animation: fade linear both;
+  animation-timeline: view();
+  animation-range: entry 50% cover 50%;
+}
+
+
+@keyframes fadein{
+  from{
+      opacity: 0;
+  }
+ 
+  to{
+      opacity: 1;
+  }
+}
+@keyframes slidein {
+  from {
+    right: -100%;
+  }
+  to {
+    right: 0;
+  }
+}
+@keyframes fade{
+  0%{
+      opacity: 0;
+  }
+ 
+  100%{
+      opacity: 1;
+  }
+
+}
+
+</style>
+
+<style>
+/* Media query for screens smaller than 992px (tablets and mobile devices) */
+@media (max-width: 991.98px) {
+  .fadein{
+    animation: none; /* Disable slidein animation on mobile screens */
+  }
+  
+}
+/* Media query for screens smaller than 992px (tablets and mobile devices) */
+@media (max-width: 991.98px) {
+  .slidein{
+    animation: none; /* Disable slidein animation on mobile screens */
+  }
+  
+}
+/* Media query for screens smaller than 992px (tablets and mobile devices) */
+@media (max-width: 991.98px) {
+  .fade{
+    animation: none; /* Disable slidein animation on mobile screens */
+  }
+  
+}
+</style>
 
 {% endblock %}

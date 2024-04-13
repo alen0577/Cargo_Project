@@ -13,31 +13,20 @@
     background-color: white;
 }
 
+
 /* styles for show more, show less in card start */
-#ch{
-    display: none;
-}
-#ch:checked ~ .card-content{
-    display: block;
-}
-#ch:checked ~ label{
-    display: none;
-}
+
 .labelch{
-    display: inline-block;
     cursor: pointer;
     color: white;
     background-color: rgb(66, 28, 82);
     padding: 3px 13px;
     border-radius: 3px;
 }
-.card-content{
+
+.hidden{
     display: none;
 }
-
-
-
-
 
 /* styles for show more, show less in card end */
 

@@ -1,56 +1,49 @@
-
-<!-- current openings card section -->
-
 <div class="row row-cols-1 row-cols-md-1 g-4 mt-3">
   {% for job in openings %}
   <div class="col">
     <div class="card h-100 p-3">
       <div class="card-body">
-        <input type="checkbox" id="ch{{ job.id }}" aria-labelledby="ch{{ job.id }}Label">
+        <input class="d-none" type="checkbox" id="ch{{ job.id }}" aria-labelledby="ch{{ job.id }}Label">
         <h5 class="card-title">{{ job.job_title }}</h5>
         <p class="card-text mt-2">Location: {{ job.job_location }} <span class="ms-5">Experience: {{ job.experience }}</span></p>
         
-        <div class="card-content hidden">
-          <p class="fw-bold">Responsibilities</p> 
-          <p style="text-align: justify;">{{ job.responsibilities }}</p>
-          <p class="fw-bold">Requirements</p>
-          <p style="text-align: justify;">{{ job.requirements }}</p>
-          <p>Interested candidates can forward their resume to <span class="fw-bold">{{ job.apply_email }}</span> or <a class="text-decoration-none main-heading" href="#apply-section"><u>apply here</u></a></p>
+        <div class="card-content">
+          <p class="fw-bold hidden responsibilities">Responsibilities</p> 
+          <p style="text-align: justify;" class="hidden responsibilities">{{ job.responsibilities }}</p>
+          <p class="fw-bold hidden requirements">Requirements</p>
+          <p style="text-align: justify;" class="hidden requirements">{{ job.requirements }}</p>
+          <p class="hidden mail">Interested candidates can forward their resume to <span class="fw-bold">{{ job.apply_email }}</span> or <a class="text-decoration-none main-heading" href="#apply-section"><u>apply here</u></a></p>
           
-          <label class="labelch mt-3" for="ch{{ job.id }}">Show less</label>
+          <label class="labelch mt-3 show-more">Read more</label>
+          <label class="labelch mt-3 show-less hidden">Show less</label>
         </div>
-        <label class="labelch mt-2" for="ch{{ job.id }}" >Read more</label>
       </div>
     </div>
   </div>
   {% endfor %}
 </div>
 
-
-
+<style>
+  
+</style>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
-    $('input[type="checkbox"]').change(function() {
+    $('.show-more').click(function() {
       var content = $(this).closest('.card-body').find('.card-content');
-      content.toggleClass('hidden'); // Toggle the 'hidden' class to show/hide content
-
-      var readMoreLabel = $(this).closest('.card-body').find('.labelch[for="' + this.id + '"]');
-      var showLessLabel = $(this).closest('.card-body').find('.labelch[for="' + this.id + '"]');
-      
-      if (content.hasClass('hidden')) {
-        readMoreLabel.text('Read more'); // Change label text back to "Read more"
-        showLessLabel.hide(); // Hide "Show less"
-      } else {
-        readMoreLabel.text('Show less'); // Change label text to "Show less"
-        showLessLabel.show(); // Show "Show less"
-      }
+      content.find('.responsibilities, .requirements').removeClass('hidden');
+      content.find('.show-more').addClass('hidden');
+      content.find('.show-less').removeClass('hidden');
+      content.find('.mail').removeClass('hidden');
     });
-
-    // Initially hide "Read more" label
-    // $('.labelch').hide();
+  
+    $('.show-less').click(function() {
+      var content = $(this).closest('.card-body').find('.card-content');
+      content.find('.responsibilities, .requirements').addClass('hidden');
+      content.find('.show-more').removeClass('hidden');
+      content.find('.show-less').addClass('hidden');
+      content.find('.mail').addClass('hidden');
+    });
   });
-</script>
-
-
+  </script>
