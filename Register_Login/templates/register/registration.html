@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- title for the registration page -->
+{% block title %}
+Registration - Cargo
+{% endblock %}
+
+<!-- css link for register page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'css/register.css' %}">
+{% endblock %}
+
+
+<!-- contents for register page -->
+{% block content %}
+
+<!-- register-section -->
+<section id="register-section">
+    <div class="container">
+        <div class="row mt-lg-5 mt-2 mb-2">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-8 mt-lg-3">
+                <!-- register card -->
+                {% include 'register/register_card.html' %} 
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

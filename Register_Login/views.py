@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, logout, login
 #------------------ Login Section-------------------------
 
 def login_page(request):
-    return render(request,'login.html')
+    return render(request,'login/login.html')
 
 def login_save(request):
     if request.method == 'POST':
@@ -19,6 +19,12 @@ def login_save(request):
         if user is not None and user.is_staff:
             login(request, user)
             return redirect('admin_dashboard')
+
+
+#------------------ Registration Section-------------------------
+
+def register_page(request):
+    return render(request,'register/registration.html')
 
 
 #------------------ Logout Section-------------------------
