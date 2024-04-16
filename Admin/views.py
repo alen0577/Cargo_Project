@@ -232,3 +232,10 @@ def download_resume(request, pk):
         response['Content-Disposition'] = f'attachment; filename="{job_application.resume.name}"'
         
         return response
+
+
+# cargo team section
+
+@login_required(login_url='login_page')
+def cargo_team(request):
+    return render(request,'cargo-team/cargo_team.html')

@@ -8,6 +8,7 @@ urlpatterns = [
 
     # register url section
     path('registration-page/',views.register_page,name='register_page'),
+    path('team/registration',views.team_register,name='team_register'),
 
     # logout url section
     path('admin-logout/',views.admin_logout,name='admin_logout'),

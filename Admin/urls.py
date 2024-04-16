@@ -25,4 +25,7 @@ urlpatterns = [
     path('view-resume/<int:pk>/', views.view_resume, name='view_resume'),
     path('download-resume/<int:pk>/', views.download_resume, name='download_resume'),
 
+    # cargo team section urls
+    path('cargo-team/', views.cargo_team, name='cargo_team'),
+
 ]

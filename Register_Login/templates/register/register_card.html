@@ -10,44 +10,44 @@
       <div class="col-md-6 sec2">
         <div class="card-body">
             <h1 class="card-title fw-bold text-center font-monospace">Cargo</h1>
-            <h4 class="font-monospace fw-bold">Welcome! to our Team</h4>
-            <h5 class="font-monospace">Sign up to continue.</h5>
+            <h4 class="font-monospace fw-bold text-center">Welcome! to our Team</h4>
+            <h5 class="font-monospace text-center">Sign up to continue.</h5>
             <div class="box mt-3">
-                <form action="{% url 'login_save' %}" method="post">
+                <form action="{% url 'team_register' %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="input-group flex-nowrap mt-1 mb-1">
-                                <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-user-cog"></i></span>
+                                <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-user-cog"></i></span>
                                 <input type="text" name="fname" class="form-control " placeholder="First Name" aria-label="firstname" aria-describedby="addon-wrapping" required>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="input-group flex-nowrap mt-lg-1 mt-3 mb-1">
-                                <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-user-shield"></i></span>
+                                <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-user-shield"></i></span>
                                 <input type="text" name="lname" class="form-control " placeholder="Last Name" aria-label="lastname" aria-describedby="addon-wrapping" required>
                             </div>
                         </div>
                     </div>
                     
                     <div class="input-group flex-nowrap mt-3 mb-1">
-                        <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-envelope"></i></span>
-                        <input type="text" name="email" class="form-control " placeholder="Email" aria-label="email" aria-describedby="addon-wrapping" required>
+                        <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-envelope"></i></span>
+                        <input type="text" name="email" class="form-control " placeholder="Email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Email should be in the format 'example@gmail.com'" aria-label="email" aria-describedby="addon-wrapping" required>
                     </div>
 
                     <div class="input-group flex-nowrap mt-3 mb-1">
-                        <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-user-lock"></i></span>
+                        <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-user-lock"></i></span>
                         <input type="text" name="username" class="form-control " placeholder="Username" aria-label="username" aria-describedby="addon-wrapping" required>
                     </div>
 
                 
                     <div class="input-group flex-nowrap  mt-3 mb-1">
-                        <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-lock"></i></span>
-                        <input type="password" name="password" class="form-control " placeholder="Password" aria-label="password" aria-describedby="addon-wrapping" required>
+                        <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-lock"></i></span>
+                        <input type="password" name="password" class="form-control " placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="*password must be at least 8 characters long and include uppercase , lowercase, special characters and numbers." aria-label="password" aria-describedby="addon-wrapping" required>
                     </div>
 
                     <div class="input-group flex-nowrap mt-3 mb-1">
-                        <span class="input-group-text icon" id="addon-wrapping"><i class="fas fa-briefcase"></i></span>
+                        <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-briefcase"></i></span>
                         <select name="designation" class="form-select" aria-label="username" aria-describedby="addon-wrapping" required>
                             <option value="" class="" hidden>Designation</option>
                             <option value="Team Member">Team Member</option>
@@ -60,11 +60,11 @@
                 </form>
             </div>
             <div class="row">
-                <div class="col-lg-7 col-6">
-                    <a href="/" class="text-decoration-none text-white">Back to Home</a>
+                <div class="col-lg-8 col-6">
+                    
                 </div>
-                <div class="col-lg-5 col-6">
-                    <a href="" class="text-decoration-none text-white">Forget Password?</a>
+                <div class="col-lg-4 col-6">
+                    <a href="/" class="text-decoration-none text-white">Back to Home</a>
                 </div>
             </div>
             <div class="row mt-1">

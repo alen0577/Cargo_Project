@@ -16,7 +16,7 @@ body{
     background: rgb(66, 28, 82);
     
 }
-.icon{
+.icon1{
     color: rgb(66, 28, 82);
 }
 .signup{
@@ -37,4 +37,25 @@ body{
     color: rgb(255, 255, 255);
     border: none;
     
+}
+
+/* styles for success messages */
+.alert {
+    background-color: rgba(66, 28, 82, 0.95);
+    color: white;
+    animation: slideInRight 0.5s forwards;
+}
+
+@keyframes slideInRight {
+    from {
+    transform: translateX(100%);
+    opacity: 0;
+    }
+    to {
+    transform: translateX(0);
+    opacity: 1;
+    }
+}
+.icon{
+    color: rgb(254, 171, 120);
 }

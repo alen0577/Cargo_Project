@@ -18,6 +18,24 @@ Registration - Cargo
 <!-- register-section -->
 <section id="register-section">
     <div class="container">
+        {% if messages %}
+        <!-- message section -->
+        <div class="row mt-3">
+            <div class="col-lg-7"></div>
+            <div class="col-lg-5">
+                {% for message in messages %}
+                <div class="alert alert-dismissible fade show" role="alert">
+                {% if message.tags == 'success' %}
+                <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+                {% else %}
+                <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+                {% endif %}
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         <div class="row mt-lg-5 mt-2 mb-2">
             <div class="col-lg-2"></div>
             <div class="col-lg-8 mt-lg-3">
