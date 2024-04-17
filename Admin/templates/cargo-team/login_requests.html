@@ -1,0 +1,88 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+<!-- title for the cargo team page -->
+{% block title %}
+Cargo Team - Requests
+{% endblock %}
+
+<!-- css link for cargo team  page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'admin/css/cargo_team.css' %}">
+{% endblock %}
+
+
+<!-- contents for cargo team  page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="#">Cargo Team</a></li>
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'cargo_team' %}">Request Management</a></li>
+        <li class="breadcrumb-item active">Requests</li>
+    </ol>
+    
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-12">
+            <!-- table to listout current openings -->
+            <h6 class="main-heading fw-bold">Requests</h6>
+            <div class="table-responsive mt-5">
+                <table class="table table-hover tablestyle">
+                    <thead >
+                        <tr>
+                            <th class="text-white">Sl.No</th>
+                            <th class="text-white">Username</th>
+                            <th class="text-white">First Name</th>
+                            <th class="text-white">Last Name</th>
+                            <th class="text-white">Email</th>
+                            <th class="text-white">Joining Date</th>
+                            <th class="text-white">Designation</th>
+                            <th class="text-white">Action</th>
+
+
+                            
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr class="borderstyle">
+                            <td class="text-white">{{forloop.counter}}</td>
+                            <td class="text-white">{{i.username}}</td>
+                            <td class="text-white">{{i.first_name}}</td>
+                            <td class="text-white">{{i.last_name}}</td>
+                            <td class="text-white">{{i.email}}</td>
+                            <td class="text-white">{{i.Joining_date}}</td>
+                            <td class="text-white">{{i.designation}}</td>
+                            <td>
+                                <a href=""  class="btn2 p-2"><i class="fas fa-check-circle"></i></a>
+                                <a href="" class="btn2 p-2"><i class="fas fa-times-circle"></i></a>
+                            </td>
+                            
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+
+       
+
+
+        
+
+       
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}

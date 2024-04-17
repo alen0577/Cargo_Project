@@ -27,5 +27,6 @@ urlpatterns = [
 
     # cargo team section urls
     path('cargo-team/', views.cargo_team, name='cargo_team'),
+    path('login-requests/', views.login_requests, name='login_requests'),
 
 ]

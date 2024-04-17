@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from Register_Login.views import login_page
+from Register_Login.models import CargoTeam
 from . models import *
 from django.contrib import messages
 from django.http import HttpResponse
@@ -239,3 +240,12 @@ def download_resume(request, pk):
 @login_required(login_url='login_page')
 def cargo_team(request):
     return render(request,'cargo-team/cargo_team.html')
+
+
+@login_required(login_url='login_page')
+def login_requests(request):
+    data = CargoTeam.objects.filter(admin_approval=0)
+    context={
+        'data':data
+    }
+    return render(request,'cargo-team/login_requests.html',context)
