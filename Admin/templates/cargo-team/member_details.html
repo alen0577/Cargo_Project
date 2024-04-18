@@ -21,23 +21,23 @@ Cargo Team
     
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="#">Cargo Team</a></li>
-        <li class="breadcrumb-item active">Request Management</li>
+        <li class="breadcrumb-item active">Member Details</li>
     </ol>
     
     <div class="row mt-5 mb-5">
-        <!--requests card section -->
+        <!--team members card section -->
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="{% url 'login_requests' %}">
+            <a class="text-decoration-none" href="">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
                             <div class="icons text-center mt-5 mb-5">
-                                <i class="fas fa-hourglass-half fs-1"></i>
+                                <i class="fas fa-user-shield fs-1"></i>
                             </div>
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Requests</h5>
+                                <h5 class="card-title main-heading text-center">Team Members</h5>
                                 <p class="text-black-50 mt-3">
                                     Effortlessly manage all pending login requests. 
                                 </p>
@@ -50,19 +50,19 @@ Cargo Team
         </div>
 
 
-        <!-- approved card section -->
+        <!-- executive members card section -->
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="{% url 'approved_requests' %}">
+            <a class="text-decoration-none" href="">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
                             <div class="icons text-center mt-5 mb-5">
-                                <i class="fas fa-check-circle fs-1"></i>
+                                <i class="fas fa-user-cog fs-1"></i>
                             </div>
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Approved</h5>
+                                <h5 class="card-title main-heading text-center">Executive Members</h5>
                                 <p class="text-black-50 mt-3">
                                     View all approved requests  
                                 </p>
@@ -76,30 +76,8 @@ Cargo Team
         </div>
 
 
-        <!-- rejected card section -->
-        <div class="col-lg-4">
-            <a class="text-decoration-none" href="{% url 'rejected_requests' %}">
-                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
-                    <div class="row g-0">
-                        <div class="col-4" id="sec1">
-                            <div class="icons text-center mt-5 mb-5">
-                                <i class="fas fa-times-circle fs-1"></i>
-                            </div>
-                        </div>
-                        <div class="col-8" id="sec2">
-                            <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Rejected</h5>
-                                <p class="text-black-50 mt-3">
-                                    View all rejected requests  
-                                </p>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-        </div>
+        
+        <div class="col-lg-4"></div>
 
         <div class="col-lg-4"></div>
     </div>

@@ -28,5 +28,12 @@ urlpatterns = [
     # cargo team section urls
     path('cargo-team/', views.cargo_team, name='cargo_team'),
     path('login-requests/', views.login_requests, name='login_requests'),
+    path('accept-request/<int:pk>/', views.accept_request, name='accept_request'),
+    path('cancel-request/<int:pk>/', views.cancel_request, name='cancel_request'),
+    path('approved-requests/', views.approved_requests, name='approved_requests'),
+    path('rejected-requests/', views.rejected_requests, name='rejected_requests'),
+    path('member-details/', views.member_details, name='member_details'),
+
+
 
 ]

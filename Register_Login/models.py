@@ -11,6 +11,6 @@ class CargoTeam(models.Model):
     designation = models.CharField(max_length=255,null=True,blank=True)
     Joining_date = models.DateField(auto_now_add=True,null=True,blank=True)
     time = models.TimeField(auto_now_add=True,null=True,blank=True)
-    admin_approval = models.BooleanField(default=0,null=True,blank=True)
+    admin_approval = models.IntegerField(default=0,null=True,blank=True)
     is_active = models.BooleanField(default=1,null=True,blank=True)
 

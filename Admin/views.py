@@ -249,3 +249,42 @@ def login_requests(request):
         'data':data
     }
     return render(request,'cargo-team/login_requests.html',context)
+
+@login_required(login_url='login_page')
+def accept_request(request,pk):
+    data = CargoTeam.objects.get(id=pk)
+    data.admin_approval=1
+    data.save()
+    messages.success(request,'Request approved')
+    return redirect('login_requests')
+
+
+@login_required(login_url='login_page')
+def cancel_request(request,pk):
+    data = CargoTeam.objects.get(id=pk)
+    data.admin_approval=2
+    data.save()
+    messages.success(request,'Request rejected')
+    return redirect('login_requests')
+
+
+@login_required(login_url='login_page')
+def approved_requests(request):
+    data = CargoTeam.objects.filter(admin_approval=1)
+    context={
+        'data':data
+    }
+    return render(request,'cargo-team/approved_requests.html',context)
+
+@login_required(login_url='login_page')
+def rejected_requests(request):
+    data = CargoTeam.objects.filter(admin_approval=2)
+    context={
+        'data':data
+    }
+    return render(request,'cargo-team/rejected_requests.html',context)
+
+
+@login_required(login_url='login_page')
+def member_details(request):
+    return render(request,'cargo-team/member_details.html')

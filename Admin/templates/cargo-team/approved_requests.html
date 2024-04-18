@@ -22,26 +22,8 @@ Cargo Team - Requests
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="#">Cargo Team</a></li>
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'cargo_team' %}">Request Management</a></li>
-        <li class="breadcrumb-item active">Requests</li>
+        <li class="breadcrumb-item active">Approved Requests</li>
     </ol>
-    {% if messages %}
-    <!-- message section -->
-    <div class="row mt-3">
-      <div class="col-lg-7"></div>
-      <div class="col-lg-5">
-        {% for message in messages %}
-        <div class="alert alert-dismissible fade show" role="alert">
-          {% if message.tags == 'success' %}
-          <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
-          {% else %}
-          <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
-          {% endif %}
-          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
     
     <div class="row mt-5 mb-5">
         <div class="col-lg-12">
@@ -59,11 +41,9 @@ Cargo Team - Requests
                             <th class="text-white">Email</th>
                             <th class="text-white">Joining Date</th>
                             <th class="text-white">Designation</th>
-                            <th class="text-white">Action</th>
 
 
-                            
-                            
+                        
                         </tr>
                     </thead>
                     <tbody>
@@ -76,11 +56,6 @@ Cargo Team - Requests
                             <td class="text-white">{{i.email}}</td>
                             <td class="text-white">{{i.Joining_date}}</td>
                             <td class="text-white">{{i.designation}}</td>
-                            <td>
-                                <a href="{% url 'accept_request' i.id %}"  class="btn2 p-2"><i class="fas fa-check-circle"></i></a>
-                                <a href="{% url 'cancel_request' i.id %}" class="btn2 p-2"><i class="fas fa-times-circle"></i></a>
-                            </td>
-                            
 
                         </tr>
                         {% endfor %}
@@ -88,9 +63,10 @@ Cargo Team - Requests
                 </table>
             </div>
             {% else %}
-            <h6 class="fw-bold font-monospace mt-3">No pending requests</h6>
+            <h6 class="fw-bold font-monospace mt-3">No requests</h6>
             {% endif %}
         </div>
+    
        
     </div>
     
