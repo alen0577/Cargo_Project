@@ -11070,6 +11070,18 @@ body {
 .breadcrumb-item a:hover{
   color: rgb(66, 28, 82);
 }
+.dropdown-item{
+  color: black;
+  font-weight: 400;
+  transition: transform 0.3s ease; /* Smooth transition for transform property */
+  
+}
+.dropdown-item:hover{
+  background-color: white;
+  color:rgb(254, 171, 120);
+  border-left: 5px solid rgb(254, 171, 120);
+  transform: scale(1);
+}
 
 .datatable-wrapper .datatable-container {
   font-size: 0.875rem;

@@ -235,7 +235,7 @@ def download_resume(request, pk):
         return response
 
 
-# cargo team section
+# cargo team section views
 
 @login_required(login_url='login_page')
 def cargo_team(request):
@@ -288,3 +288,20 @@ def rejected_requests(request):
 @login_required(login_url='login_page')
 def member_details(request):
     return render(request,'cargo-team/member_details.html')
+
+
+@login_required(login_url='login_page')
+def team_members(request):
+    data = CargoTeam.objects.filter(designation='Team Member',admin_approval=1)
+    context={
+        'data':data
+    }
+    return render(request,'cargo-team/team_members.html',context)
+
+@login_required(login_url='login_page')
+def executive_members(request):
+    data = CargoTeam.objects.filter(designation='Executive Member',admin_approval=1)
+    context={
+        'data':data
+    }
+    return render(request,'cargo-team/executive_members.html',context)

@@ -33,6 +33,8 @@ urlpatterns = [
     path('approved-requests/', views.approved_requests, name='approved_requests'),
     path('rejected-requests/', views.rejected_requests, name='rejected_requests'),
     path('member-details/', views.member_details, name='member_details'),
+    path('team-members/', views.team_members, name='team_members'),
+    path('executive-members/', views.executive_members, name='executive_members'),
 
 
 
