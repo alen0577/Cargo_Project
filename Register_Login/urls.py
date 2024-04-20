@@ -12,6 +12,6 @@ urlpatterns = [
 
     # logout url section
     path('admin-logout/',views.admin_logout,name='admin_logout'),
-    # path('user-logout',views.logout,name='logout'),
+    path('user-logout',views.logout,name='logout'),
 
 ]
