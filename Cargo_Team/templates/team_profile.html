@@ -1,0 +1,92 @@
+{% extends 'team_base.html' %}
+{% load static %}
+
+<!-- title for profile page -->
+{% block title %}
+Profile
+{% endblock %}
+
+<!-- css link for cargo team  page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'team/css/profile.css' %}">
+{% endblock %}
+
+
+<!-- contents for profile  page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item active">Profile</li>
+    </ol>
+    
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-2"></div>
+
+        <div class="col-lg-8">
+             <!-- profile card -->
+            <div class="card mb-3" style="max-width: 100%">
+                <div class="row g-0">
+                    <div class="col-md-4" id="sec1">
+                        <div class="d-flex justify-content-center">
+                          {% if details.profile_picture %}
+                          <img src="..." class="img-fluid rounded-circle mt-3" height="100" width="100" alt="img">
+                          {% else %}
+                          <img src="{% static 'team/images/noprofile.jpg' %}" class="img-fluid rounded-circle mt-3" height="100" width="100" alt="img">
+                          {% endif %} <br>
+                          
+                        </div>
+                        <h5 class="text-center mt-2 fw-bold">{{details.username}} <i class="fas fa-check-circle active-icon"></i></h5>
+                        <h6 class="text-center mt-2 ">Team Member</h6>
+
+                    </div>
+                      
+                  <div class="col-md-8" >
+                    <div class="card-body main-heading">
+                        <h5 class="text-center">PROFILE</h5>
+                        <h5 class="">Basic Details</h5>
+                        <div class="row">
+                            <div class="col-6">
+                                <p>First Name : <span class="ms-2 fw-bold">{{details.first_name}}</span></p>
+                            
+                            </div>
+                            <div class="col-6">
+                                <p>Last Name : <span class="ms-2 fw-bold">{{details.last_name}}</span></p>
+                            
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <p>Email : <span class="ms-2 fw-bold">{{details.email}}</span></p>
+                            
+                            </div>
+                            <div class="col-6">
+                                <p>Contact : <span class="ms-2 fw-bold">{{details.contact}}</span></p>
+                            
+                            </div>
+                        </div>
+
+                      
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2"></div>
+       
+        
+       
+
+        
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}
