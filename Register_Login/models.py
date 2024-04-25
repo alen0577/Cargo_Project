@@ -11,6 +11,13 @@ class CargoTeam(models.Model):
     designation = models.CharField(max_length=255,null=True,blank=True)
     Joining_date = models.DateField(auto_now_add=True,null=True,blank=True)
     time = models.TimeField(auto_now_add=True,null=True,blank=True)
+    address = models.TextField(null=True,blank=True)
+    city = models.CharField(max_length=254,null=True,blank=True)
+    pincode = models.IntegerField(null=True,blank=True)
+    state = models.CharField(max_length=254,null=True,blank=True)
+    country = models.CharField(max_length=254,null=True,blank=True)
+    contact = models.CharField(max_length=100,null=True,blank=True)
+    profile_picture = models.ImageField(null=True,blank = True,upload_to = 'image/profile_picture')
     admin_approval = models.IntegerField(default=0,null=True,blank=True)
     is_active = models.BooleanField(default=1,null=True,blank=True)
 
