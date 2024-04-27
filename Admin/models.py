@@ -43,4 +43,38 @@ class JobApplications(models.Model):
     date = models.DateField(auto_now_add=True,null=True,blank=True)
     time = models.TimeField(auto_now_add=True,null=True,blank=True)
     is_shortlisted = models.BooleanField(default=0,null=True,blank=True)
+
+   
+# model for service locations
+
+class Country(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+class State(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+class City(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+class ServiceLocation(models.Model):
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    postal_code = models.CharField(max_length=20)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    contact_person = models.CharField(max_length=100, null=True, blank=True)
+    contact_number = models.CharField(max_length=20, null=True, blank=True)
+    operating_hours = models.CharField(max_length=255, null=True, blank=True)
+    service_type = models.CharField(max_length=50, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
     
+
+    
+   

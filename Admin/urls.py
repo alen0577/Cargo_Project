@@ -36,6 +36,13 @@ urlpatterns = [
     path('team-members/', views.team_members, name='team_members'),
     path('executive-members/', views.executive_members, name='executive_members'),
 
+    # cargo service location management urls
+    path('location-hub/', views.location_hub, name='location_hub'),
+    path('add-contry/', views.add_country, name='add_country'),
+    path('add-state/', views.add_state, name='add_state'),
+    path('add-city/', views.add_city, name='add_city'),
+
+
 
 
 ]

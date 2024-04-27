@@ -305,3 +305,66 @@ def executive_members(request):
         'data':data
     }
     return render(request,'cargo-team/executive_members.html',context)
+
+
+
+# Service locations section views
+
+@login_required(login_url='login_page')
+def location_hub(request):
+    country=Country.objects.filter(is_active=True)
+    state=State.objects.filter(is_active=True)
+    city=City.objects.filter(is_active=True)
+    context={
+        'country':country,
+        'stste':state,
+        'city':city,
+    }
+
+    return render(request,'locations/location_hub.html',context)
+
+@login_required(login_url='login_page')
+def add_country(request):
+    if request.method == 'POST':
+        country=request.POST.get('name')
+        
+        data=Country(
+            name=country,
+    
+        )
+        
+        data.save()
+        messages.success(request,'Country Added')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def add_state(request):
+    if request.method == 'POST':
+        state=request.POST.get('name')
+        data=State(
+            name=state,
+        )
+        
+        data.save()
+        messages.success(request,'State Added')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def add_city(request):
+    if request.method == 'POST':
+        city=request.POST.get('name')
+        data=City(
+            name=city,
+        )
+        
+        data.save()
+        messages.success(request,'City Added')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
