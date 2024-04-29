@@ -35,8 +35,13 @@
     box-shadow: none !important; /* Remove box shadow on focus */
     border-color: rgb(66, 28, 82);
 }
+.select-hover {
+    background-color: rgb(255, 255, 255); /* Change background color on hover */
+    color: rgb(0, 0, 0);
+}
+
 #pills-tab .nav-link{
-    color: black;
+    color: rgb(0, 0, 0);
 }
 /* Change color of active tab */
 #pills-tab .nav-link.active {
@@ -50,7 +55,7 @@
 }
 .card{
     background-color: rgb(66, 28, 82);
-    color: white;
+    color: rgb(255, 255, 255);
     cursor: pointer;
 }
 .content{
@@ -90,4 +95,31 @@
 }
 .icon{
     color: rgb(254, 171, 120);
+}
+
+.tablestyle{
+    background-color: rgb(66, 28, 82);
+    color: white;
+
+}
+.borderstyle{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn2{
+    background-color: rgb(255, 255, 255);
+    color: rgb(66, 28, 82);
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+.btn2:hover{
+    background-color: rgb(255, 255, 255);
+    color: rgb(66, 28, 82);
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.hidden{
+    display: none;
 }

@@ -38,9 +38,20 @@ urlpatterns = [
 
     # cargo service location management urls
     path('location-hub/', views.location_hub, name='location_hub'),
-    path('add-contry/', views.add_country, name='add_country'),
+    path('add-country/', views.add_country, name='add_country'),
     path('add-state/', views.add_state, name='add_state'),
     path('add-city/', views.add_city, name='add_city'),
+    path('add-location/', views.add_location, name='add_location'),
+    path('delete-country/<int:pk>/', views.delete_country, name='delete_country'),
+    path('delete-state/<int:pk>/', views.delete_state, name='delete_state'),
+    path('delete-city/<int:pk>/', views.delete_city, name='delete_city'),
+    path('delete-location/<int:pk>/', views.delete_location, name='delete_location'),
+    path('active-country/<int:pk>/', views.active_country, name='active_country'),
+    path('inactive-country/<int:pk>/', views.inactive_country, name='inactive_country'),
+    path('active-state/<int:pk>/', views.active_state, name='active_state'),
+    path('inactive-state/<int:pk>/', views.inactive_state, name='inactive_state'),
+
+
 
 
 

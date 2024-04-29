@@ -1,0 +1,173 @@
+
+<div class="table-responsive" id="country-table">
+    <h6 class="main-heading">All Countries</h6>
+    <table class="table table-hover tablestyle">
+      <thead >
+        <tr>
+          <th class="text-white">Sl.No</th>
+          <th class="text-white">Name</th>
+          <th class="text-white">Action</th>
+          
+            
+            
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in all_country %}
+        <tr class="borderstyle">
+          <td class="text-white">{{forloop.counter}}</td>
+
+          {% if i.is_active %}
+          <td class="text-white">{{i.name}}</td>
+          {% else %}
+          <td class="text-white-50">{{i.name}}</td>
+          {% endif %}
+
+          <td class="text-white">
+            <a href="" class="btn2 w-25"><i class="fas fa-edit"></i></a>
+
+            {% if i.is_active == 1 %}
+            <a href="{% url 'inactive_country' i.id %}" class="btn2 w-25"><i class="fas fa-times-circle"></i></a>
+            {% else %}
+            <a href="{% url 'active_country' i.id %}" class="btn2 w-25"><i class="fas fa-check-circle"></i></a>
+            {% endif %}
+
+            <a href="{% url 'delete_country' i.id %}" class="btn2 w-25"><i class="fas fa-trash"></i></a>
+          </td>
+        
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+
+<div class="table-responsive hidden" id="state-table">
+    <h6 class="main-heading">All States</h6>
+    <table class="table table-hover tablestyle">
+      <thead >
+        <tr>
+          <th class="text-white">Sl.No</th>
+          <th class="text-white">Name</th>
+          <th class="text-white">Action</th>
+          
+            
+            
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in all_state %}
+        <tr class="borderstyle">
+          <td class="text-white">{{forloop.counter}}</td>
+
+          {% if i.is_active %}
+          <td class="text-white">{{i.name}}</td>
+          {% else %}
+          <td class="text-white-50">{{i.name}}</td>
+          {% endif %}
+
+          <td class="text-white">
+            <a href="" class="btn2 w-25"><i class="fas fa-edit"></i></a>
+
+            {% if i.is_active %}
+            <a href="{% url 'inactive_state' i.id %}" class="btn2 w-25"><i class="fas fa-times-circle"></i></a>
+            {% else %}
+            <a href="{% url 'active_state' i.id %}" class="btn2 w-25"><i class="fas fa-check-circle"></i></a>
+            {% endif %}
+
+            <a href="{% url 'delete_state' i.id %}" class="btn2 w-25"><i class="fas fa-trash"></i></a>
+          </td>
+        
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+
+<div class="table-responsive hidden" id="city-table">
+    <h6 class="main-heading">All Cities</h6>
+    <table class="table table-hover tablestyle">
+      <thead >
+        <tr>
+          <th class="text-white">Sl.No</th>
+          <th class="text-white">Name</th>
+          <th class="text-white">Action</th>
+          
+            
+            
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in all_city %}
+        <tr class="borderstyle">
+          <td class="text-white">{{forloop.counter}}</td>
+
+          {% if i.is_active %}
+          <td class="text-white">{{i.name}}</td>
+          {% else %}
+          <td class="text-white-50">{{i.name}}</td>
+          {% endif %}
+
+          <td class="text-white">
+            <a href="" class="btn2 w-25"><i class="fas fa-edit"></i></a>
+
+            {% if i.is_active %}
+            <a href="" class="btn2 w-25"><i class="fas fa-times-circle"></i></a>
+            {% else %}
+            <a href="" class="btn2 w-25"><i class="fas fa-check-circle"></i></a>
+            {% endif %}
+
+            <a href="{% url 'delete_city' i.id %}" class="btn2 w-25"><i class="fas fa-trash"></i></a>
+          </td>
+        
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+<div class="table-responsive hidden" id="location-table">
+    <h6 class="main-heading">All Locations</h6>
+    <table class="table table-hover tablestyle">
+      <thead >
+        <tr>
+          <th class="text-white">Sl.No</th>
+          <th class="text-white">Name</th>
+          <th class="text-white">Pincode</th>
+          <th class="text-white">Action</th>
+          
+            
+            
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in all_location %}
+        <tr class="borderstyle">
+          <td class="text-white">{{forloop.counter}}</td>
+
+          {% if i.is_active %}
+          <td class="text-white">{{i.name}}</td>
+          <td class="text-white">{{i.postal_code}}</td>
+          {% else %}
+          <td class="text-white-50">{{i.name}}</td>
+          <td class="text-white-50">{{i.postal_code}}</td>
+          {% endif %}
+
+          <td class="text-white">
+            <a href="" class="btn2"><i class="fas fa-edit"></i></a>
+
+            {% if i.is_active %}
+            <a href="" class="btn2"><i class="fas fa-times-circle"></i></a>
+            {% else %}
+            <a href="" class="btn2"><i class="fas fa-check-circle"></i></a>
+            {% endif %}
+
+            <a href="{% url 'delete_location' i.id %}" class="btn2"><i class="fas fa-trash"></i></a>
+          </td>
+        
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>

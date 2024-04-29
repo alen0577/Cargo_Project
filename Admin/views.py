@@ -312,12 +312,20 @@ def executive_members(request):
 
 @login_required(login_url='login_page')
 def location_hub(request):
+    all_country=Country.objects.all()
+    all_state=State.objects.all()
+    all_city=City.objects.all()
+    all_location=ServiceLocation.objects.all()
     country=Country.objects.filter(is_active=True)
     state=State.objects.filter(is_active=True)
     city=City.objects.filter(is_active=True)
     context={
+        'all_country':all_country,
+        'all_state':all_state,
+        'all_city':all_city,
+        'all_location':all_location,
         'country':country,
-        'stste':state,
+        'state':state,
         'city':city,
     }
 
@@ -368,3 +376,101 @@ def add_city(request):
         return redirect('location_hub')
     else:
         return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def add_location(request):
+    if request.method == 'POST':
+        country_id=request.POST.get('country')
+        state_id=request.POST.get('state')
+        city_id=request.POST.get('city')
+
+        country=Country.objects.get(id=country_id)
+        state=State.objects.get(id=state_id)
+        city=City.objects.get(id=city_id)
+
+        location=request.POST.get('name')
+        pincode=request.POST.get('pincode')
+
+        data=ServiceLocation(
+            country=country,state=state,city=city,
+            name=location,
+            postal_code=pincode
+        )
+        
+        data.save()
+        messages.success(request,'Location Added')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def delete_country(request,pk):
+       
+    data=Country.objects.get(id=pk)
+    data.delete()
+    messages.success(request,'Country Deleted')
+    return redirect('location_hub')
+    
+
+@login_required(login_url='login_page')
+def delete_state(request,pk):
+       
+    data=State.objects.get(id=pk)
+    data.delete()
+    messages.success(request,'State Deleted')
+    return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def delete_city(request,pk):
+       
+    data=City.objects.get(id=pk)
+    data.delete()
+    messages.success(request,'City Deleted')
+    return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def delete_location(request,pk):
+       
+    data=ServiceLocation.objects.get(id=pk)
+    data.delete()
+    messages.success(request,'Location Deleted')
+    return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def active_country(request,pk):
+       
+    data=Country.objects.get(id=pk)
+    data.is_active=1
+    data.save()
+    messages.success(request,'Active')
+    return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def inactive_country(request,pk):
+       
+    data=Country.objects.get(id=pk)
+    data.is_active=0
+    data.save()
+    messages.success(request,'Inactive')
+    return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def active_state(request,pk):
+       
+    data=State.objects.get(id=pk)
+    data.is_active=1
+    data.save()
+    messages.success(request,'Active')
+    return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def inactive_state(request,pk):
+       
+    data=State.objects.get(id=pk)
+    data.is_active=0
+    data.save()
+    messages.success(request,'Inactive')
+    return redirect('location_hub')
