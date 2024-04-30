@@ -1,153 +1,330 @@
-<!DOCTYPE html>
-<html lang="en">
-    {% load static %}
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>
-            {% block title %}
-            {% endblock  %}
-        </title>
-        <!-- bootstrap link version 5.3.2 -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+{% extends 'admin_base.html' %}
+{% load static %}
 
-        <!-- Link to jQuery from CDN -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- title for the location page -->
+{% block title %}
+Admin-Location Hub
+{% endblock %}
 
-        <!-- Link to google fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+<!-- css link for location page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'admin/css/locationhub.css' %}">
+{% endblock %}
 
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <!-- Font Awesome CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!-- Custom CSS links -->
-        <link href="{% static 'admin/css/styles.css' %}" rel="stylesheet" />
-        {% block link %}
-        {% endblock %}
-        <style>
-            body{
-             font-family: "Roboto", sans-serif;
-            }
-        </style>
-    </head>
-    <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark ">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="">Cargo</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-dark" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div> -->
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="{% url 'admin_logout' %}">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="{% url 'admin_dashboard' %}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Cargo Team</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Cargo Team
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="">Requests</a>
-                                    <a class="nav-link" href="">Details</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Cargo Executives
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="">Login</a>
-                                            <a class="nav-link" href="">Register</a>
-                                            <a class="nav-link" href="">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="">401 Page</a>
-                                            <a class="nav-link" href="">404 Page</a>
-                                            <a class="nav-link" href="">500 Page</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
-                            <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
-                        </div> 
+
+<!-- contents for location page -->
+{% block content %}
+<div class="container-fluid px-4">
+  <!-- breadcrumb section -->
+  <ol class="breadcrumb mt-3">
+      <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+      <li class="breadcrumb-item active">Location Hub</li>
+  </ol>
+
+  {% if messages %}
+  <!-- message section -->
+  <div class="row mt-3">
+    <div class="col-lg-7"></div>
+    <div class="col-lg-5">
+      {% for message in messages %}
+      <div class="alert alert-dismissible fade show" role="alert">
+        {% if message.tags == 'success' %}
+        <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+        {% else %}
+        <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+        {% endif %}
+        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row mt-5">
+    <div class="d-grid gap-2 d-md-block">
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcountrymodal"><i class="fas fa-plus"></i> Country</button>
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addstatemodal"><i class="fas fa-plus"></i> State</button>
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcitymodal"><i class="fas fa-plus"></i> City</button>
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addlocationmodal"><i class="fas fa-plus"></i> Service Location</button>
+
+    </div>
+
+  </div>
+
+  <div class="row mt-3 mb-5">
+    <div class="col-lg-12">
+      <ul class="nav nav-underline  mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-locations" type="button" role="tab" aria-controls="pills-locations" aria-selected="true">Locations</button>
+        </li>
+        <!-- <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-archive" type="button" role="tab" aria-controls="pills-archive" aria-selected="false">Archive</button>
+        </li> -->
+          
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <!-- locations add -->
+        <div class="tab-pane fade show active" id="pills-locations" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+          <div class="locations mt-5">
+              <div class="row">
+                <!-- card section -->
+                <div class="col-lg-3">
+
+                  <div id="country-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
+                    <div class="card-body">
+                      <h5 class="card-title text-center mt-2">Countries</h5>
+                      <p class="card-text text-center text-white-50">Edit and manage all service available Countries</p>
                     </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small text-white-50">Logged in as : <span class="fw-bold">Admin</span></div>
-                       
+                  </div>
+
+                  <div id="state-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
+                    <div class="card-body">
+                      <h5 class="card-title text-center mt-2">States</h5>
+                      <p class="card-text text-center text-white-50">Edit and manage all service available States</p>
                     </div>
-                </nav>
-            </div>
-            <div id="layoutSidenav_content">
-                <main >
-                    {% block content %}
-                    {% endblock %}
-                </main>
-                <footer class="footer mt-3 mb-3">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 text-center text-lg-start">
-                                <div class="text-muted">Copyright &copy; Cargo 2024</div>
-                            </div>
-                        </div>
+                  </div>
+
+                  <div id="city-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
+                    <div class="card-body">
+                      <h5 class="card-title text-center mt-2">Cities</h5>
+                      <p class="card-text text-center text-white-50">Edit and manage all service available Cities</p>
                     </div>
-                </footer>
-            </div>
+                  </div>
+
+                  <div id="location-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
+                    <div class="card-body">
+                      <h5 class="card-title text-center mt-2">Locations</h5>
+                      <p class="card-text text-center text-white-50">Edit and manage all service available Locations</p>
+                    </div>
+                  </div>
+
+                  
+
+                </div>
+                <!-- card related table section -->
+                <div class="col-lg-9 mt-lg-0 mt-5">
+                  <!-- default lo table -->
+                  {% include 'locations/tables.html' %}
+                </div>
+              </div>
+          </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <script src="{% static 'admin/js/scripts.js' %}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="{% static 'admin/assets/demo/chart-area-demo.js' %}"></script>
-        <script src="{% static 'admin/assets/demo/chart-bar-demo.js' %}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="{% static 'admin/js/datatables-simple-demo.js' %}"></script>
-    </body>
-</html>
+
+          
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<!--create Modal -->
+
+<div class="modal fade " id="addcountrymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Country</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'add_country' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Country Name"  required>
+          
+          <div class="row">
+              <div class="col-lg-8"></div>
+              <div class="col-lg-4">
+                <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+              </div>
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="addstatemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> State</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'add_state' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          
+          <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="State Name"  required>
+          
+          <div class="row">
+              <div class="col-lg-8"></div>
+              <div class="col-lg-4">
+                <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+              </div>
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="addcitymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> City</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'add_city' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          
+          <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="City Name"  required>
+          
+          <div class="row">
+              <div class="col-lg-8"></div>
+              <div class="col-lg-4">
+                <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+              </div>
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade " id="addlocationmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> City</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'add_location' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <select name="country" class="form-select  mt-2 mb-2" required>
+            <option value="" hidden>Select Country</option>
+            {% for i in country %}
+            <option class="select-hover" value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+          </select>
+          <select name="state" class="form-select  mt-2 mb-2" required>
+            <option  value="" hidden>Select State</option>
+            {% for i in state %}
+            <option class="select-hover" value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+          </select>
+          <select name="city" class="form-select  mt-2 mb-2" required>
+            <option value="" hidden>Select City</option>
+            {% for i in city %}
+            <option class="select-hover" value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+          </select>
+          <input type="text" name="name" class="form-control mt-2 mb-2" placeholder="Location Name"  required>
+          <input type="text" name="pincode" class="form-control mt-2 mb-2" placeholder="Pincode"  required>
+
+          <div class="row">
+              <div class="col-lg-8"></div>
+              <div class="col-lg-4">
+                <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+              </div>
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!--edit Modal -->
+<div class="modal fade " id="editcountrymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Country</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'add_country' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="text" name="name" class="form-control mt-2 mb-2" value=""  required>
+          
+          <div class="row">
+              <div class="col-lg-8"></div>
+              <div class="col-lg-4">
+                <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+              </div>
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#country-card').click(function() {
+      $('#country-table').removeClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').addClass('hidden');
+    });
+  
+    $('#state-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').removeClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').addClass('hidden');
+    });
+
+    $('#city-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').removeClass('hidden');
+      $('#location-table').addClass('hidden');
+    });
+
+    $('#location-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').removeClass('hidden');
+    });
+
+    // Add similar click functions for other cards if needed
+  });
+</script>
+
+
+{% endblock %}
