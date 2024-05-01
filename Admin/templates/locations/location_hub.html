@@ -42,10 +42,10 @@ Admin-Location Hub
 
   <div class="row mt-5">
     <div class="d-grid gap-2 d-md-block">
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addlocationmodal"><i class="fas fa-plus"></i> Service Location</button>
       <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcountrymodal"><i class="fas fa-plus"></i> Country</button>
       <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addstatemodal"><i class="fas fa-plus"></i> State</button>
       <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcitymodal"><i class="fas fa-plus"></i> City</button>
-      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addlocationmodal"><i class="fas fa-plus"></i> Service Location</button>
 
     </div>
 
@@ -70,6 +70,13 @@ Admin-Location Hub
                 <!-- card section -->
                 <div class="col-lg-3">
 
+                  <div id="location-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
+                    <div class="card-body">
+                      <h5 class="card-title text-center mt-2">Locations</h5>
+                      <p class="card-text text-center text-white-50">Edit and manage all service available Locations</p>
+                    </div>
+                  </div>
+
                   <div id="country-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
                     <div class="card-body">
                       <h5 class="card-title text-center mt-2">Countries</h5>
@@ -91,12 +98,7 @@ Admin-Location Hub
                     </div>
                   </div>
 
-                  <div id="location-card" class="card  mb-3 shadow rounded" style="max-width: 100%">
-                    <div class="card-body">
-                      <h5 class="card-title text-center mt-2">Locations</h5>
-                      <p class="card-text text-center text-white-50">Edit and manage all service available Locations</p>
-                    </div>
-                  </div>
+                  
 
                   
 
@@ -212,7 +214,7 @@ Admin-Location Hub
   <div class="modal-dialog ">
     <div class="modal-content ">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> City</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Location</h1>
       </div>
       <div class="modal-body rounded-2 shadow">
         <form action="{% url 'add_location' %}" method="post" enctype="multipart/form-data">
@@ -262,21 +264,46 @@ Admin-Location Hub
 
 
 <!--edit Modal -->
-<div class="modal fade " id="editcountrymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{% for i in all_location %}
+<div class="modal fade " id="editlocationmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
     <div class="modal-content ">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-plus"></i> Country</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Location</h1>
       </div>
       <div class="modal-body rounded-2 shadow">
-        <form action="{% url 'add_country' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'edit_location' i.id %}" method="post" enctype="multipart/form-data">
           {% csrf_token %}
-          <input type="text" name="name" class="form-control mt-2 mb-2" value=""  required>
+          <label for="">Country</label>
+          <select name="country" class="form-select  mt-2 mb-2" required>
+            <option value="{{i.country.id}}" hidden>{{i.country.name}}</option>
+            {% for i in country %}
+            <option class="select-hover" value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+          </select>
+          <label for="">State</label>
+          <select name="state" class="form-select  mt-2 mb-2" required>
+            <option  value="{{i.state.id}}" hidden>{{i.state.name}}</option>
+            {% for i in state %}
+            <option class="select-hover" value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+          </select>
+          <label for="">City</label>
+          <select name="city" class="form-select  mt-2 mb-2" required>
+            <option value="{{i.city.id}}" hidden>{{i.city.name}}</option>
+            {% for i in city %}
+            <option class="select-hover" value="{{i.id}}">{{i.name}}</option>
+            {% endfor %}
+          </select>
+          <label for="">Location</label>
+          <input type="text" name="name" class="form-control mt-2 mb-2" value="{{i.name}}"  required>
+          <label for="">Pincode</label>
+          <input type="text" name="pincode" class="form-control mt-2 mb-2" value="{{i.postal_code}}"  required>
           
           <div class="row">
               <div class="col-lg-8"></div>
               <div class="col-lg-4">
-                <button type="submit" class="btn1 w-100 mt-2 mb-2">Save <i class="fas fa-save ms-1"></i></button>
+                <button type="submit" class="btn1 w-100 mt-2 mb-2">Update <i class="fas fa-save ms-1"></i></button>
               </div>
           </div>
         </form>
@@ -287,13 +314,21 @@ Admin-Location Hub
     </div>
   </div>
 </div>
-
+{% endfor %}
 
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
+
+    $('#location-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').removeClass('hidden');
+    });
+
     $('#country-card').click(function() {
       $('#country-table').removeClass('hidden');
       $('#state-table').addClass('hidden');
@@ -315,12 +350,7 @@ Admin-Location Hub
       $('#location-table').addClass('hidden');
     });
 
-    $('#location-card').click(function() {
-      $('#country-table').addClass('hidden');
-      $('#state-table').addClass('hidden');
-      $('#city-table').addClass('hidden');
-      $('#location-table').removeClass('hidden');
-    });
+   
 
     // Add similar click functions for other cards if needed
   });

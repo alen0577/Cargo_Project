@@ -404,6 +404,28 @@ def add_location(request):
     else:
         return redirect('location_hub')
 
+
+@login_required(login_url='login_page')
+def edit_location(request,pk):
+    if request.method == 'POST':
+        data=ServiceLocation.objects.get(id=pk)
+        country_id=request.POST.get('country')
+        state_id=request.POST.get('state')
+        city_id=request.POST.get('city')
+
+        data.country=Country.objects.get(id=country_id)
+        data.state=State.objects.get(id=state_id)
+        data.city=City.objects.get(id=city_id)
+
+        data.location=request.POST.get('name')
+        data.postal_code=request.POST.get('pincode')
+
+        data.save()
+        messages.success(request,'Updated')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
+
 @login_required(login_url='login_page')
 def delete_country(request,pk):
        
@@ -470,6 +492,45 @@ def active_state(request,pk):
 def inactive_state(request,pk):
        
     data=State.objects.get(id=pk)
+    data.is_active=0
+    data.save()
+    messages.success(request,'Inactive')
+    return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def active_city(request,pk):
+       
+    data=City.objects.get(id=pk)
+    data.is_active=1
+    data.save()
+    messages.success(request,'Active')
+    return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def inactive_city(request,pk):
+       
+    data=City.objects.get(id=pk)
+    data.is_active=0
+    data.save()
+    messages.success(request,'Inactive')
+    return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def active_location(request,pk):
+       
+    data=ServiceLocation.objects.get(id=pk)
+    data.is_active=1
+    data.save()
+    messages.success(request,'Active')
+    return redirect('location_hub')
+
+
+@login_required(login_url='login_page')
+def inactive_location(request,pk):
+       
+    data=ServiceLocation.objects.get(id=pk)
     data.is_active=0
     data.save()
     messages.success(request,'Inactive')

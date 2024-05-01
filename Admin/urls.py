@@ -42,6 +42,7 @@ urlpatterns = [
     path('add-state/', views.add_state, name='add_state'),
     path('add-city/', views.add_city, name='add_city'),
     path('add-location/', views.add_location, name='add_location'),
+    path('edit-location/<int:pk>/', views.edit_location, name='edit_location'),
     path('delete-country/<int:pk>/', views.delete_country, name='delete_country'),
     path('delete-state/<int:pk>/', views.delete_state, name='delete_state'),
     path('delete-city/<int:pk>/', views.delete_city, name='delete_city'),
@@ -50,6 +51,10 @@ urlpatterns = [
     path('inactive-country/<int:pk>/', views.inactive_country, name='inactive_country'),
     path('active-state/<int:pk>/', views.active_state, name='active_state'),
     path('inactive-state/<int:pk>/', views.inactive_state, name='inactive_state'),
+    path('active-city/<int:pk>/', views.active_city, name='active_city'),
+    path('inactive-city/<int:pk>/', views.inactive_city, name='inactive_city'),
+    path('active-location/<int:pk>/', views.active_location, name='active_location'),
+    path('inactive-location/<int:pk>/', views.inactive_location, name='inactive_location'),
 
 
 
