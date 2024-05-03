@@ -485,3 +485,167 @@ Admin-Location Hub
 
 
 {% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+
+    $('#location-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').removeClass('hidden');
+    });
+
+    $('#country-card').click(function() {
+      $('#country-table').removeClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').addClass('hidden');
+    });
+  
+    $('#state-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').removeClass('hidden');
+      $('#city-table').addClass('hidden');
+      $('#location-table').addClass('hidden');
+    });
+
+    $('#city-card').click(function() {
+      $('#country-table').addClass('hidden');
+      $('#state-table').addClass('hidden');
+      $('#city-table').removeClass('hidden');
+      $('#location-table').addClass('hidden');
+    });
+
+   
+
+    // Add similar click functions for other cards if needed
+  });
+</script>
+
+
+<!-- <script>
+  function deleteCountry(pk) {
+    $.ajax({
+        type: 'POST',
+        url: '/delete-country/' + pk + '/',
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(response) {
+            if (response.success) {
+                alert(response.message);
+                $('#country-row-' + pk).remove(); // Remove the row from the table
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert('An error occurred: ' + error);
+        }
+    });
+  }
+</script> -->
+
+
+<script>
+
+  $(document).ready(function() {
+      // Check if the page was reloaded after deleting a country
+      var urlParams = new URLSearchParams(window.location.search);
+      var action = urlParams.get('action');
+
+      if (action === 'deleteCountry') {
+          // Store visibility state in session storage
+          sessionStorage.setItem('countryTableVisible', 'true');
+
+          // Remove the query parameter from the URL after processing
+          var newUrl = removeURLParameter(location.href, 'action');
+          history.pushState(null, '', newUrl);
+      } else {
+          // Clear session storage for default case
+          // sessionStorage.removeItem('countryTableVisible');
+      }
+
+      // Check if the country table should be visible
+      var countryTableVisible = sessionStorage.getItem('countryTableVisible');
+      if (countryTableVisible === 'true') {
+          // Manipulate table visibility
+          $('#country-table').removeClass('hidden');
+          $('#state-table').addClass('hidden');
+          $('#city-table').addClass('hidden');
+          $('#location-table').addClass('hidden');
+      } else {
+          // Default visibility state
+          $('#country-table').addClass('hidden');
+          $('#state-table').addClass('hidden');
+          $('#city-table').addClass('hidden');
+          $('#location-table').removeClass('hidden');
+      }
+  });
+
+  function deleteCountry(pk) {
+      $.ajax({
+          type: 'POST',
+          url: '/delete-country/' + pk + '/',
+          data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}' // Replace with your actual CSRF token
+          },
+          success: function(response) {
+              if (response.success) {
+                  var successMessage = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                      '<strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">' +
+                      response.message + '</span>' +
+                      '<button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      '</div>';
+                  $('#message-section').html(successMessage);
+
+                  // Store visibility state in session storage
+                  sessionStorage.setItem('countryTableVisible', 'true');
+
+                  // Remove the query parameter from the URL after processing
+                  var newUrl = removeURLParameter(location.href, 'action');
+                  history.pushState(null, '', newUrl);
+
+                  // Reload the page
+                  location.reload();
+
+                  
+              } else {
+                  var errorMessage = '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                      '<strong>Error <i class="fas fa-exclamation-circle icon"></i></strong><span class="ms-2">' +
+                      response.message + '</span>' +
+                      '<button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      '</div>';
+                  $('#message-section').html(errorMessage);
+              }
+          },
+          error: function(xhr, status, error) {
+              alert('An error occurred: ' + error);
+          }
+      });
+  }
+
+  // Function to remove a query parameter from the URL
+  function removeURLParameter(url, parameter) {
+      var urlParts = url.split('?');
+      if (urlParts.length >= 2) {
+          var prefix = encodeURIComponent(parameter) + '=';
+          var queryParams = urlParts[1].split(/[&;]/g);
+
+          // Iterate over the query parameters to remove the specified one
+          for (var i = queryParams.length; i-- > 0;) {
+              if (queryParams[i].lastIndexOf(prefix, 0) !== -1) {
+                  queryParams.splice(i, 1);
+              }
+          }
+
+          // Reconstruct the URL without the removed query parameter
+          url = urlParts[0] + (queryParams.length > 0 ? '?' + queryParams.join('&') : '');
+      }
+      return url;
+  }
+
+
+</script>
