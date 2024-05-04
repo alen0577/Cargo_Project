@@ -429,23 +429,14 @@ def edit_location(request,pk):
     else:
         return redirect('location_hub')
 
-# @login_required(login_url='login_page')
-# def delete_country(request,pk):
-       
-#     data=Country.objects.get(id=pk)
-#     data.delete()
-#     messages.success(request,'Country Deleted')
-#     return redirect('location_hub')
 
 @login_required(login_url='login_page')
-def delete_country(request, pk):
-    try:
-        data = Country.objects.get(id=pk)
-        data.delete()
-        messages.success(request,'Country Deleted')
-        return JsonResponse({'success': True, 'message': 'Country Deleted'})
-    except Country.DoesNotExist:
-        return JsonResponse({'success': False, 'message': 'Country not found'})
+def delete_country(request,pk):
+       
+    data=Country.objects.get(id=pk)
+    data.delete()
+    messages.success(request,'Country Deleted')
+    return redirect('location_hub')
 
 
 @login_required(login_url='login_page')
