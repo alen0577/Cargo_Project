@@ -56,5 +56,5 @@ class ShipmentBooking(models.Model):
     receiver_country = models.CharField(max_length=254,null=True,blank=True)
     receiver_contact_no = models.CharField(max_length=100,null=True,blank=True)
 
-    is_confirmed = models.BooleanField(default=0,null=True,blank=True)
-    is_active = models.BooleanField(default=0,null=True,blank=True)
+    is_confirmed = models.IntegerField(default=0,null=True,blank=True)
+    is_active = models.BooleanField(default=1,null=True,blank=True)

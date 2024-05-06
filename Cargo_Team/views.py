@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
+from Customer.models import ShipmentBooking
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
@@ -69,5 +70,23 @@ def edit_team_profile(request):
             return redirect('team_profile')
         else:
             return redirect('team_profile')
+    else:
+        return redirect('/')
+
+# team profile page
+def order_requests(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1)
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'orders/order_requests.html', context)
     else:
         return redirect('/')
