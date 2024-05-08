@@ -90,3 +90,37 @@ def order_requests(request):
         return render(request, 'orders/order_requests.html', context)
     else:
         return redirect('/')
+
+def approved_orders(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1)
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'orders/approved_orders.html', context)
+    else:
+        return redirect('/')
+
+def rejected_orders(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1)
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'orders/rejected_orders.html', context)
+    else:
+        return redirect('/')
