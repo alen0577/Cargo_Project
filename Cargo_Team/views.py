@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
-from Customer.models import ShipmentBooking
+from Customer.models import ShipmentBooking,CustomerIssues
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
@@ -122,5 +122,58 @@ def rejected_orders(request):
             'orders': orders,
         }
         return render(request, 'orders/rejected_orders.html', context)
+    else:
+        return redirect('/')
+
+
+
+# customer support section
+def customer_support(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        
+        context = {
+            'details': dash_details,
+        }
+        return render(request, 'customersupport/customer_support.html', context)
+    else:
+        return redirect('/')
+
+
+def pending_issues(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        pending_issues = CustomerIssues.objects.filter(action_taken=0)
+        
+        context = {
+            'details': dash_details,
+            'issues':pending_issues,
+        }
+        return render(request, 'customersupport/pending_issues.html', context)
+    else:
+        return redirect('/')
+
+def solved_issues(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        solved_issues = CustomerIssues.objects.filter(action_taken=1)
+        
+        context = {
+            'details': dash_details,
+            'issues':solved_issues,
+        }
+        return render(request, 'customersupport/solved_issues.html', context)
     else:
         return redirect('/')

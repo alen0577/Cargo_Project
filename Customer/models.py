@@ -58,3 +58,14 @@ class ShipmentBooking(models.Model):
 
     is_confirmed = models.IntegerField(default=0,null=True,blank=True)
     is_active = models.BooleanField(default=1,null=True,blank=True)
+
+
+class CustomerIssues(models.Model):
+    date = models.DateField(auto_now_add=True,null=True,blank=True)
+    time = models.TimeField(auto_now_add=True,null=True,blank=True)
+    full_name = models.CharField(max_length=100,null=True,blank=True)
+    email = models.EmailField(max_length = 254,null=True,blank=True)
+    contact_number = models.CharField(max_length=100,null=True,blank=True)
+    issues = models.TextField(null=True,blank=True)
+    response = models.TextField(null=True,blank=True)
+    action_taken = models.BooleanField(default=0,null=True,blank=True)

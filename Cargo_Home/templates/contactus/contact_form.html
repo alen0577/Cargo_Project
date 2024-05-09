@@ -6,13 +6,13 @@
       
     </div>
     <!-- form section -->
-    <form action="" method="post">
+    <form action="{% url 'customer_issues' %}" method="post">
         {% csrf_token %}
         <div class="customer-details p-4">
             
             <div class="row mt-1">
                 <div class="col-lg-12">
-                    <input type="text" class="form-control mt-3 mb-3" placeholder="Full Name" >
+                    <input type="text" name="fname" class="form-control mt-3 mb-3" placeholder="Full Name" required>
                 </div>
                
                 
@@ -20,7 +20,7 @@
             <div class="row mt-1">
                 
                 <div class="col-lg-12">
-                    <input type="email" class="form-control mt-3 mb-3" placeholder="Email" >
+                    <input type="email" name="email" class="form-control mt-3 mb-3" placeholder="Email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Email should be in the format 'example@gmail.com'" required>
                 </div>
                 
             </div>
@@ -28,7 +28,7 @@
             <div class="row  mt-1">
                 
                 <div class="col-lg-12">
-                    <input type="number" class="form-control mt-3 mb-3" placeholder="Mobile Number" >
+                    <input type="text" name="number" class="form-control mt-3 mb-3" placeholder="Mobile Number" pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
                 </div>
                 
             </div>
@@ -36,7 +36,7 @@
             <div class="row mt-1">
                 
                 <div class="col-lg-12">
-                    <textarea type="Text" class="form-control mt-3 mb-3" placeholder="Facing issue/Help"></textarea>
+                    <textarea type="Text" name="issue" class="form-control mt-3 mb-3" placeholder="Facing issue/Help" required></textarea>
                 </div>
                 
             </div>
@@ -66,19 +66,3 @@
 
 
 
-
-
-
-
-
-<!-- <h3 class="text-center main-heading">Get in Touch</h3>
-          <div class="form">
-            <input type="text" class="form-control mt-3 mb-3" placeholder="Name" >
-            <input type="email" class="form-control mt-3 mb-3" placeholder="Email" >
-            <input type="number" class="form-control mt-3 mb-3" placeholder="Mobile Number" >
-            <input type="Text" class="form-control mt-3 mb-3" placeholder="Facing issue/Help" >
-            <div class="row mt-2">
-              <div class="col-lg-6">
-                <input type="submit" value="Submit" class="btn btn-outline-dark w-50">
-              </div>
-            </div> -->

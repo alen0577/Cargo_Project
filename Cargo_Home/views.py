@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from Admin.models import *
+from Customer.models import CustomerIssues
 from django.contrib import messages
 
 # Create your views here.
@@ -22,6 +23,21 @@ def aboutus(request):
 # contactus page of cargo
 def contactus(request):
     return render(request, 'contactus/contactus.html')
+
+
+def customer_issues(request):
+    if request.method == 'POST':
+        name=request.POST.get('fname')
+        email=request.POST.get('email')
+        number=request.POST.get('number')
+        issue=request.POST.get('issue')
+        data=CustomerIssues(full_name=name,email=email,contact_number=number,issues=issue)
+        data.save()
+        messages.success(request,'Issue reported, actions will take as soon...')
+        return redirect('contactus')
+    else:
+        return redirect('contactus')
+
 
 
 # service page of cargo

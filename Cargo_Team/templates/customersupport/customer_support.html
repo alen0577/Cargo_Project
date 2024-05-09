@@ -1,0 +1,88 @@
+{% extends 'team_base.html' %}
+{% load static %}
+
+<!-- title for the customer support page -->
+{% block title %}
+Customer Support Hub
+{% endblock %}
+
+<!-- css link for customer support page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'team/css/customer_support.css' %}">
+{% endblock %}
+
+
+<!-- contents for customer support page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item active">Customer Support</li>
+    </ol>
+    
+    <div class="row mt-5 mb-5">
+        <!-- pending issue card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'pending_issues' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-exclamation-triangle fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Pending Issues</h5>
+                                <p class="text-black-50 mt-3">
+                                    Effortlessly manage pending issues from one convenient hub. 
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <!-- solved issues card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'solved_issues' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-check-circle fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Solved Issues</h5>
+                                <p class="text-black-50 mt-3">
+                                    Manage all solved customer issues easily.  
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+
+        
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4"></div>
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}
