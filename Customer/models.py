@@ -35,6 +35,7 @@ class ShipmentBooking(models.Model):
     delivery_type = models.CharField(max_length=10,choices=delivery_type_choices,null=True,blank=True)
     pickup_date = models.DateField(null=True,blank=True)
     pickup_time = models.TimeField(null=True,blank=True)
+    description = models.TextField(null=True,blank=True)
     package_weight = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True)
     number_of_packages = models.IntegerField(null=True,blank=True)
 

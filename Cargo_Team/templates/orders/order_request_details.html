@@ -225,6 +225,17 @@ Order Requests
                         </div>
                         {% endif %}
                     </div>
+
+                    <div class="row mt-5 mb-5">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-4">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <a href="" class="btn1 text-decoration-none" data-bs-toggle="modal" data-bs-target="#approvemodal" type="button">Approve <i class="fas fa-check-circle"></i></a>
+                                <a href="" class="btn1 text-decoration-none ms-2" data-bs-toggle="modal" data-bs-target="#rejectmodal" type="button">Reject <i class="fas fa-times-circle"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4"></div>
+                    </div>
                   
                 </div>
             </div>
@@ -237,197 +248,68 @@ Order Requests
 
 
 
-<!--Details Modal -->
-<div class="modal fade " id="detailsmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<!--Approve Modal -->
+<div class="modal fade " id="approvemodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content ">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-file"></i> Booking Order</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-check-circle"></i> Order Confirmation</h1>
             </div>
             <div class="modal-body rounded-2 shadow">
+                <form action="{% url 'order_approval' order.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="">Select a date for pickup items*</label>
+                    <input type="date" class="form-control" name="pickupdate" required>
+                    <textarea name="description" class="form-control mt-2 mb-2" placeholder="Please provide details regarding the time of pickup" required></textarea>
 
-                <div class="row g-0 mt-3">
-                    <div class="col-4"></div>
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                        <div class="details2 text-end">
-                            <p class="fw-bold">{{i.booking_order_number}}</p>
-                            <p class="fw-bold mt-1">{{i.date}}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="shipment-details-section">
-                    <div class="row g-0">
-                        <div class="col-12">
-                            <h5 class="main-heading fw-bold">Shipment Order Details</h5>
-                        </div>
-                    </div>
-                    <div class="row g-0 mt-3 lh-large">
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col-5">Name</div>
-                                <div class="col-7 ">{{order.full_name|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Email</div>
-                                <div class="col-7 ">{{order.email}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Phone No.</div>
-                                <div class="col-7 ">{{order.contact_number}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Delivery Option</div>
-                                <div class="col-7 fw-bold ">By {{order.delivery_option|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Delivery Type</div>
-                                <div class="col-7 fw-bold ">{{order.delivery_type|title}} Delivery</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Package Weight</div>
-                                <div class="col-7 ">{{order.package_weight}} Kg</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">No. of Packages</div>
-                                <div class="col-7 ">{{order.number_of_packages}}</div>
-                            </div>
-                            
-                        </div>
-                        <div class="col-6"></div>
-                    </div>
-                </div>
-
-                <div class="address-details mt-3">
-                    {% if i.shipment_type == "Home Pickup" %} 
-                    <div class="row g-0">
-                        <div class="col-5">
-                            <h5 class="main-heading fw-bold">Pickup Address</h5>
-                            <div class="row g-0 mt-3">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-5">Name</div>
-                                        <div class="col-7 ">{{order.sender_name|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Address</div>
-                                        <div class="col-7 ">{{order.sender_address|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">City</div>
-                                        <div class="col-7 ">{{order.sender_city|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Pincode</div>
-                                        <div class="col-7 fw-bold">{{order.sender_pincode}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">State</div>
-                                        <div class="col-7 ">{{order.sender_state|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Country</div>
-                                        <div class="col-7 ">{{order.sender_country|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Contact No.</div>
-                                        <div class="col-7">{{order.sender_contact_no}}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-2"></div>
-                        <div class="col-5">
-                            <h5 class="main-heading fw-bold">Delivery Address</h5>
-                            <div class="row g-0 mt-3">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-5">Name</div>
-                                        <div class="col-7">{{order.receiver_name|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Address</div>
-                                        <div class="col-7 ">{{order.receiver_address|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">City</div>
-                                        <div class="col-7 ">{{order.receiver_city|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Pincode</div>
-                                        <div class="col-7 fw-bold">{{order.receiver_pincode}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">State</div>
-                                        <div class="col-7 ">{{order.receiver_state|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Country</div>
-                                        <div class="col-7 ">{{order.receiver_country|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Contact No.</div>
-                                        <div class="col-7 ">{{order.receiver_contact_no}}</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    {% else %}
                     <div class="row">
-                        <div class="col-6">
-                            <h5 class="main-heading fw-bold">Delivery Address</h5>
-                            <div class="row g-0 mt-3">
-                                <div class="col-12">
-                                    <div class="row">
-                                        <div class="col-5">Name</div>
-                                        <div class="col-7 ">{{order.receiver_name|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Address</div>
-                                        <div class="col-7 ">{{order.receiver_address|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">City</div>
-                                        <div class="col-7 ">{{order.receiver_city|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Pincode</div>
-                                        <div class="col-7 fw-bold">{{order.receiver_pincode}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">State</div>
-                                        <div class="col-7 ">{{order.receiver_state|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Country</div>
-                                        <div class="col-7 ">{{order.receiver_country|title}}</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-5">Contact No.</div>
-                                        <div class="col-7 ">{{order.receiver_contact_no}}</div>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="col-lg-8"></div>
+                        <div class="col-lg-4">
+                            <button type="submit" class="btn1 w-100 mt-3 mb-2">Confirm <i class="fas fa-check-circle ms-1"></i></button>
                         </div>
-                        <div class="col-2"></div>
-                        <div class="col-5"></div>
                     </div>
-                    {% endif %}
-                </div>
+                </form>
 
-                
-                
+                 
             </div>
         
         </div>
     </div>
 </div>
 
+<!--Reject Modal -->
+<div class="modal fade " id="rejectmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-times-circle"></i> Order Rejection</h1>
+            </div>
+            <div class="modal-body rounded-2 shadow">
+                <form action="{% url 'order_rejection' order.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="">Are you sure to reject this order?</label>
+                    <textarea name="description" class="form-control mt-2 mb-2" placeholder="Please provide details regarding the rejection*" required></textarea>
+                    
+
+                    <div class="row mt-3 mb-3">
+                        <div class="col-lg-4"></div>
+                        <div class="col-lg-8">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <button type="submit" class="btn1  mt-3 mb-2">Proceed</button>
+                                <button type="button" class="btn1  mt-3 mb-2" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+
+                 
+            </div>
+        
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}

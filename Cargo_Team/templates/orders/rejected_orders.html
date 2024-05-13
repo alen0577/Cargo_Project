@@ -56,6 +56,7 @@ Order Requests
                   <th class="text-white">Name</th>
                   <th class="text-white">Email</th>
                   <th class="text-white">Contact</th>
+                  <th class="text-white">Rejection reason</th>
                   <th class="text-white">Details</th>
                     
                     
@@ -74,12 +75,12 @@ Order Requests
                   <td class="text-white">{{i.email}}</td>
                   <td class="text-white">{{i.contact_number}}</td>
                 
-                  
+                  <td class="text-white">
+                    <div><textarea name="" rows="3" cols="31" id="" readonly>{{i.description}}</textarea></div>
+                  </td>
           
                   <td class="text-white">
-                    <a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal{{i.id}}"><i class="fas fa-file"></i></a>
-          
-                    
+                    <a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal{{i.id}}"><i class="fas fa-file"></i></a> 
                   </td>
                 
                 </tr>
