@@ -81,7 +81,7 @@ def order_requests(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).order_by('-date','-time')
         
         context = {
             'details': dash_details,
@@ -122,7 +122,11 @@ def order_approval(request,pk):
         if request.method == 'POST':
             order.pickup_date=request.POST.get('pickupdate')
             order.description=request.POST.get('description')
-            order.is_confirmed=1
+            if order.shipment_type == 'Home Pickup':
+                order.is_confirmed=1
+            else:
+                order.is_confirmed=2
+
             order.save()
             messages.success(request,'Order Confirmed')
             return redirect('order_requests')  
@@ -142,7 +146,7 @@ def order_rejection(request,pk):
         order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
         if request.method == 'POST':
             order.description=request.POST.get('description')
-            order.is_confirmed=2
+            order.is_confirmed=3
             order.save()
             messages.success(request,'Order Rejected')
             return redirect('order_requests')  

@@ -24,7 +24,7 @@ Team Dashboard
     </ol>
     
     <div class="row mt-5 mb-5">
-        <!-- service card section -->
+        <!-- order request card section -->
         <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'order_requests' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
@@ -49,21 +49,46 @@ Team Dashboard
         </div>
 
 
-        <!-- current openings card section -->
+        <!-- pickup request card section -->
         <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'approved_orders' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
                             <div class="icons text-center mt-5 mb-5">
-                                <i class="fas fa-check-circle fs-1"></i>
+                                <i class="fas fa-truck fs-1"></i>
                             </div>
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Approved</h5>
+                                <h5 class="card-title main-heading text-center">Pickup Requests</h5>
                                 <p class="text-black-50 mt-3">
-                                    Manage all approved shipment orders easily.  
+                                    Manage all approved shipment orders for home pickup.  
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- bill request card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'approved_orders' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-money-check-alt fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Payment Requests</h5>
+                                <p class="text-black-50 mt-3">
+                                    Manage all approved shipment orders for payment.  
                                 </p>
                                 
                             </div>
@@ -75,7 +100,7 @@ Team Dashboard
         </div>
 
 
-        <!-- testimonial card section -->
+        <!-- rejected card section -->
         <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'rejected_orders' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
@@ -87,7 +112,7 @@ Team Dashboard
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Rejected</h5>
+                                <h5 class="card-title main-heading text-center">Rejected Orders</h5>
                                 <p class="text-black-50 mt-3">
                                     Craft compelling all rejected orders effortlessly.  
                                 </p>
