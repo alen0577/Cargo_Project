@@ -73,6 +73,26 @@ def edit_team_profile(request):
     else:
         return redirect('/')
 
+
+
+def order_booking(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        
+        context = {
+            'details': dash_details,
+        }
+        return render(request, 'order_booking.html', context)
+    else:
+        return redirect('/')
+
+
+
+
 # order request page
 def order_requests(request):
     if 'login_id' in request.session:
@@ -156,7 +176,7 @@ def order_rejection(request,pk):
     else:
         return redirect('/')
 
-def approved_orders(request):
+def pickup_orders(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
         if 'login_id' not in request.session:
@@ -169,9 +189,50 @@ def approved_orders(request):
             'details': dash_details,
             'orders': orders,
         }
-        return render(request, 'orders/approved_orders.html', context)
+        return render(request, 'orders/pickup_orders.html', context)
     else:
         return redirect('/')
+
+
+def pickup_order_details(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order=ShipmentBooking.objects.get(id=pk,is_confirmed=1,is_active=1)
+        
+        context = {
+            'details': dash_details,
+            'order': order,
+        }
+        return render(request, 'orders/pickup_order_details.html', context)
+    else:
+        return redirect('/')
+
+
+def edit_pickup_order_details(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order=ShipmentBooking.objects.get(id=pk,is_confirmed=1,is_active=1)
+        
+        if request.method == 'POST':
+            order.package_weight=request.POST.get('package_weight')
+            order.number_of_packages=request.POST.get('number_of_packages')
+            order.save()
+            messages.success(request,'Details Updated')
+            return redirect('pickup_order_details', order.id) 
+        else:
+            return redirect('pickup_order_details', order.id)
+
+    else:
+        return redirect('/')
+
 
 def rejected_orders(request):
     if 'login_id' in request.session:

@@ -92,12 +92,22 @@ Order Requests
                                     <div class="col-7 fw-bold ">{{order.delivery_type|title}} Delivery</div>
                                 </div>
                                 <div class="row">
+                                    
                                     <div class="col-5">Package Weight</div>
+                                    {% if order.package_weight %}
                                     <div class="col-7 ">{{order.package_weight}} Kg</div>
+                                    {% else %}
+                                    <div class="col-7 ">nil</div>
+                                    {% endif %}
+
                                 </div>
                                 <div class="row">
                                     <div class="col-5">No. of Packages</div>
+                                    {% if order.number_of_packages %}
                                     <div class="col-7 ">{{order.number_of_packages}}</div>
+                                    {% else %}
+                                    <div class="col-7 ">nil</div>
+                                    {% endif %}
                                 </div>
                                 
                             </div>
