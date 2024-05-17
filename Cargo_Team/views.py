@@ -74,7 +74,7 @@ def edit_team_profile(request):
         return redirect('/')
 
 
-
+# order booking  page
 def order_booking(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -166,7 +166,7 @@ def order_rejection(request,pk):
         order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
         if request.method == 'POST':
             order.description=request.POST.get('description')
-            order.is_confirmed=3
+            order.is_confirmed=4
             order.save()
             messages.success(request,'Order Rejected')
             return redirect('order_requests')  
@@ -183,7 +183,7 @@ def pickup_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('-date','-time')
         
         context = {
             'details': dash_details,
@@ -212,6 +212,7 @@ def pickup_order_details(request,pk):
         return redirect('/')
 
 
+
 def edit_pickup_order_details(request,pk):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -234,6 +235,78 @@ def edit_pickup_order_details(request,pk):
         return redirect('/')
 
 
+def bill_request_approve(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order=ShipmentBooking.objects.get(id=pk,is_confirmed=1,is_active=1)
+        if request.method == 'POST':
+            order.is_confirmed=2
+            order.save()
+            return redirect('bill_request_details', order.id)  
+        else:
+            return redirect('pickup_order_details', order.id)
+
+    else:
+        return redirect('/')
+
+def bill_requests(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).order_by('-date','-time')
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'orders/bill_requests.html', context)
+    else:
+        return redirect('/')
+
+
+def bill_request_details(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order=ShipmentBooking.objects.get(id=pk,is_confirmed=2,is_active=1)
+        
+        context = {
+            'details': dash_details,
+            'order': order,
+        }
+        return render(request, 'orders/bill_request_details.html', context)
+    else:
+        return redirect('/')
+
+
+def all_orders(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'orders/all_orders.html', context)
+    else:
+        return redirect('/')
+
+
 def rejected_orders(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -241,7 +314,7 @@ def rejected_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1)
+        orders=ShipmentBooking.objects.filter(is_confirmed=4,is_active=1).order_by('-date','-time')
         
         context = {
             'details': dash_details,

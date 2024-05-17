@@ -1,96 +1,91 @@
 {% extends 'team_base.html' %}
 {% load static %}
 
-<!-- title for rejected orders  page -->
+<!-- title for  payment requests page -->
 {% block title %}
-Rejected Orders
+Order Requests
 {% endblock %}
 
-<!-- css link for rejected orders page -->
+<!-- css link for payment requests page -->
 {% block link %}
 <link rel="stylesheet"  href="{% static 'team/css/order.css' %}">
 {% endblock %}
 
 
-<!-- contents for  rejected orders  -->
+<!-- contents for payment requests -->
 {% block content %}
 
 
 
 <div class="container-fluid px-4">
     
-  <ol class="breadcrumb mt-3">
-    <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'team_dashboard' %}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Rejeted Orders</li>
-  </ol>
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'team_dashboard' %}">Dashboard</a></li>
+        <li class="breadcrumb-item active">Bill Requests</li>
+    </ol>
 
-  {% if messages %}
-  <!-- message section -->
-  <div class="row mt-3">
-    <div class="col-lg-7"></div>
-    <div class="col-lg-5">
-      {% for message in messages %}
-      <div class="alert alert-dismissible fade show" role="alert">
-        {% if message.tags == 'success' %}
-        <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
-        {% else %}
-        <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
-        {% endif %}
-        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      {% endfor %}
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+        <div class="col-lg-7"></div>
+        <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+            {% if message.tags == 'success' %}
+            <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+            {% else %}
+            <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+            {% endif %}
+            <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        </div>
     </div>
-  </div>
-  {% endif %}
+    {% endif %}
 
-  <div class="row  mt-5 mb-5">
-      <div class="col-lg-12">
-          <div class="table-responsive">
-            <h6 class="main-heading">Orders</h6>
-            <table class="table table-hover tablestyle mt-4">
-              <thead >
-                <tr>
-                  <th class="text-white">Sl.No</th>
-                  <th class="text-white">Ordered Date</th>
-                  <th class="text-white">Order.No</th>
-                  <th class="text-white">Name</th>
-                  <th class="text-white">Email</th>
-                  <th class="text-white">Contact</th>
-                  <th class="text-white">Rejection reason</th>
-                  <th class="text-white">Details</th>
+    <div class="row  mt-5 mb-5">
+        <div class="col-lg-12">
+            <div class="table-responsive">
+                <h6 class="main-heading">Orders</h6>
+                <table class="table table-hover tablestyle mt-4">
+                    <thead >
+                        <tr>
+                            <th class="text-white">Sl.No</th>
+                            <th class="text-white">Ordered Date</th>
+                            <th class="text-white">Order.No</th>
+                            <th class="text-white">Name</th>
+                            <th class="text-white">Email</th>
+                            <th class="text-white">Contact</th>
+                            <th class="text-white">Details</th>
+                            
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in orders %}
+                        <tr class="borderstyle">
+                            <td class="text-white">{{forloop.counter}}</td>
                     
-                    
-                </tr>
-              </thead>
-              <tbody>
-                {% for i in orders %}
-                <tr class="borderstyle">
-                  <td class="text-white">{{forloop.counter}}</td>
-          
-                  
-                  <td class="text-white">{{i.date}}</td>
-                  <td class="text-white">{{i.booking_order_number}}</td>
-                  
-                  <td class="text-white">{{i.full_name}}</td>
-                  <td class="text-white">{{i.email}}</td>
-                  <td class="text-white">{{i.contact_number}}</td>
-                
-                  <td class="text-white">
-                    <div><textarea name="" rows="3" cols="31" id="" readonly>{{i.description}}</textarea></div>
-                  </td>
-          
-                  <td class="text-white">
-                    <a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal{{i.id}}"><i class="fas fa-file"></i></a> 
-                  </td>
-                
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-          
-      </div>
-  </div>
+                            
+                            <td class="text-white">{{i.date}}</td>
+                            <td class="text-white">{{i.booking_order_number}}</td>
+                            
+                            <td class="text-white">{{i.full_name}}</td>
+                            <td class="text-white">{{i.email}}</td>
+                            <td class="text-white">{{i.contact_number}}</td>
+                        
+                            <td class="text-white">
+                                <a href="{% url 'pickup_order_details' i.id %}" class="btn1" ><i class="fas fa-file"></i></a> 
+                            </td>
+                        
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
 
 
 </div>

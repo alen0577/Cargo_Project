@@ -1,18 +1,18 @@
 {% extends 'team_base.html' %}
 {% load static %}
 
-<!-- title for order request page -->
+<!-- title for Bill page -->
 {% block title %}
-Order Requests
+Bill Details
 {% endblock %}
 
-<!-- css link for order request page -->
+<!-- css link for  Bill page -->
 {% block link %}
 <link rel="stylesheet"  href="{% static 'team/css/order.css' %}">
 {% endblock %}
 
 
-<!-- contents for order request -->
+<!-- contents for bill -->
 {% block content %}
 
 
@@ -21,8 +21,8 @@ Order Requests
     
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'team_dashboard' %}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'pickup_orders' %}">Pickup Requests</a></li>
-        <li class="breadcrumb-item active">Order Details</li>
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'bill_requests' %}">Bill Requests</a></li>
+        <li class="breadcrumb-item active">Bill Details</li>
     </ol>
 
     {% if messages %}
@@ -295,10 +295,10 @@ Order Requests
     <div class="modal-dialog">
         <div class="modal-content ">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-money-check-alt"></i> Bill Section</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-money-check-alt"></i> Payment Section</h1>
             </div>
             <div class="modal-body rounded-2 shadow">
-                <form action="{% url 'bill_request_approve' order.id %}" method="post">
+                <form action="{% url 'order_approval' order.id %}" method="post">
                     {% csrf_token %}
                     
                     <label for="">Are you sure to continue?</label>

@@ -1,18 +1,18 @@
 {% extends 'team_base.html' %}
 {% load static %}
 
-<!-- title for rejected orders  page -->
+<!-- title for all orders  page -->
 {% block title %}
-Rejected Orders
+All Orders
 {% endblock %}
 
-<!-- css link for rejected orders page -->
+<!-- css link for all orders page -->
 {% block link %}
 <link rel="stylesheet"  href="{% static 'team/css/order.css' %}">
 {% endblock %}
 
 
-<!-- contents for  rejected orders  -->
+<!-- contents for  all orders  -->
 {% block content %}
 
 
@@ -21,7 +21,7 @@ Rejected Orders
     
   <ol class="breadcrumb mt-3">
     <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'team_dashboard' %}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Rejeted Orders</li>
+    <li class="breadcrumb-item active">All Orders</li>
   </ol>
 
   {% if messages %}
@@ -56,7 +56,7 @@ Rejected Orders
                   <th class="text-white">Name</th>
                   <th class="text-white">Email</th>
                   <th class="text-white">Contact</th>
-                  <th class="text-white">Rejection reason</th>
+                  <th class="text-white">Order Status</th>
                   <th class="text-white">Details</th>
                     
                     
@@ -75,9 +75,15 @@ Rejected Orders
                   <td class="text-white">{{i.email}}</td>
                   <td class="text-white">{{i.contact_number}}</td>
                 
-                  <td class="text-white">
-                    <div><textarea name="" rows="3" cols="31" id="" readonly>{{i.description}}</textarea></div>
-                  </td>
+                  {% if i.is_confirmed == 0 %}
+                  <td class="text-danger">Pending</td>
+                  {% elif i.is_confirmed == 1 %}
+                  <td class="text-warning">Waiting for pickup</td>
+                  {% elif i.is_confirmed == 2 %}
+                  <td class="text-warning">waiting for payment</td>
+                  {% elif i.is_confirmed == 3 %}
+                  <td class="text-success">Payment Completed</td>
+                  {% endif %}
           
                   <td class="text-white">
                     <a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal{{i.id}}"><i class="fas fa-file"></i></a> 
