@@ -7,6 +7,8 @@ urlpatterns = [
     path('update-team-profile/',views.edit_team_profile,name='edit_team_profile'),
 
     path('order-booking',views.order_booking,name='order_booking'),
+    path('order-booking-save',views.order_booking_save,name='order_booking_save'),
+
     path('order-requests/',views.order_requests,name='order_requests'),
     path('order-request/<int:pk>/',views.order_request_details,name='order_request_details'),
     path('order-approval/<int:pk>/',views.order_approval,name='order_approval'),

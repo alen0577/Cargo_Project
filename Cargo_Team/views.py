@@ -90,6 +90,71 @@ def order_booking(request):
     else:
         return redirect('/')
 
+def order_booking_save(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        if request.method == 'POST':
+            # If the form has been submitted
+            
+            shipment_type = 'Shipping Center'
+            full_name = request.POST.get('full_name')
+            email = request.POST.get('email')
+            contact_number = request.POST.get('contact_number')
+            delivery_option = request.POST.get('delivery_option')
+            delivery_type = request.POST.get('delivery_type')
+            package_weight = request.POST.get('package_weight')
+            number_of_packages = request.POST.get('number_of_packages')
+            receiver_name = request.POST.get('receiver_name')
+            receiver_address = request.POST.get('receiver_address')
+            receiver_city = request.POST.get('receiver_city')
+            receiver_pincode = request.POST.get('receiver_pincode')
+            receiver_state = request.POST.get('receiver_state')
+            receiver_country = request.POST.get('receiver_country')
+            receiver_contact_no = request.POST.get('receiver_contact_no')
+            
+            # Create an instance of the ShipmentBooking model
+            shipment = ShipmentBooking(
+                shipment_type=shipment_type,
+                full_name=full_name,
+                email=email,
+                contact_number=contact_number,
+                delivery_option=delivery_option,
+                delivery_type=delivery_type,
+                package_weight=package_weight,
+                number_of_packages=number_of_packages,
+                receiver_name=receiver_name,
+                receiver_address=receiver_address,
+                receiver_city=receiver_city,
+                receiver_pincode=receiver_pincode,
+                receiver_state=receiver_state,
+                receiver_country=receiver_country,
+                receiver_contact_no=receiver_contact_no
+            )
+            
+            # Save the instance to the database
+            shipment.save()
+
+            # Assign the shipping order number
+            shipment.booking_order_number = f'CARSO{shipment.id}'
+            shipment.is_confirmed=2
+            shipment.save()
+            
+            # Redirect to a success page
+            return redirect('bill_request_details', shipment.id)
+        else:
+            return redirect('order_booking') 
+    else:
+        return redirect('/')
+
+
+
+
+
+
 
 
 
@@ -282,7 +347,7 @@ def bill_request_details(request,pk):
         
         context = {
             'details': dash_details,
-            'order': order,
+            'data': order,
         }
         return render(request, 'orders/bill_request_details.html', context)
     else:

@@ -36,7 +36,7 @@ Order Booking
                     </div>
                 </div>
                 <!-- form section -->
-                <form action="{% url 'shipping_center_booking' %}" method="post"  class="needs-validation" novalidate>
+                <form action="{% url 'order_booking_save' %}" method="post"  class="needs-validation" novalidate>
                     {% csrf_token %}
                     <div class="customer-details p-5">
                         <h5 class="main-heading fw-bold">Your Information</h5>
