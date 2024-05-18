@@ -17,9 +17,17 @@ def team_dashboard(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order_count=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).count()
+        pickup_count=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).count()
+        bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
+       
+
         
         context = {
             'details': dash_details,
+            'order_count':order_count,
+            'pickup_count':pickup_count,
+            'bill_count':bill_count,
         }
         return render(request, 'team_dashboard.html', context)
     else:
@@ -350,6 +358,26 @@ def bill_request_details(request,pk):
             'data': order,
         }
         return render(request, 'orders/bill_request_details.html', context)
+    else:
+        return redirect('/')
+
+
+def bill_save(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order=ShipmentBooking.objects.get(id=pk,is_confirmed=2,is_active=1)
+        if request.method == 'POST':
+            order.is_confirmed=3
+            order.save()
+            messages.success(request,'Payment Done')
+            return redirect('bill_requests')  
+        else:
+            return redirect('bill_requests',)
+
     else:
         return redirect('/')
 

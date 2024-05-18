@@ -36,7 +36,14 @@ Team Dashboard
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Order Requests</h5>
+                                <h5 class="card-title main-heading text-center">Order Requests 
+                                    {% if order_count %}
+                                    <sup class="text-danger">({{order_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
+                                   
                                 <p class="text-black-50 mt-3">
                                     Effortlessly manage requests from one convenient hub. 
                                 </p>
@@ -61,7 +68,13 @@ Team Dashboard
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Pickup Requests</h5>
+                                <h5 class="card-title main-heading text-center">Pickup Requests
+                                    {% if pickup_count %}
+                                    <sup class="text-danger">({{pickup_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
                                 <p class="text-black-50 mt-3">
                                     Manage all approved shipment orders for home pickup.  
                                 </p>
@@ -86,7 +99,13 @@ Team Dashboard
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Bill Requests</h5>
+                                <h5 class="card-title main-heading text-center">Bill Requests
+                                    {% if bill_count %}
+                                    <sup class="text-danger">({{bill_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
                                 <p class="text-black-50 mt-3">
                                     Manage all approved shipment orders for bill payment.  
                                 </p>

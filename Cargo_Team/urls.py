@@ -20,7 +20,8 @@ urlpatterns = [
     path('bill-request-approve/<int:pk>/',views.bill_request_approve,name='bill_request_approve'),
 
     path('bill-requests/',views.bill_requests,name='bill_requests'), 
-    path('bill-request/<int:pk>/',views.bill_request_details,name='bill_request_details'), 
+    path('bill-request/<int:pk>/',views.bill_request_details,name='bill_request_details'),
+    path('bill-save/<int:pk>/',views.bill_save,name='bill_save'), 
 
     path('all-orders/',views.all_orders,name='all_orders'),
     path('rejected-orders/',views.rejected_orders,name='rejected_orders'), 
