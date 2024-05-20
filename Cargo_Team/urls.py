@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('order-booking',views.order_booking,name='order_booking'),
     path('order-booking-save',views.order_booking_save,name='order_booking_save'),
+    path('check-pincode/', views.check_pincode, name='check_pincode'),
 
     path('order-requests/',views.order_requests,name='order_requests'),
     path('order-request/<int:pk>/',views.order_request_details,name='order_request_details'),
@@ -28,5 +29,6 @@ urlpatterns = [
 
     path('customer-support/',views.customer_support,name='customer_support'), 
     path('pending-issues/',views.pending_issues,name='pending_issues'), 
+    path('issue-action-taken/<int:pk>/',views.issue_action_taken,name='issue_action_taken'),
     path('solved-issues/',views.solved_issues,name='solved_issues'), 
 ]

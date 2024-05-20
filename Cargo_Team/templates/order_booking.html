@@ -39,7 +39,7 @@ Order Booking
                 <form action="{% url 'order_booking_save' %}" method="post"  class="needs-validation" novalidate>
                     {% csrf_token %}
                     <div class="customer-details p-5">
-                        <h5 class="main-heading fw-bold">Your Information</h5>
+                        <h5 class="main-heading fw-bold">Customer Information</h5>
                         <div class="row g-3 mt-3">
                             <div class="col-lg-4 mt-2">
                                 <input type="text" class="form-control mt-1 mb-1" name="full_name" placeholder="Full Name" required>
@@ -128,7 +128,7 @@ Order Booking
                                 </div>
                                 <div class="row g-3 mt-3">
                                     <div class="col-lg-12">
-                                        <input type="text" class="form-control mt-1 mb-1" name="receiver_address" placeholder="Shipment Delivery Address" required>
+                                        <input type="text" class="form-control mt-1 mb-1" name="receiver_address" placeholder="Address" required>
                                     </div>
                                 </div>
                                 <div class="row g-3 mt-3">
@@ -136,7 +136,8 @@ Order Booking
                                         <input type="text" class="form-control mt-1 mb-1" name="receiver_city" placeholder="City" required>
                                     </div>
                                     <div class="col-lg-6">
-                                        <input type="number" class="form-control mt-1 mb-1" name="receiver_pincode" placeholder="Pincode" required>
+                                        <input type="number" class="form-control mt-1 mb-1" id="pincode" name="receiver_pincode" placeholder="Pincode" required>
+                                        <div id="pincode-result"></div>
                                     </div>
                                 </div>
                                 <div class="row g-3 mt-3">
@@ -185,6 +186,36 @@ Order Booking
     
     
 </div>
+
+<!-- code for checking pincode is available -->
+<script>
+    $(document).ready(function() {
+        $('#pincode').on('input', function() {
+            var pincode = $(this).val();
+            if (pincode.length >= 6) { // Assuming pincode is at least 6 digits long
+                $.ajax({
+                    url: '{% url "check_pincode" %}',
+                    type: 'GET',
+                    data: {
+                        'pincode': pincode
+                    },
+                    success: function(data) {
+                        if (data.is_available) {
+                            $('#pincode-result').text('Pincode is available for delivery.');
+                        } else {
+                            $('#pincode-result').text('Pincode is not available for delivery.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#pincode-result').text('An error occurred: ' + error);
+                    }
+                });
+            } else {
+                $('#pincode-result').text('');
+            }
+        });
+    });
+</script>
 
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields

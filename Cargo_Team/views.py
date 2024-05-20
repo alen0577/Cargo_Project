@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
 from Customer.models import ShipmentBooking,CustomerIssues
+from Admin.models import ServiceLocation
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -159,10 +161,10 @@ def order_booking_save(request):
         return redirect('/')
 
 
-
-
-
-
+def check_pincode(request):
+    pincode = request.GET.get('pincode')
+    is_available = ServiceLocation.objects.filter(postal_code=pincode).exists()
+    return JsonResponse({'is_available': is_available})
 
 
 
@@ -174,7 +176,7 @@ def order_requests(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).order_by('-date','-time')
+        orders=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).order_by('date','time')
         
         context = {
             'details': dash_details,
@@ -256,7 +258,7 @@ def pickup_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('-date','-time')
+        orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('date','time')
         
         context = {
             'details': dash_details,
@@ -333,7 +335,7 @@ def bill_requests(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).order_by('-date','-time')
+        orders=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).order_by('date','time')
         
         context = {
             'details': dash_details,
@@ -427,9 +429,11 @@ def customer_support(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issues_count = CustomerIssues.objects.filter(action_taken=0).count()
         
         context = {
             'details': dash_details,
+            'issues_count':issues_count
         }
         return render(request, 'customersupport/customer_support.html', context)
     else:
@@ -443,7 +447,7 @@ def pending_issues(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        pending_issues = CustomerIssues.objects.filter(action_taken=0)
+        pending_issues = CustomerIssues.objects.filter(action_taken=0).order_by('date','time')
         
         context = {
             'details': dash_details,
@@ -453,6 +457,28 @@ def pending_issues(request):
     else:
         return redirect('/')
 
+
+def issue_action_taken(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue=CustomerIssues.objects.get(id=pk,action_taken=0)
+        if request.method == 'POST':
+            issue.action_taken=1
+            issue.response=request.POST.get('response')
+            issue.save()
+            messages.success(request,'Action Taken')
+            return redirect('pending_issues')  
+        else:
+            return redirect('pending_issues',)
+
+    else:
+        return redirect('/')
+
+
 def solved_issues(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -460,7 +486,7 @@ def solved_issues(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        solved_issues = CustomerIssues.objects.filter(action_taken=1)
+        solved_issues = CustomerIssues.objects.filter(action_taken=1).order_by('-date','-time')
         
         context = {
             'details': dash_details,

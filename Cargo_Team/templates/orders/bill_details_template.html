@@ -33,6 +33,9 @@
     .line{
         color: rgb(66, 28, 82);
     }
+    .font-style{
+        font-family: cursive;
+    }
     
 </style>
 
@@ -55,14 +58,14 @@
 <div class="orderdetails-template" id="orderdetails-template">
     <div class="card shadow bg-body-tertiary rounded" style="max-width: 100%;">
     
-        <div class="header-section p-5">
+        <div class="header-section p-5" style="border-bottom: 1px;">
             <div class="row g-0 mt-3">
                 <div class="col-4">
                     <h4 class="main-heading fw-bold"><i class="fas fa-truck"></i>Cargo</h4>
                 </div>
                 <div class="col-4"></div>
                 <div class="col-4">
-                    <h4 class="main-heading fw-bold text-end">Bill</h4>
+                    <h4 class="main-heading fw-bold text-end">Order Bill</h4>
                 </div>
             </div>
             <div class="row g-0 mt-3">
@@ -73,8 +76,8 @@
                         <div>Infopark Kakkanad, Cochin</div>
                         <div>info@altostechnologies.com</div>
                         <div>+91 90741 56818</div>
-                        <div class="fw-bold">GSTIN - </div>
-                        <div class="fw-bold">Invoice Number - </div>
+                        <div class="fw-bold main-heading">GSTIN - </div>
+                        <div class="fw-bold main-heading">Invoice Number - </div>
                    </div>
 
 
@@ -85,129 +88,106 @@
                 </div>
             </div>
         </div>
-        <hr >
-        <!-- <div class="shipment-details-section p-5 ">
-            <div class="row g-0">
-                <div class="col-12">
-                    <h5 class="main-heading fw-bold">Shipment Order Details</h5>
-                </div>
-            </div>
-            <div class="row g-0 mt-3 lh-large">
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-5">Name</div>
-                        <div class="col-7 ">{{data.full_name|title}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">Email</div>
-                        <div class="col-7 ">{{data.email}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">Phone No.</div>
-                        <div class="col-7 ">{{data.contact_number}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">Delivery Option</div>
-                        <div class="col-7 ">By {{data.delivery_option|title}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">Delivery Type</div>
-                        <div class="col-7 ">{{data.delivery_type|title}} Delivery</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">Package Weight</div>
-                        <div class="col-7 ">{{data.package_weight}} Kg</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">No. of Packages</div>
-                        <div class="col-7 ">{{data.number_of_packages}}</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-5">Order Status</div>
-                        <div class="col-7 text-warning-emphasis">Pending</div>
-                    </div>
-                </div>
-                <div class="col-6"></div>
-            </div>
-        </div> -->
+       <hr>
         <div class="address-details p-5">
-
-            <div class="row g-0">
-                <div class="col-5">
-                    <h5 class="main-heading fw-bold">Bill To</h5>
-                    <div class="row g-0 mt-3">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-5">Name</div>
-                                <div class="col-7 ">{{data.sender_name|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Address</div>
-                                <div class="col-7 ">{{data.sender_address|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">City</div>
-                                <div class="col-7 ">{{data.sender_city|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Pincode</div>
-                                <div class="col-7 ">{{data.sender_pincode}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">State</div>
-                                <div class="col-7 ">{{data.sender_state|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Country</div>
-                                <div class="col-7 ">{{data.sender_country|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Contact No.</div>
-                                <div class="col-7">{{data.sender_contact_no}}</div>
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="row mt-0">
+                        <div class="col-5">Order Number</div>
+                        <div class="col-7 fw-bold main-heading">{{data.booking_order_number}}</div>
+                    </div>
+                    <div class="row mt-0">
+                        <div class="col-5">Order Date</div>
+                        <div class="col-7 fw-bold main-heading">{{data.date}}</div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <div class="row mt-0 ">
+                        <div class="fw-bold main-heading">Bill To</div>
+                        <div class="fw-bold main-heading">{{data.full_name|title}}</div>
+                        <div class="">{{data.email}}</div>
+                        <div class="">{{data.contact_number}}</div>  
                     </div>
 
                 </div>
-                <div class="col-2"></div>
-                <div class="col-5">
-                    <h5 class="main-heading fw-bold">Shipping To</h5>
-                    <div class="row g-0 mt-3">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-5">Name</div>
-                                <div class="col-7">{{data.receiver_name|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Address</div>
-                                <div class="col-7 ">{{data.receiver_address|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">City</div>
-                                <div class="col-7 ">{{data.receiver_city|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Pincode</div>
-                                <div class="col-7 ">{{data.receiver_pincode}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">State</div>
-                                <div class="col-7 ">{{data.receiver_state|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Country</div>
-                                <div class="col-7 ">{{data.receiver_country|title}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">Contact No.</div>
-                                <div class="col-7 ">{{data.receiver_contact_no}}</div>
-                            </div>
-                        </div>
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <div class="row mt-0">
+                        <div class="fw-bold main-heading">Ship To</div>
+                        <div class="fw-bold main-heading">{{data.receiver_name|title}}</div>
+                        <div class="">{{data.receiver_address|title}},</div>
+                        <div class="">{{data.receiver_city|title}}, {{data.receiver_pincode}}</div>
+                        <div class="">{{data.receiver_state|title}}, {{data.receiver_country|title}}</div>
+                        <div class="">{{data.receiver_contact_no}}</div>  
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+        <hr>
+        <div class="bill-details p-5">
+            <table class="table">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col">No.of packages</th>
+                    <th scope="col">Total Weight</th>
+                    <th scope="col">Delivery Option</th>
+                    <th scope="col">Delivery Type</th>
+                    <th scope="col">Total Distance</th>
+                    <th scope="col">Additional Service</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{data.number_of_packages}}</td>
+                        <td>{{data.package_weight}} Kg</td>
+                        <td>{{data.delivery_option|title}}</td>
+                        <td>{{data.delivery_type|title}}</td>
+                        <td>0000 Km</td>
+                        <td>None</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    <div class="row mt-0">
+                        <div class="col-5 fw-bold">Grand Total</div>
+                        <div class="col-7 fw-bold main-heading">00000 /-</div>
                     </div>
 
                 </div>
             </div>
-            
+             
+        </div>
+        
+        <div class="extra-details p-5">
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    <div class="row mt-0 text-end">
+                        <div class=" fw-bold"></div>
+                        <div class="fw-bold main-heading">Authorized Signatory</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-8"></div>
+                <div class="col-4">
+                    <div class="row mt-0 text-end">
+                        <div class="h6 fw-bold  main-heading"><i class="fas fa-truck"></i>Cargo</div>
+                        <div class="font-style">Thank You!</div>
+                        <div class="font-style">For order with us</div>
+                    </div>
+
+                </div>
+            </div>
         </div>
        
     </div>

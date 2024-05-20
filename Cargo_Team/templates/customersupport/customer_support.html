@@ -22,6 +22,14 @@ Customer Support Hub
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item active">Customer Support</li>
     </ol>
+
+    <!-- refresh button -->
+    <div class="row">
+        <div class="col-lg-11"></div>
+        <div class="col-lg-1">
+            <a class="text-decoration-none " href="{% url 'customer_support' %}" type="button"><span class="refresh-btn"><i class="fas fa-refresh"></i> refresh</span></a>
+        </div>
+    </div>
     
     <div class="row mt-5 mb-5">
         <!-- pending issue card section -->
@@ -36,7 +44,13 @@ Customer Support Hub
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Pending Issues</h5>
+                                <h5 class="card-title main-heading text-center">Pending Issues
+                                    {% if issues_count %}
+                                    <sup class="text-danger">({{issues_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
                                 <p class="text-black-50 mt-3">
                                     Effortlessly manage pending issues from one convenient hub. 
                                 </p>
