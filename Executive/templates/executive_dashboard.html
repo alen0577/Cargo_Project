@@ -1,14 +1,14 @@
-{% extends 'team_base.html' %}
+{% extends 'executive_base.html' %}
 {% load static %}
 
 <!-- title for the dashboard page -->
 {% block title %}
-Team Dashboard
+Executive Dashboard
 {% endblock %}
 
 <!-- css link for dashboard page -->
 {% block link %}
-<link rel="stylesheet"  href="{% static 'team/css/team_dashboard.css' %}">
+<link rel="stylesheet"  href="{% static 'executive/css/executive_dashboard.css' %}">
 {% endblock %}
 
 
@@ -26,13 +26,13 @@ Team Dashboard
     <div class="row">
         <div class="col-lg-11 col-8"></div>
         <div class="col-lg-1 col-4">
-            <a class="text-decoration-none " href="{% url 'team_dashboard' %}" type="button"><span class="refresh-btn"><i class="fas fa-refresh"></i> refresh</span></a>
+            <a class="text-decoration-none " href="{% url 'executive_dashboard' %}" type="button"><span class="refresh-btn"><i class="fas fa-refresh"></i> refresh</span></a>
         </div>
     </div>
     
     <div class="row mt-5 mb-5">
         <!-- order request card section -->
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'order_requests' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
@@ -60,11 +60,11 @@ Team Dashboard
                     </div>
                 </div>
             </a>
-        </div>
+        </div> -->
 
 
         <!-- pickup request card section -->
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'pickup_orders' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
@@ -92,10 +92,10 @@ Team Dashboard
                 </div>
             </a>
 
-        </div>
+        </div> -->
 
         <!-- bill request card section -->
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'bill_requests' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
@@ -123,11 +123,11 @@ Team Dashboard
                 </div>
             </a>
 
-        </div>
+        </div> -->
 
 
         <!-- bill request card section -->
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'all_orders' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-3" style="max-width: 100%;">
                     <div class="row g-0">
@@ -149,11 +149,11 @@ Team Dashboard
                 </div>
             </a>
 
-        </div>
+        </div> -->
 
 
         <!-- rejected card section -->
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'rejected_orders' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-3" style="max-width: 100%;">
                     <div class="row g-0">
@@ -177,7 +177,7 @@ Team Dashboard
 
         </div>
 
-        <div class="col-lg-4"></div>
+        <div class="col-lg-4"></div> -->
     </div>
     
     

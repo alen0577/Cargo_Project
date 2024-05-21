@@ -107,7 +107,8 @@
                             <input type="text" class="form-control mt-1 mb-1" name="sender_city" placeholder="City" required>
                         </div>
                         <div class="col-lg-6">
-                            <input type="number" class="form-control mt-1 mb-1" name="sender_pincode" placeholder="Pincode" required>
+                            <input id="sender-pincode" type="number" class="form-control mt-1 mb-1" name="sender_pincode" placeholder="Pincode" required>
+                            <div id="sender-pincode-result"></div>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
@@ -144,7 +145,8 @@
                             <input type="text" class="form-control mt-1 mb-1" name="receiver_city" placeholder="City" required>
                         </div>
                         <div class="col-lg-6">
-                            <input type="number" class="form-control mt-1 mb-1" name="receiver_pincode" placeholder="Pincode" required>
+                            <input id="receiver-pincode" type="number" class="form-control mt-1 mb-1" name="receiver_pincode" placeholder="Pincode" required>
+                            <div id="receiver-pincode-result"></div>
                         </div>
                     </div>
                     <div class="row g-3 mt-3">
@@ -169,7 +171,7 @@
         <div class="submit-section p-5">
             <div class="row g-3 mt-3">
                 <div class="col-lg-4">
-                    <button class="button2" type="submit"><span class="ms-1">Submit</span></button>
+                    <button id="submit-button" class="button2" type="submit"><span class="ms-1">Submit</span></button>
                 </div>
                 
 
@@ -181,6 +183,92 @@
     
     
 </div>
+
+
+
+
+<!-- code for checking pincode is available -->
+<style>
+    .available{
+        color: rgb(29, 173, 0);
+        font-style: italic;
+        
+    }
+    .not-available{
+        color: rgb(183, 0, 0);
+        font-style: italic;
+    }   
+    </style>
+    
+    <script>
+        $(document).ready(function() {
+            function checkPincode(pincode, resultDiv, callback) {
+                if (pincode.length >= 6) {
+                    $.ajax({
+                        url: '{% url "check_pincode" %}',
+                        type: 'GET',
+                        data: {
+                            'pincode': pincode
+                        },
+                        success: function(data) {
+                            if (data.is_available) {
+                                $(resultDiv).text('Service is available.')
+                                    .removeClass()
+                                    .addClass('available');
+                                callback(true);
+                            } else {
+                                $(resultDiv).text('Service is not available.')
+                                    .removeClass()
+                                    .addClass('not-available');
+                                callback(false);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            $(resultDiv).text('An error occurred: ' + error)
+                                .removeClass()
+                                .addClass('error');
+                            callback(false);
+                        }
+                    });
+                } else {
+                    $(resultDiv).text('').removeClass();
+                    callback(false);
+                }
+            }
+
+            function validateForm() {
+                const senderPincodeValid = $('#sender-pincode').data('is-valid');
+                const receiverPincodeValid = $('#receiver-pincode').data('is-valid');
+                if (senderPincodeValid && receiverPincodeValid) {
+                    $('#submit-button').prop('disabled', false);
+                } else {
+                    $('#submit-button').prop('disabled', true);
+                }
+            }
+
+            $('#sender-pincode').on('input', function() {
+                const pincode = $(this).val();
+                checkPincode(pincode, '#sender-pincode-result', function(isValid) {
+                    $('#sender-pincode').data('is-valid', isValid);
+                    validateForm();
+                });
+            });
+
+            $('#receiver-pincode').on('input', function() {
+                const pincode = $(this).val();
+                checkPincode(pincode, '#receiver-pincode-result', function(isValid) {
+                    $('#receiver-pincode').data('is-valid', isValid);
+                    validateForm();
+                });
+            });
+
+            // Initialize pincode validation data attributes
+            $('#sender-pincode').data('is-valid', false);
+            $('#receiver-pincode').data('is-valid', false);
+        });
+    </script>
+
+
 
 <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields

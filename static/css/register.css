@@ -28,17 +28,16 @@ body{
     box-shadow: none !important; /* Remove box shadow on focus */
     border-color: rgb(66, 28, 82);
 }
+.form-select:focus {
+    box-shadow: none !important; /* Remove box shadow on focus */
+    border-color: rgb(66, 28, 82);
+}
 .btn1{
     background-color: rgb(109, 64, 128);;
     color: rgba(255, 255, 255, 0.9);
     border: none;
 }
-.btn1:hover{
-    background-color: rgb(98, 48, 119);
-    color: rgb(255, 255, 255);
-    border: none;
-    
-}
+
 
 /* styles for success messages */
 .alert {
@@ -59,4 +58,9 @@ body{
 }
 .icon{
     color: rgb(254, 171, 120);
+}
+
+.available{
+    color: rgb(254, 171, 120);
+   
 }

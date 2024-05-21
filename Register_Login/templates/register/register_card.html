@@ -1,6 +1,6 @@
 {% load static %}
 <!-- login card  -->
-<div class="card mt-lg-5 rounded" style="max-width: 100%;">
+<div class="card mt-lg-4 rounded" style="max-width: 100%;">
     <div class="row g-0">
       <div class="col-md-6 sec1">
         <div class="div mt-lg-5">
@@ -30,23 +30,23 @@
                         </div>
                     </div>
                     
-                    <div class="input-group flex-nowrap mt-3 mb-1">
+                    <div class="input-group flex-nowrap mt-4 mb-1">
                         <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-envelope"></i></span>
                         <input type="text" name="email" class="form-control " placeholder="Email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Email should be in the format 'example@gmail.com'" aria-label="email" aria-describedby="addon-wrapping" required>
                     </div>
 
-                    <div class="input-group flex-nowrap mt-3 mb-1">
+                    <div class="input-group flex-nowrap mt-4 mb-1">
                         <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-user-lock"></i></span>
-                        <input type="text" name="username" class="form-control " placeholder="Username" aria-label="username" aria-describedby="addon-wrapping" required>
+                        <input type="text" id="username" name="username" class="form-control " placeholder="Username" aria-label="username" aria-describedby="addon-wrapping" required>
                     </div>
+                    <label id="username-message"></label>
 
-                
-                    <div class="input-group flex-nowrap  mt-3 mb-1">
+                    <div class="input-group flex-nowrap  mt-1 mb-1">
                         <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-lock"></i></span>
-                        <input type="password" name="password" class="form-control " placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="*password must be at least 8 characters long and include uppercase , lowercase, special characters and numbers." aria-label="password" aria-describedby="addon-wrapping" required>
+                        <input type="password" name="password" class="form-control " placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*]).{8,}" title="*password must be at least 8 characters long and include uppercase , lowercase, special characters and numbers." aria-label="password" aria-describedby="addon-wrapping" required>
                     </div>
 
-                    <div class="input-group flex-nowrap mt-3 mb-1">
+                    <div class="input-group flex-nowrap mt-4 mb-1">
                         <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-briefcase"></i></span>
                         <select name="designation" class="form-select" aria-label="username" aria-describedby="addon-wrapping" required>
                             <option value="" class="" hidden>Designation</option>
@@ -55,7 +55,7 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn1  form-control mt-3 mb-3 fw-bold">Create Account</button>
+                    <button type="submit" id="submit-btn" class="btn1  form-control mt-4 mb-3 fw-bold"><span class="ms-1">Create Account</span></button>
 
                 </form>
             </div>
@@ -78,3 +78,28 @@
       </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function() {
+        $('#username').on('input', function() {
+            var username = $(this).val();
+            $.ajax({
+                url: "{% url 'check_username' %}",
+                data: {
+                    'username': username
+                },
+                dataType: 'json',
+                success: function(data) {
+                    if (data.exists) {
+                        $('#username-message').text('Username already taken*').removeClass().addClass('available');
+                        $('#submit-btn').prop('disabled', true);
+                    } else {
+                        
+                        $('#submit-btn').prop('disabled', false);
+                    }
+                }
+            });
+        });
+    });
+</script>

@@ -163,7 +163,7 @@ Order Booking
                     <div class="submit-section p-5">
                         <div class="row g-3 mt-3">
                             <div class="col-lg-4">
-                                <button class="button2" type="submit"><span class="ms-1">Submit</span></button>
+                                <button id="submit-button" class="button2" type="submit"><span class="ms-1">Submit</span></button>
                             </div>
                             
 
@@ -188,6 +188,18 @@ Order Booking
 </div>
 
 <!-- code for checking pincode is available -->
+<style>
+.available{
+    color: rgb(29, 173, 0);
+    font-style: italic;
+    
+}
+.not-available{
+    color: rgb(183, 0, 0);
+    font-style: italic;
+}   
+</style>
+
 <script>
     $(document).ready(function() {
         $('#pincode').on('input', function() {
@@ -201,17 +213,22 @@ Order Booking
                     },
                     success: function(data) {
                         if (data.is_available) {
-                            $('#pincode-result').text('Pincode is available for delivery.');
+                            $('#pincode-result').text('Serivice is available for this location.').removeClass().addClass('available');
+                            $('#submit-button').prop('disabled', false);
                         } else {
-                            $('#pincode-result').text('Pincode is not available for delivery.');
+                            $('#pincode-result').text('Service  is not available for this location.').removeClass().addClass('not-available');
+                            $('#submit-button').prop('disabled', true);
                         }
                     },
                     error: function(xhr, status, error) {
                         $('#pincode-result').text('An error occurred: ' + error);
+                        $('#submit-button').prop('disabled', true);
+                        
                     }
                 });
             } else {
                 $('#pincode-result').text('');
+                $('#submit-button').prop('disabled', true);
             }
         });
     });

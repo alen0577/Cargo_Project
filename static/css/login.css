@@ -32,12 +32,6 @@ body{
     color: rgba(255, 255, 255, 0.9);
     border: none;
 }
-.btn1:hover{
-    background-color: rgb(98, 48, 119);
-    color: rgb(255, 255, 255);
-    border: none;
-    
-}
 
 /* styles for success messages */
 .alert {

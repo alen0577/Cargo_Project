@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, logout, login
 from . models import *
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 
 
 
@@ -18,6 +19,7 @@ def login_save(request):
         password=request.POST.get('password')
         user = authenticate(username=username, password=password)
 
+        # admin login session
         if user is not None and user.is_staff:
             login(request, user)
             return redirect('admin_dashboard')
@@ -43,6 +45,7 @@ def login_save(request):
                 messages.warning(request, 'Approval is Pending')
                 return redirect('login_page')
 
+        # executive member login session
         elif log_user.designation == 'Executive Member':
             request.session["login_id"] = log_user.id
             if 'login_id' in request.session:
@@ -52,7 +55,7 @@ def login_save(request):
 
             try:
                 dash_details = CargoTeam.objects.get(id=member_id,admin_approval=1,is_active=1)
-                pass
+                return redirect('executive_dashboard')
             except CargoTeam.DoesNotExist:
                 messages.warning(request, 'Approval is Pending')
                 return redirect('login_page')
@@ -86,6 +89,17 @@ def team_register(request):
         return redirect('login_page')
     else:
         return redirect('register_page')
+
+# username checking
+def check_username(request):
+    if request.method == 'GET':
+        username = request.GET.get('username')
+        if CargoTeam.objects.filter(username=username).exists():
+            return JsonResponse({'exists': True})
+        else:
+            return JsonResponse({'exists': False})
+
+
 
 #------------------ Logout Section-------------------------
 

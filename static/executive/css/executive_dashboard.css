@@ -1,0 +1,22 @@
+
+.main-heading{
+    color: rgb(66, 28, 82);
+}
+
+#sec1{
+    background-color: rgb(66, 28, 82);
+    color: white;
+}
+
+.icon{
+    color: rgb(254, 171, 120);
+}
+
+.refresh-btn{
+    color: rgb(66, 28, 82);
+}
+
+.refresh-btn:hover{
+    color: rgb(112, 0, 159);
+}
+
