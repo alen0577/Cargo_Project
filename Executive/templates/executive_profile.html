@@ -1,0 +1,312 @@
+{% extends 'team_base.html' %}
+{% load static %}
+
+<!-- title for profile page -->
+{% block title %}
+Profile
+{% endblock %}
+
+<!-- css link for cargo team  page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'team/css/profile.css' %}">
+{% endblock %}
+
+
+<!-- contents for profile  page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item active">Profile</li>
+    </ol>
+
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% if message.tags == 'success' %}
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+          {% else %}
+          <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+          {% endif %}
+          <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-2"></div>
+
+        <div class="col-lg-8">
+             <!-- profile card -->
+            <div class="card mb-3 shadow  mb-5  rounded" style="max-width: 100%">
+                <div class="row g-0">
+                    <div class="col-md-4" id="sec1">
+                        <div class="d-flex justify-content-center mt-lg-5">
+                          <div class="mt-lg-5">
+                            {% if details.profile_picture %}
+                            <img src="{{details.profile_picture.url}}" class="img-fluid rounded-circle mt-lg-5 mt-3" height="100" width="100" alt="img">
+                            {% else %}
+                            <img src="{% static 'team/images/noprofile.jpg' %}" class="img-fluid rounded-circle mt-lg-5 mt-3" height="100" width="100" alt="img">
+                            {% endif %}
+                          </div>
+                          
+                        </div>
+                        <h5 class="text-center mt-2 fw-bold">{{details.username}} <i class="fas fa-check-circle active-icon"></i></h5>
+                        <h6 class="text-center mt-2 ">Team Member</h6>
+                        <center><a href="#" class=" btn2 text-decoration-none" data-bs-toggle="modal" data-bs-target="#editmodal"><i class="fas fa-edit"></i> Profile</a></center>
+
+                    </div>
+                      
+                  <div class="col-md-8" >
+                    <div class="card-body main-heading">
+                        <h5 class="text-center">PROFILE</h5>
+                        <h6 class="">Basic Details</h6>
+                        <hr>
+                        <div class="row mt-3">
+                            <div class="col-4">
+                                <p class="">Name</p>
+
+                            </div>
+                            <div class="col-8">
+                                <h6 class="">: {{details.first_name}} {{details.last_name}}</h6>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Username</p>
+
+                            </div>
+                            <div class="col-8">
+                                <h6 class="">: {{details.username}}</h6>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Email</p>
+
+                            </div>
+                            <div class="col-8">
+                                <h6 class="">: {{details.email}}</h6>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Joined Date</p>
+                            </div>
+                            <div class="col-8">
+                                <h6 class="">: {{details.Joining_date}}</h6>
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Contact</p>
+                            </div>
+                            <div class="col-8">
+                                {% if details.contact %}
+                                <h6 class="">: {{details.contact}}</h6>
+                                {% else %}
+                                <h6 class="text-black-50 fst-italic">: Not given</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Address</p>
+                            </div>
+                            <div class="col-8">
+                                {% if details.address %}
+                                <h6 class="">: {{details.address}}</h6>
+                                {% else %}
+                                <h6 class="text-black-50 fst-italic">: Not given</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">City</p>
+                            </div>
+                            <div class="col-8">
+                                {% if details.city %}
+                                <h6 class="">: {{details.city}}</h6>
+                                {% else %}
+                                <h6 class="text-black-50 fst-italic">: Not given</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">State</p>
+                            </div>
+                            <div class="col-8">
+                                {% if details.state %}
+                                <h6 class="">: {{details.state}}</h6>
+                                {% else %}
+                                <h6 class="text-black-50 fst-italic">: Not given</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Pincode</p>
+                            </div>
+                            <div class="col-8">
+                                {% if details.pincode %}
+                                <h6 class="">: {{details.pincode}}</h6>
+                                {% else %}
+                                <h6 class="text-black-50 fst-italic">: Not given</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mt-1">
+                            <div class="col-4">
+                                <p class="">Country</p>
+                            </div>
+                            <div class="col-8">
+                                {% if details.country %}
+                                <h6 class="">: {{details.country}}</h6>
+                                {% else %}
+                                <h6 class="text-black-50 fst-italic">: Not given</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        
+
+                      
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2"></div>
+       
+        
+       
+
+        
+    </div>
+    
+    
+</div>
+
+
+
+
+<!-- editmodal -->
+<div class="modal fade " id="editmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Profile</h1>
+        </div>
+        <div class="modal-body rounded-2 shadow">
+          <form action="{% url 'edit_team_profile' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-6">
+                    <label for="">First Name</label>
+                    <input type="text" name="fname" class="form-control mt-2 mb-2" placeholder="First Name" value="{{details.first_name}}" required>
+    
+                </div>
+                <div class="col-6">
+                    <label for="">Last Name</label>
+                    <input type="text" name="lname" class="form-control mt-2 mb-2" placeholder="Last Name" value="{{details.last_name}}" required>
+    
+                </div>
+            </div>
+            <label for="">Username</label>
+            <input type="text" name="uname" class="form-control mt-2 mb-2" placeholder="Username" value="{{details.username}}" required>
+
+            <label for="">Email</label>
+            <input type="email" name="email" class="form-control mt-2 mb-2" placeholder="Email" value="{{details.email}}" required>
+
+            <label for="">Contact</label>
+            {% if details.contact %}
+            <input type="text" name="contact" class="form-control mt-2 mb-2" value="{{details.contact}}" required>
+            {% else %}
+            <input type="text" name="contact" class="form-control mt-2 mb-2" required>
+            {% endif %}
+
+            <label for="">Address</label>
+            {% if details.address %}
+            <input type="text" name="address" class="form-control mt-2 mb-2"  value="{{details.address}}" required>
+            {% else %}
+            <input type="text" name="address" class="form-control mt-2 mb-2"   required>
+            {% endif %}
+            
+            <div class="row">
+                <div class="col-6">
+                    <label for="">City</label>
+                    {% if details.city %}
+                    <input type="text" name="city" class="form-control mt-2 mb-2"  value="{{details.city}}" required>
+                    {% else %}
+                    <input type="text" name="city" class="form-control mt-2 mb-2"   required>
+                    {% endif %}
+
+                </div>
+                <div class="col-6">
+                    <label for="">State</label>
+                    {% if details.state %}
+                    <input type="text" name="state" class="form-control mt-2 mb-2"  value="{{details.state}}" required>
+                    {% else %}
+                    <input type="text" name="state" class="form-control mt-2 mb-2"   required>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-6">
+                    <label for="">country</label>
+                    {% if details.country %}
+                    <input type="text" name="country" class="form-control mt-2 mb-2"  value="{{details.country}}" required>
+                    {% else %}
+                    <input type="text" name="country" class="form-control mt-2 mb-2"  required>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    <label for="">Pincode</label>
+                    {% if details.country %}
+                    <input type="text" name="pincode" class="form-control mt-2 mb-2" value="{{details.pincode}}" required>
+                    {% else %}
+                    <input type="text" name="pincode" class="form-control mt-2 mb-2" required>
+                    {% endif %}
+                </div>
+            </div>
+            <label for="">Profile Picture</label>
+            <input type="file"  name="image" class="form-control mt-2 mb-2" accept="image/*">
+            <div class="row">
+                <div class="col-lg-8"></div>
+                <div class="col-lg-4">
+                    <button type="submit" class="btn1 w-100 mt-2 mb-2">Update <i class="fas fa-save ms-1"></i></button>
+                </div>
+            </div>
+          </form>
+            
+          
+        </div>
+        
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
