@@ -8,7 +8,9 @@ from django.contrib import messages
 # Landing page of cargo
 def cargo_home(request):
     atestimonial = Testimonials.objects.filter(is_active=1).first()
-    rtestimonials = Testimonials.objects.filter(is_active=1).exclude(id=atestimonial.id)
+    rtestimonials = Testimonials.objects.filter(is_active=True).exclude(id=atestimonial.id) if atestimonial else None
+
+
     context={
         'atestimonial': atestimonial,
         'rtestimonials': rtestimonials
