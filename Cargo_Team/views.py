@@ -52,7 +52,7 @@ def team_profile(request):
         return redirect('/')
 
 
-# team profile page
+# team profile edit page
 def edit_team_profile(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']

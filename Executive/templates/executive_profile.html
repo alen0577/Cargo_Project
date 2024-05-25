@@ -8,7 +8,7 @@ Profile
 
 <!-- css link for cargo team  page -->
 {% block link %}
-<link rel="stylesheet"  href="{% static 'team/css/profile.css' %}">
+<link rel="stylesheet"  href="{% static 'executive/css/profile.css' %}">
 {% endblock %}
 
 
@@ -55,13 +55,13 @@ Profile
                             {% if details.profile_picture %}
                             <img src="{{details.profile_picture.url}}" class="img-fluid rounded-circle mt-lg-5 mt-3" height="100" width="100" alt="img">
                             {% else %}
-                            <img src="{% static 'team/images/noprofile.jpg' %}" class="img-fluid rounded-circle mt-lg-5 mt-3" height="100" width="100" alt="img">
+                            <img src="{% static 'executive/images/noprofile.jpg' %}" class="img-fluid rounded-circle mt-lg-5 mt-3" height="100" width="100" alt="img">
                             {% endif %}
                           </div>
                           
                         </div>
                         <h5 class="text-center mt-2 fw-bold">{{details.username}} <i class="fas fa-check-circle active-icon"></i></h5>
-                        <h6 class="text-center mt-2 ">Team Member</h6>
+                        <h6 class="text-center mt-2 ">Executive Member</h6>
                         <center><a href="#" class=" btn2 text-decoration-none" data-bs-toggle="modal" data-bs-target="#editmodal"><i class="fas fa-edit"></i> Profile</a></center>
 
                     </div>
@@ -219,7 +219,7 @@ Profile
           <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Profile</h1>
         </div>
         <div class="modal-body rounded-2 shadow">
-          <form action="" method="post" enctype="multipart/form-data">
+          <form action="{% url 'edit_executive_profile' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
                 <div class="col-6">
@@ -237,13 +237,13 @@ Profile
             <input type="text" name="uname" class="form-control mt-2 mb-2" placeholder="Username" value="{{details.username}}" required>
 
             <label for="">Email</label>
-            <input type="email" name="email" class="form-control mt-2 mb-2" placeholder="Email" value="{{details.email}}" required>
+            <input type="email" name="email" class="form-control mt-2 mb-2" placeholder="Email" value="{{details.email}}" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Email should be in the format 'example@gmail.com'" required>
 
             <label for="">Contact</label>
             {% if details.contact %}
-            <input type="text" name="contact" class="form-control mt-2 mb-2" value="{{details.contact}}" required>
+            <input type="text" name="contact" class="form-control mt-2 mb-2" value="{{details.contact}}" pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
             {% else %}
-            <input type="text" name="contact" class="form-control mt-2 mb-2" required>
+            <input type="text" name="contact" class="form-control mt-2 mb-2" pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
             {% endif %}
 
             <label for="">Address</label>
@@ -275,7 +275,7 @@ Profile
             
             <div class="row">
                 <div class="col-6">
-                    <label for="">country</label>
+                    <label for="">Country</label>
                     {% if details.country %}
                     <input type="text" name="country" class="form-control mt-2 mb-2"  value="{{details.country}}" required>
                     {% else %}

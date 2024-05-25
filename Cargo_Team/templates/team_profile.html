@@ -237,13 +237,13 @@ Profile
             <input type="text" name="uname" class="form-control mt-2 mb-2" placeholder="Username" value="{{details.username}}" required>
 
             <label for="">Email</label>
-            <input type="email" name="email" class="form-control mt-2 mb-2" placeholder="Email" value="{{details.email}}" required>
+            <input type="email" name="email" class="form-control mt-2 mb-2" placeholder="Email" value="{{details.email}}" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" title="Email should be in the format 'example@gmail.com'" required>
 
             <label for="">Contact</label>
             {% if details.contact %}
-            <input type="text" name="contact" class="form-control mt-2 mb-2" value="{{details.contact}}" required>
+            <input type="text" name="contact" class="form-control mt-2 mb-2" value="{{details.contact}}" pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
             {% else %}
-            <input type="text" name="contact" class="form-control mt-2 mb-2" required>
+            <input type="text" name="contact" class="form-control mt-2 mb-2" pattern="[7896][0-9]{9}" title="Mobile number should contain 10 digits and start with 7,8,9 or 6." required>
             {% endif %}
 
             <label for="">Address</label>
@@ -275,7 +275,7 @@ Profile
             
             <div class="row">
                 <div class="col-6">
-                    <label for="">country</label>
+                    <label for="">Country</label>
                     {% if details.country %}
                     <input type="text" name="country" class="form-control mt-2 mb-2"  value="{{details.country}}" required>
                     {% else %}
