@@ -88,3 +88,9 @@ def job_apply(request):
             return redirect('careers')
     else:
          return redirect('careers')
+
+
+
+# available locations page of cargo
+def available_locations(request):
+    return render(request, 'available locations/available_locations.html')
