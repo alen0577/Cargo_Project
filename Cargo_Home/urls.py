@@ -10,5 +10,6 @@ urlpatterns = [
     path('service-details/<int:pk>/', views.service_details, name='service_details'),
     path('careers/', views.careers, name='careers'),
     path('job-apply/', views.job_apply, name='job_apply'),
-    path('available-locations/', views.available_locations, name='available_locations'),    
+    path('available-locations/', views.available_locations, name='available_locations'),  
+    path('check_service_availability/', views.check_service_availability, name='check_service_availability'),  
 ]

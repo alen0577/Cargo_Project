@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect
 from Admin.models import *
 from Customer.models import CustomerIssues
+from Admin.models import ServiceLocation
 from django.contrib import messages
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -94,3 +96,27 @@ def job_apply(request):
 # available locations page of cargo
 def available_locations(request):
     return render(request, 'available locations/available_locations.html')
+
+def check_service_availability(request):
+    if request.method == 'POST':
+        search_query = request.POST.get('query')
+        if search_query.isdigit():
+            locations = ServiceLocation.objects.filter(postal_code=search_query,is_active=True)
+        else:
+            locations = ServiceLocation.objects.filter(city__name__icontains=search_query,is_active=True)
+        
+        print(locations.values)
+        if locations.exists():
+            data = {
+                'available': True,
+                'count': locations.count(),
+                'query': search_query,
+                'locations': list(locations.values('city__name', 'postal_code', 'name')),
+            }
+        else:
+            data = {
+                'available': False,
+                'message': 'Service not available in this location.',
+            }
+        return JsonResponse(data)
+    return JsonResponse({'error': 'Invalid request'}, status=400)

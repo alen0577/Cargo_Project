@@ -27,14 +27,15 @@
 
 <!-- start location-section  -->
 
-<section id="aboutus-section">
+<section id="location-section">
   <div class="container">
-    <div class="row mt-3 mt-lg-5">
+    <div class="row mt-3 mt-lg-5 mb-lg-5">
       <div class="col-lg-6 mt-lg-5 mt-0">
         <h2 class="main-heading fw-bold">Find Your Service Location</h2>
         <h6
           class="mt-lg-3 mt-0 lh-base"
-          style="text-align: justify; color: rgba(31, 31, 31, 0.8)">
+          style="text-align: justify; color: rgba(31, 31, 31, 0.8)"
+        >
           Discover the nearest service centers for cargo pickup and delivery.
           Enter your city or postal code to see if our services are available in
           your area. We ensure a seamless and efficient shipping process,
@@ -43,9 +44,10 @@
           are here to meet your needs.
         </h6>
       </div>
-      <div class="col-lg-6 mt-lg-5 mt-3">
+
+      <div class="col-lg-6 mt-lg-5 mt-3 mb-lg-5">
         <img
-          src="{% static 'images/aboutus/locations.png' %}"
+          src="{% static 'images/available_locations/locations.jpg' %}"
           class="img-fluid mt-lg-5 mt-2"
           alt="img"
         />
@@ -65,14 +67,22 @@
       <div class="col-lg-10">
         <div class="card1 bg-body-tertiary">
           <div class="card-body">
-            <div class="row">
+            <div class="row mb-4">
               <div class="col-lg-6">
                 <div class="box p-5">
-                  <form action="">
-                    <label for="" class="main-heading"
+                  <form
+                    id="search-form"
+                    onsubmit="checkServiceAvailability(event)"
+                  >
+                    <label for="search-query" class="main-heading"
                       >Enter Pincode or City</label
                     >
-                    <input type="text" class="form-control mt-1 mb-1" />
+                    <input
+                      type="text"
+                      id="search-query"
+                      class="form-control mt-1 mb-1"
+                      required
+                    />
                     <button type="submit" class="btn1 mt-1 p-1 rounded-3">
                       <span class="mx-3"
                         >Search <i class="fas fa-search"></i
@@ -96,6 +106,9 @@
           </div>
         </div>
       </div>
+      <!-- search result section -->
+      <div id="result-container" class="row"></div>
+
       <div class="col-lg-1"></div>
     </div>
   </div>
@@ -109,5 +122,58 @@
 </section>
 
 <!-- end footer section -->
+
+<script>
+  function checkServiceAvailability(event) {
+    event.preventDefault();
+
+    const query = document.getElementById("search-query").value;
+    const formData = new FormData();
+    formData.append("query", query);
+
+    fetch("{% url 'check_service_availability' %}", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const resultContainer = document.getElementById("result-container");
+        resultContainer.innerHTML = "";
+
+        if (data.available) {
+          const message = document.createElement("div");
+          message.classList.add("col-12", "mb-3");
+          message.innerHTML = `<h5 class='main-heading'>${data.count} locations found for your search <span class"fst-italic">${data.query}</span></h5>`;
+          resultContainer.appendChild(message);
+          data.locations.forEach((location) => {
+            const card = document.createElement("div");
+            card.classList.add("col-lg-4", "mb-5", "mt-3");
+            card.innerHTML = `
+                <div class="card shadow p-3 bg-body-tertiary rounded" width=100%>
+                    <div class="card-body">
+                      <h5 class="card-title main-heading">${location.name}</h5>
+                      <p class="card-text">City: ${location.city__name}</p>
+                      <p class="card-text">Pincode: ${location.postal_code}</p>
+                    </div>
+                </div>
+            `;
+            resultContainer.appendChild(card);
+          });
+        } else {
+          resultContainer.innerHTML = `
+            <div class="col-12 mt-5 mb-5">
+                <div class="alert alert-danger" role="alert">
+                  ${data.message}
+                </div>
+            </div>
+        `;
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+</script>
 
 {% endblock %}
