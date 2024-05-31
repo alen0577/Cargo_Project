@@ -145,18 +145,18 @@
 
         if (data.available) {
           const message = document.createElement("div");
-          message.classList.add("col-12", "mb-3");
-          message.innerHTML = `<h5 class='main-heading'>${data.count} locations found for your search <span class"fst-italic">${data.query}</span></h5>`;
+          message.classList.add("row");
+          message.innerHTML = `<h5 class='main-heading mt-2'>${data.count} locations found for your search <span class="fst-italic">'${data.query}'</span></h5>`;
           resultContainer.appendChild(message);
           data.locations.forEach((location) => {
             const card = document.createElement("div");
-            card.classList.add("col-lg-4", "mb-5", "mt-3");
+            card.classList.add("col-lg-3", "mb-5", "mt-3", "mx-2");
             card.innerHTML = `
-                <div class="card shadow p-3 bg-body-tertiary rounded" width=100%>
+                <div class="card shadow p-3 bg-body-tertiary rounded text-center" style="max-width: 100%;">
                     <div class="card-body">
-                      <h5 class="card-title main-heading">${location.name}</h5>
+                      <h5 class="card-title main-heading fw-bold">${location.name}</h5>
                       <p class="card-text">City: ${location.city__name}</p>
-                      <p class="card-text">Pincode: ${location.postal_code}</p>
+                      <p class="card-text">Pincode: <span class="main-heading"> ${location.postal_code}</span></p>
                     </div>
                 </div>
             `;
@@ -164,11 +164,11 @@
           });
         } else {
           resultContainer.innerHTML = `
-            <div class="col-12 mt-5 mb-5">
-                <div class="alert alert-danger" role="alert">
-                  ${data.message}
-                </div>
+          <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+              <i class="fas fa-location-slash"></i> ${data.message}
             </div>
+          </div>
         `;
         }
       })
