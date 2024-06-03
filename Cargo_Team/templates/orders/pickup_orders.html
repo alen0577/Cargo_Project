@@ -47,6 +47,24 @@ Pickup Requests
         <div class="col-lg-12">
             <div class="table-responsive">
                 <h6 class="main-heading">Orders</h6>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <select class="form-select mt-1 mb-1" name="pickup_city"  id="pickup_city">
+                            <option value="" hidden>Select city</option>
+                            {% for i in city %}
+                            <option value="{{i.name}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-select mt-1 mb-1" name="filter_date"  id="filter_date">
+                            <option value="All">All</option>
+                            <option value="Today">Today</option>
+                            
+                        </select>
+                        
+                    </div>
+                </div>
                 <table class="table table-hover tablestyle mt-4">
                     <thead >
                         <tr>
@@ -56,6 +74,7 @@ Pickup Requests
                             <th class="text-white">Name</th>
                             <th class="text-white">Email</th>
                             <th class="text-white">Contact</th>
+                            <th class="text-white">Pickup City</th>
                             <th class="text-white">Pickp Date</th>
                             <th class="text-white">Response</th>
                             <th class="text-white">Details</th>
@@ -65,7 +84,7 @@ Pickup Requests
                     </thead>
                     <tbody>
                         {% for i in orders %}
-                        <tr class="borderstyle">
+                        <tr class="borderstyle order-row"  data-city="{{ i.sender_city }}" data-pickup-date="{{ i.pickup_date }}">
                             <td class="text-white">{{forloop.counter}}</td>
                     
                             
@@ -75,6 +94,7 @@ Pickup Requests
                             <td class="text-white">{{i.full_name}}</td>
                             <td class="text-white">{{i.email}}</td>
                             <td class="text-white">{{i.contact_number}}</td>
+                            <td class="text-white">{{i.sender_city}}</td>
                             <td class="text-white">{{i.pickup_date}}</td>
                             <td class="text-white">
                                 <div><textarea name="" rows="3" cols="31" id="" readonly>{{i.description}}</textarea></div>
@@ -290,6 +310,51 @@ Pickup Requests
   </div>
 </div>
 {% endfor %}
+
+<script>
+    $(document).ready(function() {
+        function filterTable() {
+            var selectedCity = $('#pickup_city').val();
+            var selectedDate = $('#filter_date').val();
+            var today = new Date().toISOString().split('T')[0]; // Today's date in 'YYYY-MM-DD' format
+
+            console.log('Selected City:', selectedCity); // Debugging line
+            console.log('Selected Date Filter:', selectedDate); // Debugging line
+            console.log('Today\'s Date:', today); // Debugging line
+
+            $('.order-row').each(function() {
+                var city = $(this).data('city');
+                var pickupDate = $(this).data('pickup-date');
+                var showRow = true;
+
+                console.log('Row City:', city); // Debugging line
+                console.log('Row Pickup Date:', pickupDate); // Debugging line
+
+                if (selectedCity && city !== selectedCity) {
+                    showRow = false;
+                }
+
+                if (selectedDate === 'Today' && pickupDate !== today) {
+                    showRow = false;
+                }
+
+                if (showRow) {
+                    $(this).removeClass('hidden-row');
+                } else {
+                    $(this).addClass('hidden-row');
+                }
+            });
+        }
+
+        $('#pickup_city, #filter_date').on('change', filterTable);
+    });
+</script>
+
+<style>
+    .hidden-row {
+        display: none;
+    }
+</style>
 
 
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
 from Customer.models import ShipmentBooking,CustomerIssues
-from Admin.models import ServiceLocation
+from Admin.models import ServiceLocation, City
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
@@ -259,10 +259,11 @@ def pickup_orders(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('date','time')
-        
+        city=City.objects.filter(is_active=True)
         context = {
             'details': dash_details,
             'orders': orders,
+            'city':city,
         }
         return render(request, 'orders/pickup_orders.html', context)
     else:
