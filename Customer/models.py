@@ -61,6 +61,45 @@ class ShipmentBooking(models.Model):
     is_active = models.BooleanField(default=1,null=True,blank=True)
 
 
+class ShipmentTracking(models.Model):
+    shipment = models.OneToOneField(ShipmentBooking, on_delete=models.CASCADE)
+    STATUS_CHOICES = [
+        ('processing', 'Processing'),
+        ('packed', 'Packed'),
+        ('dispatched', 'Dispatched'),
+        ('in_transit', 'In Transit'),
+        ('arrived_at_destination_hub', 'Arrived at Destination Hub'),
+        ('out_for_delivery', 'Out for Delivery'),
+        ('delivered', 'Delivered'),
+        ('returned', 'Returned'),
+        ('canceled', 'Canceled'),
+        ('delayed', 'Delayed'),
+    ]
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='processing')
+    tracking_number = models.CharField(max_length=20, unique=True, editable=False,null=True, blank=True)
+    qr_code = models.ImageField(upload_to='qrcodes/',null=True, blank=True)
+    current_location = models.CharField(max_length=254, null=True, blank=True)
+    estimated_delivery_date = models.DateField(null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    # def save(self, *args, **kwargs):
+    #     if not self.tracking_number:
+    #         self.tracking_number = str(uuid.uuid4()).replace('-', '')[:20]
+        
+    #     qrcode_img = qrcode.make(self.tracking_number)
+    #     buffer = BytesIO()
+    #     qrcode_img.save(buffer)
+    #     self.qr_code.save(f'qrcode_{self.tracking_number}.png', File(buffer), save=False)
+        
+    #     super().save(*args, **kwargs)
+    
+    # def __str__(self):
+    #     return f'{self.shipment.booking_order_number} - {self.status}'
+
+
+
+
+
 class CustomerIssues(models.Model):
     date = models.DateField(auto_now_add=True,null=True,blank=True)
     time = models.TimeField(auto_now_add=True,null=True,blank=True)

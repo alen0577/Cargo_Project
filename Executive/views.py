@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
-from Customer.models import ShipmentBooking,CustomerIssues
+from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues
 from Admin.models import ServiceLocation
 from django.contrib import messages
 from datetime import date
@@ -74,5 +74,24 @@ def edit_executive_profile(request):
             return redirect('executive_profile')
         else:
             return redirect('executive_profile')
+    else:
+        return redirect('/')
+
+
+# executive profile page
+def shipment_status_update(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders = ShipmentTracking.objects.all()
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'shipment_status.html', context)
     else:
         return redirect('/')

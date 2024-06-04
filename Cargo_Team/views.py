@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
-from Customer.models import ShipmentBooking,CustomerIssues
+from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues
 from Admin.models import ServiceLocation, City
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
 from django.http import JsonResponse
+import uuid
+import qrcode
+from io import BytesIO
+from django.core.files import File
 
 # Create your views here.
 
@@ -377,6 +381,8 @@ def bill_save(request,pk):
             order.is_confirmed=3
             order.save()
             messages.success(request,'Payment Done')
+            tracking=ShipmentTracking(shipment=order)
+            tracking.save()
             return redirect('bill_requests')  
         else:
             return redirect('bill_requests',)
