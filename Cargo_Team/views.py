@@ -378,11 +378,16 @@ def bill_save(request,pk):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         order=ShipmentBooking.objects.get(id=pk,is_confirmed=2,is_active=1)
         if request.method == 'POST':
+            # create ShipmentTracking record
+            tracking= ShipmentTracking(shipment=order)
+            tracking.save()
+            
             order.is_confirmed=3
             order.save()
-            messages.success(request,'Payment Done')
-            tracking=ShipmentTracking(shipment=order)
-            tracking.save()
+
+            
+            
+            messages.success(request, 'Payment Done and Order moved for delivery process')
             return redirect('bill_requests')  
         else:
             return redirect('bill_requests',)

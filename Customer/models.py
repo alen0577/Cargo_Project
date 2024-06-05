@@ -1,5 +1,8 @@
 from django.db import models
 import uuid
+import qrcode  # Add this line to import the qrcode library
+from io import BytesIO
+from django.core.files import File
 
 # Create your models here.
 
@@ -82,19 +85,19 @@ class ShipmentTracking(models.Model):
     estimated_delivery_date = models.DateField(null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
 
-    # def save(self, *args, **kwargs):
-    #     if not self.tracking_number:
-    #         self.tracking_number = str(uuid.uuid4()).replace('-', '')[:20]
+    def save(self, *args, **kwargs):
+        if not self.tracking_number:
+            self.tracking_number = str(uuid.uuid4()).replace('-', '')[:20]
         
-    #     qrcode_img = qrcode.make(self.tracking_number)
-    #     buffer = BytesIO()
-    #     qrcode_img.save(buffer)
-    #     self.qr_code.save(f'qrcode_{self.tracking_number}.png', File(buffer), save=False)
+        qrcode_img = qrcode.make(self.tracking_number)
+        buffer = BytesIO()
+        qrcode_img.save(buffer)
+        self.qr_code.save(f'qrcode_{self.tracking_number}.png', File(buffer), save=False)
         
-    #     super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
     
-    # def __str__(self):
-    #     return f'{self.shipment.booking_order_number} - {self.status}'
+    def __str__(self):
+        return f'{self.shipment.booking_order_number} - {self.status}'
 
 
 
