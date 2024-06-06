@@ -1,0 +1,157 @@
+{% extends 'base.html' %} {% load static %}
+
+<!-- title for the tracking details page -->
+{% block title %} Shipment Tracking - Cargo {% endblock %}
+
+<!-- css link for tracking details -->
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/tracking.css' %}" />
+{% endblock %}
+
+<!-- contents for tracking details -->
+{% block content %}
+
+<!-- start nav-section  -->
+<div class="nav-section">
+  <div class="container">
+    <div class="row">
+      <!-- include home navbar section -->
+      <div class="col-lg-12 mt-lg-5 mt-1">
+        {% include 'cusmod_navbar.html' %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end nav-section  -->
+
+<!-- start message-section  -->
+
+<section id="message-section">
+  <div class="container">
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong
+          ><span class="ms-2"
+            >Your order is placed, please wait for confirmation.</span
+          >
+          <button
+            type="button"
+            class="btn-close btn-close-white shadow-none"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- end message-section  -->
+
+<!-- start tracking details section -->
+
+<section id="tracking-section">
+  <div class="container">
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% if message.tags == 'success' %}
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong
+          ><span class="ms-2">{{message}}</span>
+          {% else %}
+          <strong>Sorry <i class="fas fa-warning icon"></i></strong
+          ><span class="ms-2">{{message}}</span>
+          {% endif %}
+          <button
+            type="button"
+            class="btn-close btn-close-white shadow-none"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="row mt-3 mb-3 mt-lg-5">
+      <div class="col-lg-5 mt-lg-5 mt-0">
+        <h2 class="main-heading fw-bold">Book and Track Orders
+            Anytime, Anywhere
+        </h2>
+        <h6
+          class="mt-lg-3 mt-0 lh-base"
+          style="text-align: justify; color: rgba(31, 31, 31, 0.8)"
+        >Stay updated with the real-time status of your shipment. 
+        Enter your tracking code to get the latest information on the location and delivery status of your cargo. 
+        Hassle-free tracking to ensure peace of mind.
+        </h6>
+      </div>
+      <div class="col-lg-2"></div>
+      <div class="col-lg-5 mt-lg-5 mt-3">
+        <div class="tracking-box p-5">
+            
+            <div class="container-fluid">
+                <form class="d-flex" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Enter Tracking Number" aria-label="Search" required>
+                  <button class="btn1 p-2 rounded mx-2" type="submit"> <i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- end tracking section -->
+
+<section id="section3">
+    <div class="container">
+      <div class="row mt-5 mb-5">
+        <div class="col-lg-5">
+          <h3 class="main-heading"></h3>
+          <img
+            src="{% static 'images/contactus/hc1.webp' %}"
+            alt=""
+            class="img-fluid"
+          />
+        </div>
+        <div class="col-lg-2"></div>
+        <div class="col-lg-5 mt-3">
+          <h5 class="main-heading">Have Questions About Your Order?</h5>
+          <p class="mb-3" style="text-align: justify">
+            If you have any queries or concerns regarding your shipment, 
+            please feel free to reach out to us. 
+            Enter your order details and query below, 
+            and our support team will get back to you promptly
+          </p>
+  
+          <!-- include contact form -->
+          {% include 'help_form.html' %}
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- start footer section -->
+
+<section id="footer">
+  <div class="container">{% include 'footer.html' %}</div>
+</section>
+
+<!-- end footer section -->
+
+{% endblock %}

@@ -187,3 +187,8 @@ def download_pdf(request,pk):
         return response
 
     return HttpResponse('Error generating PDF: {}'.format(pdf.err), status=500)
+
+
+# shipment tracking page
+def tracking(request):
+    return render(request, 'shipment_tracking.html')

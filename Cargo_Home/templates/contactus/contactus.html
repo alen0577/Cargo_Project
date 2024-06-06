@@ -1,83 +1,90 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} {% load static %}
 
 <!-- title for the contact page -->
-{% block title %}
-Contact-Us - Cargo
-{% endblock %}
+{% block title %} Contact-Us - Cargo {% endblock %}
 
 <!-- css link for contact page -->
 {% block link %}
-<link rel="stylesheet"  href="{% static 'css/contactus.css' %}">
+<link rel="stylesheet" href="{% static 'css/contactus.css' %}" />
 {% endblock %}
-
 
 <!-- contents for contact page -->
 {% block content %}
 
 <!-- start nav-section  -->
 <div class="nav-section">
-    <div class="container">
-        <div class="row">
-            <!-- include home navbar section -->
-            <div class="col-lg-12 mt-lg-5 mt-1">
-                {% include 'navbars/contactus_navbar.html' %}
-            </div>
-        </div>
-        
-
+  <div class="container">
+    <div class="row">
+      <!-- include home navbar section -->
+      <div class="col-lg-12 mt-lg-5 mt-1">
+        {% include 'navbars/contactus_navbar.html' %}
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- end nav-section  -->
 
-
 <!-- start contact-section  -->
 
 <section id="contactus-section">
-    <div class="container">
-
-      {% if messages %}
-      <!-- message section -->
-      <div class="row mt-3">
-        <div class="col-lg-7"></div>
-        <div class="col-lg-5">
-          {% for message in messages %}
-          <div class="alert alert-dismissible fade show" role="alert">
-            {% if message.tags == 'success' %}
-            <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
-            {% else %}
-            <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
-            {% endif %}
-            <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-          {% endfor %}
+  <div class="container">
+    {% if messages %}
+    <!-- message section -->
+    <div class="row mt-3">
+      <div class="col-lg-7"></div>
+      <div class="col-lg-5">
+        {% for message in messages %}
+        <div class="alert alert-dismissible fade show" role="alert">
+          {% if message.tags == 'success' %}
+          <strong>Success <i class="fas fa-check-circle icon"></i></strong
+          ><span class="ms-2">{{message}}</span>
+          {% else %}
+          <strong>Sorry <i class="fas fa-warning icon"></i></strong
+          ><span class="ms-2">{{message}}</span>
+          {% endif %}
+          <button
+            type="button"
+            class="btn-close btn-close-white shadow-none"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
         </div>
-      </div>
-      {% endif %}
-
-      <div class="row mt-3 mt-lg-5">
-          <div class="col-lg-6 mt-lg-5 mt-0">
-            <h2 class="main-heading fw-bold ">Contact Us</h2>
-            <h6 class="mt-lg-3 mt-0 lh-base" style="text-align: justify;color: rgba(31, 31, 31, 0.8);">
-              Thank you for your interest in Cargo. We're here to assist you with any questions, inquiries, 
-              or feedback you may have. Whether you're looking to learn more about our services, discuss partnership opportunities, 
-              or simply say hello, our team is ready to help. Please feel free to reach out to us using the contact form below, 
-              and we'll get back to you as soon as possible. Alternatively, you can also contact us directly via email or phone. 
-              We look forward to hearing from you and starting a conversation about how we can support your shipping needs.
-            </h6>
-            
-          </div>
-          <div class="col-lg-6 mt-lg-5 mt-3">
-            <img src="{% static 'images/contactus/contactbg.png' %}" class="img-fluid  mt-lg-5 mt-2" alt="img">
-          </div>
+        {% endfor %}
       </div>
     </div>
+    {% endif %}
+
+    <div class="row mt-3 mt-lg-5">
+      <div class="col-lg-6 mt-lg-5 mt-0">
+        <h2 class="main-heading fw-bold">Contact Us</h2>
+        <h6
+          class="mt-lg-3 mt-0 lh-base"
+          style="text-align: justify; color: rgba(31, 31, 31, 0.8)"
+        >
+          Thank you for your interest in Cargo. We're here to assist you with
+          any questions, inquiries, or feedback you may have. Whether you're
+          looking to learn more about our services, discuss partnership
+          opportunities, or simply say hello, our team is ready to help. Please
+          feel free to reach out to us using the contact form below, and we'll
+          get back to you as soon as possible. Alternatively, you can also
+          contact us directly via email or phone. We look forward to hearing
+          from you and starting a conversation about how we can support your
+          shipping needs.
+        </h6>
+      </div>
+      <div class="col-lg-6 mt-lg-5 mt-3">
+        <img
+          src="{% static 'images/contactus/contactbg.png' %}"
+          class="img-fluid mt-lg-5 mt-2"
+          alt="img"
+        />
+      </div>
+    </div>
+  </div>
 </section>
 
-
 <!-- end contact-section  -->
-
 
 <!-- start section2  -->
 
@@ -90,10 +97,8 @@ Contact-Us - Cargo
         {% include 'contactus/contact_cards.html' %}
       </div>
       <div class="col-lg-1"></div>
-
     </div>
   </div>
-
 </section>
 
 <!-- end section2  -->
@@ -104,42 +109,34 @@ Contact-Us - Cargo
   <div class="container">
     <div class="row mt-5 mb-5">
       <div class="col-lg-5">
-        <h3 class="main-heading ">Still Confused</h3>
-        <img src="{% static 'images/contactus/hc1.webp' %}" alt="" class="img-fluid">
-        
+        <h3 class="main-heading">Still Confused</h3>
+        <img
+          src="{% static 'images/contactus/hc1.webp' %}"
+          alt=""
+          class="img-fluid"
+        />
       </div>
       <div class="col-lg-2"></div>
       <div class="col-lg-5 mt-3">
         <h5 class="main-heading">Feel Free to Contact Us</h5>
-        <p class="mb-3" style="text-align: justify;">Fill the form and we will get you as soon as possible.</p>
-       
+        <p class="mb-3" style="text-align: justify">
+          Fill the form and we will get you as soon as possible.
+        </p>
+
         <!-- include contact form -->
         {% include 'contactus/contact_form.html' %}
-          
       </div>
     </div>
   </div>
-
 </section>
-
-
 
 <!-- end section2  -->
 
-
-
 <!-- start footer section -->
 <section id="footer">
-    <div class="container">
-      {% include 'footer.html' %}
-        
-    </div>
-      
+  <div class="container">{% include 'footer.html' %}</div>
 </section>
-  
+
 <!-- end footer section -->
-  
-
-
 
 {% endblock %}

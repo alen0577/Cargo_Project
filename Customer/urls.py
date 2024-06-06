@@ -7,4 +7,5 @@ urlpatterns = [
     path('dropoff/', views.shipping_center_booking, name='shipping_center_booking'),
     path('booking-details/<uuid:pk>/', views.booking_details, name='booking_details'),
     path('download-pdf/<int:pk>/', views.download_pdf, name='download_pdf'),
+    path('tracking/', views.tracking, name='tracking'),
 ]
