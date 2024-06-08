@@ -1,0 +1,102 @@
+{% extends 'executive_base.html' %}
+{% load static %}
+
+<!-- title for the query page -->
+{% block title %}
+Order Queries
+{% endblock %}
+
+<!-- css link forquery page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'executive/css/query.css' %}">
+{% endblock %}
+
+
+<!-- contents for query page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item active">Order Queries</li>
+    </ol>
+
+    <!-- refresh button -->
+    <div class="row">
+        <div class="col-lg-11"></div>
+        <div class="col-lg-1">
+            <a class="text-decoration-none " href="{% url 'query_section' %}" type="button"><span class="refresh-btn"><i class="fas fa-refresh"></i> refresh</span></a>
+        </div>
+    </div>
+    
+    <div class="row mt-5 mb-5">
+        <!-- pending queries card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'pending_queries' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-inbox fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Pending Order Queries
+                                    {% if query_count %}
+                                    <sup class="text-danger">({{query_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
+                                <p class="text-black-50 mt-3">
+                                    View and manage all pending order queries in one place.                                     
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <!-- all query card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'all_queries' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-envelope-open-text fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">All Order Queries</h5>
+                                <p class="text-black-50 mt-3">
+                                    Access a comprehensive list of all order queries. 
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+
+        
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4"></div>
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}

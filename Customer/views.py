@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from . models import *
 import uuid
 from django.contrib import messages
@@ -192,3 +192,19 @@ def download_pdf(request,pk):
 # shipment tracking page
 def tracking(request):
     return render(request, 'shipment_tracking.html')
+
+
+def tracking_details(request):
+    shipment_order = None
+    
+    if request.method == "POST":
+        tracking_number = request.POST.get('tracking_number')
+        
+        if tracking_number:
+            shipment_order = get_object_or_404(ShipmentTracking, tracking_number=tracking_number)
+    
+    context = {
+        'data': shipment_order,
+    }
+    
+    return render(request, 'shipment_tracking_details.html', context)

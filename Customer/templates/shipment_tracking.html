@@ -120,16 +120,17 @@
     <div class="row mt-5 mb-5">
       <div class="col-lg-5 mt-3">
         <div class="tracking-box">
-          <h4 class="main-heading text-center">
-            Track Shipment
-          </h4>
-          <div class="card text-center mb-3 bg-body-tertiary" style="width: 100%; height: 180px;">
+          <h5 class="main-heading text-center">
+            Track Now
+          </h5>
+          <div class="card shadow  mb-5 bg-body-tertiary rounded" style="width: 100%; height: 180px;">
             <div class="card-body">
               <div class="container mt-5">
-                <form class="d-flex" role="search">
+                <form method="post" action="{% url 'tracking_details' %}" class="d-flex" role="search">
+                  {% csrf_token %}
                   <input
                     class="form-control me-2"
-                    type="search"
+                    type="search" name="tracking_number"
                     placeholder="Enter Tracking Number"
                     aria-label="Search"
                     required

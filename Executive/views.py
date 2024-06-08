@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
-from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues
+from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues,OrderQueries
 from Admin.models import ServiceLocation
 from django.contrib import messages
 from datetime import date
@@ -93,5 +93,61 @@ def shipment_status_update(request):
             'orders': orders,
         }
         return render(request, 'shipment_status.html', context)
+    else:
+        return redirect('/')
+
+
+# Order queries section page
+def query_section(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
+
+        context = {
+            'details': dash_details,
+            'query_count':query_count
+        }
+        
+        return render(request, 'order_queries/query_section.html', context)
+    else:
+        return redirect('/')
+
+def pending_queries(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        pending_queries = OrderQueries.objects.filter(action_taken=0).order_by('date','time')
+        
+        context = {
+            'details': dash_details,
+            'queries':pending_queries,
+        }
+        return render(request, 'order_queries/pending_queries.html', context)
+    else:
+        return redirect('/')
+
+
+
+def all_queries(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        all_queries = OrderQueries.objects.all().order_by('-date','-time')
+        
+        context = {
+            'details': dash_details,
+            'queries':all_queries,
+        }
+        return render(request, 'order_queries/all_queries.html', context)
     else:
         return redirect('/')
