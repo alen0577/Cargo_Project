@@ -9,4 +9,5 @@ urlpatterns = [
     path('download-pdf/<int:pk>/', views.download_pdf, name='download_pdf'),
     path('tracking/', views.tracking, name='tracking'),
     path('tracking-details/', views.tracking_details, name='tracking_details'),
+    path('query-submission/', views.query_submission, name='query_submission'),
 ]

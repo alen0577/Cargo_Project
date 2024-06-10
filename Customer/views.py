@@ -208,3 +208,16 @@ def tracking_details(request):
     }
     
     return render(request, 'shipment_tracking_details.html', context)
+
+
+def query_submission(request):
+    if request.method == 'POST':
+        name=request.POST.get('name')
+        number=request.POST.get('tracking_number')
+        query=request.POST.get('query')
+        data=OrderQueries(name=name,tracking_number=number,queries=query)
+        data.save()
+        messages.success(request,'Query submitted')
+        return redirect('tracking')
+    else:
+        return redirect('tracking')

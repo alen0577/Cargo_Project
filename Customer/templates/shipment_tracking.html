@@ -24,36 +24,6 @@
 </div>
 <!-- end nav-section  -->
 
-<!-- start message-section  -->
-
-<section id="message-section">
-  <div class="container">
-    {% if messages %}
-    <!-- message section -->
-    <div class="row mt-3">
-      <div class="col-lg-7"></div>
-      <div class="col-lg-5">
-        {% for message in messages %}
-        <div class="alert alert-dismissible fade show" role="alert">
-          <strong>Success <i class="fas fa-check-circle icon"></i></strong
-          ><span class="ms-2"
-            >Your order is placed, please wait for confirmation.</span
-          >
-          <button
-            type="button"
-            class="btn-close btn-close-white shadow-none"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
-  </div>
-</section>
-
-<!-- end message-section  -->
 
 <!-- start tracking details section -->
 
@@ -87,18 +57,19 @@
 
     <div class="row mt-3 mb-3 mt-lg-5">
       <div class="col-lg-5 mt-lg-5 mt-0">
-        <h2 class="main-heading fw-bold">
+        <h2 class="main-heading fw-bold text-center">
           Book and Track Orders Anytime, Anywhere
         </h2>
         <h6
           class="mt-lg-3 mt-0 lh-base"
           style="text-align: justify; color: rgba(31, 31, 31, 0.8)"
         >
-        Stay informed with the real-time status of your shipment. 
-        Our tracking system allows you to monitor the journey of your cargo with ease and transparency. 
-        Simply enter your tracking code to get the latest updates of your package.
-        Hassle-free tracking to ensure peace of mind. 
-        If you have any questions or concerns, our dedicated support team is here to assist you.
+          Stay informed with the real-time status of your shipment. Our tracking
+          system allows you to monitor the journey of your cargo with ease and
+          transparency. Simply enter your tracking code to get the latest
+          updates of your package. Hassle-free tracking to ensure peace of mind.
+          If you have any questions or concerns, our dedicated support team is
+          here to assist you.
         </h6>
       </div>
       <div class="col-lg-2"></div>
@@ -120,18 +91,27 @@
     <div class="row mt-5 mb-5">
       <div class="col-lg-5 mt-3">
         <div class="tracking-box">
-          <h5 class="main-heading text-center">
-            Track Now
-          </h5>
-          <div class="card shadow  mb-5 bg-body-tertiary rounded" style="width: 100%; height: 180px;">
+          <div
+            class="card shadow mb-5 bg-body-tertiary rounded"
+            style="width: 100%; height: 180px"
+          >
             <div class="card-body">
-              <div class="container mt-5">
-                <form method="post" action="{% url 'tracking_details' %}" class="d-flex" role="search">
+              <div class="container mt-4">
+                <label for="search-query" class="main-heading"
+                  >Enter Tracking Number</label
+                >
+
+                <form
+                  method="post"
+                  action="{% url 'tracking_details' %}"
+                  class="d-flex"
+                  role="search"
+                >
                   {% csrf_token %}
                   <input
                     class="form-control me-2"
-                    type="search" name="tracking_number"
-                    placeholder="Enter Tracking Number"
+                    type="search"
+                    name="tracking_number"
                     aria-label="Search"
                     required
                   />
@@ -140,10 +120,8 @@
                   </button>
                 </form>
               </div>
-              
             </div>
           </div>
-          
         </div>
       </div>
       <div class="col-lg-2"></div>
