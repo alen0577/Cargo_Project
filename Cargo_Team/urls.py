@@ -11,6 +11,8 @@ urlpatterns = [
     path('check-pincode/', views.check_pincode, name='check_pincode'),
 
     path('order-requests/',views.order_requests,name='order_requests'),
+    path('fetch-orders-by-city/', views.fetch_orders_by_city, name='fetch_orders_by_city'),
+    path('fetch-orders-by-type/', views.fetch_orders_by_type, name='fetch_orders_by_type'),
     path('order-request/<int:pk>/',views.order_request_details,name='order_request_details'),
     path('order-approval/<int:pk>/',views.order_approval,name='order_approval'),
     path('order-rejection/<int:pk>/',views.order_rejection,name='order_rejection'),

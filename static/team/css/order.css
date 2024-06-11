@@ -124,3 +124,33 @@
     right: 0;
 }
 
+/* Style the select element */
+.form-select {
+    background-color: #f8f9fa; /* Background color */
+    color: #333; /* Text color */
+    border: 1px solid rgb(66, 28, 82); /* Border color */
+    
+}
+
+/* Style the select element when focused */
+.form-select:focus {
+    box-shadow: none !important; /* Remove box shadow on focus */
+    border-color: rgb(66, 28, 82);
+}
+
+/* Style the options */
+.form-select option {
+    background-color: #fff; /* Option background color */
+    color: rgb(66, 28, 82); /* Option text color */
+}
+
+/* Style the options on hover */
+.form-select option:hover {
+    background-color: #fff; /* Option background color */
+    color: rgb(66, 28, 82); /* Option text color */
+}
+
+.opt-hover:hover{
+    background-color: #fff; /* Option background color */
+    color: rgb(66, 28, 82); /* Option text color */
+}
