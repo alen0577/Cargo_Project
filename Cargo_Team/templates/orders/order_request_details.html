@@ -21,7 +21,7 @@ Order Details
     
     <ol class="breadcrumb mt-3">
         <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'team_dashboard' %}">Dashboard</a></li>
-        <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'order_requests' %}">Order Requests</a></li>
+        <li class="breadcrumb-item"><a class="text-decoration-none main-heading"  href="javascript:void(0);" onclick="history.back();">Order Requests</a></li>
         <li class="breadcrumb-item active">Order Details</li>
     </ol>
 
@@ -266,7 +266,7 @@ Order Details
                 <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-check-circle"></i> Order Confirmation</h1>
             </div>
             <div class="modal-body rounded-2 shadow">
-                <form action="{% url 'order_approval' order.id %}" method="post">
+                <form id="orderApprovalForm"  method="post">
                     {% csrf_token %}
                     {% if order.shipment_type == "Home Pickup" %}
                     <label for="">Select a date for pickup items*</label>
@@ -326,6 +326,38 @@ Order Details
         </div>
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function() {
+      $('#orderApprovalForm').on('submit', function(event) {
+        event.preventDefault();
+        
+        var formData = {
+          'csrfmiddlewaretoken': '{{ csrf_token }}',
+          'pickupdate': $('#pickupdate').val(),
+          'description': $('#description').val()
+        };
+  
+        $.ajax({
+          url: "{% url 'order_approval' order.id %}",
+          type: "POST",
+          data: formData,
+          success: function(response) {
+            if (response.success) {
+              $('#approvemodal').modal('hide');
+              location.reload();
+            } else {
+              alert(response.message);
+            }
+          },
+          error: function(xhr, errmsg, err) {
+            alert("An error occurred: " + errmsg);
+          }
+        });
+      });
+    });
+</script>
 
 
 {% endblock %}

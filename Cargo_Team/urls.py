@@ -18,6 +18,7 @@ urlpatterns = [
     path('order-rejection/<int:pk>/',views.order_rejection,name='order_rejection'),
 
     path('pickup-requests/',views.pickup_orders,name='pickup_orders'),
+    path('pickup-orders-by-city/', views.pickup_orders_by_city, name='pickup_orders_by_city'),
     path('pickup-request/<int:pk>/',views.pickup_order_details,name='pickup_order_details'),
     path('edit-pickup-order/<int:pk>/',views.edit_pickup_order_details,name='edit_pickup_order_details'),
     path('bill-request-approve/<int:pk>/',views.bill_request_approve,name='bill_request_approve'),

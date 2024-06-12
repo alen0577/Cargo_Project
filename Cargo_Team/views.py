@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from Register_Login.models import CargoTeam
 from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues
 from Admin.models import ServiceLocation, City
@@ -205,7 +205,7 @@ def fetch_orders_by_city(request):
         }
         for order in orders
     ]
-    print(orders_data)
+   
     return JsonResponse({'orders': orders_data})
 
 def fetch_orders_by_type(request):
@@ -244,30 +244,55 @@ def order_request_details(request,pk):
         return redirect('/')
 
 
-def order_approval(request,pk):
+# def order_approval(request,pk):
+#     if 'login_id' in request.session:
+#         log_id = request.session['login_id']
+#         if 'login_id' not in request.session:
+#             return redirect('/')
+        
+#         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+#         order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
+#         if request.method == 'POST':
+#             order.pickup_date=request.POST.get('pickupdate')
+#             order.description=request.POST.get('description')
+#             if order.shipment_type == 'Home Pickup':
+#                 order.is_confirmed=1
+#             else:
+#                 order.is_confirmed=2
+
+#             order.save()
+#             messages.success(request,'Order Confirmed')
+#             return redirect('order_requests')  
+#         else:
+#             return redirect('order_requests')
+
+#     else:
+#         return redirect('/')
+
+
+def order_approval(request, pk):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
-        if 'login_id' not in request.session:
-            return redirect('/')
+        dash_details = get_object_or_404(CargoTeam, id=log_id, admin_approval=1, is_active=1)
+        order = get_object_or_404(ShipmentBooking, id=pk, is_confirmed=0, is_active=1)
         
-        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
         if request.method == 'POST':
-            order.pickup_date=request.POST.get('pickupdate')
-            order.description=request.POST.get('description')
+            
+            order.pickup_date = request.POST.get('pickupdate')
+            order.description = request.POST.get('description')
+            
             if order.shipment_type == 'Home Pickup':
-                order.is_confirmed=1
+                order.is_confirmed = 1
             else:
-                order.is_confirmed=2
-
+                order.is_confirmed = 2
+            
             order.save()
-            messages.success(request,'Order Confirmed')
-            return redirect('order_requests')  
+            return JsonResponse({'success': True, 'message': 'Order Confirmed'})
+            
         else:
-            return redirect('order_requests')
-
+            return JsonResponse({'success': False, 'message': 'Invalid request method'})
     else:
-        return redirect('/')
+        return JsonResponse({'success': False, 'message': 'Unauthorized access'})
 
 def order_rejection(request,pk):
     if 'login_id' in request.session:
@@ -289,6 +314,27 @@ def order_rejection(request,pk):
     else:
         return redirect('/')
 
+def fetch_orders(request):
+    if 'login_id' in request.session:
+        orders = ShipmentBooking.objects.filter(is_confirmed=0, is_active=1)
+        order_list = []
+        for order in orders:
+            order_list.append({
+                'id': order.id,
+                'date': order.date,
+                'booking_order_number': order.booking_order_number,
+                'full_name': order.full_name,
+                'email': order.email,
+                'contact_number': order.contact_number,
+                'sender_city': order.sender_city,
+                'pickup_date': order.pickup_date,
+                'description': order.description,
+            })
+        return JsonResponse({'orders': order_list})
+    else:
+        return JsonResponse({'error': 'Unauthorized access'}, status=403)
+
+
 def pickup_orders(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -306,6 +352,40 @@ def pickup_orders(request):
         return render(request, 'orders/pickup_orders.html', context)
     else:
         return redirect('/')
+
+def pickup_orders_by_city(request):
+    city = request.GET.get('city')
+    filter_date = request.GET.get('filter_date')
+    
+    today = date.today()
+    
+    if city:
+        if filter_date == "Today":
+            orders = ShipmentBooking.objects.filter(sender_city=city, pickup_date=today,is_confirmed=1,is_active=1).order_by('date','time')
+        else:
+            orders = ShipmentBooking.objects.filter(sender_city=city,is_confirmed=1,is_active=1).order_by('date','time')
+
+    else:
+        if filter_date == "Today":
+            orders = ShipmentBooking.objects.filter(pickup_date=today,is_confirmed=1,is_active=1).order_by('date','time')
+        else:
+            orders = ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('date','time')
+    
+    orders_data = []
+    for order in orders:
+        orders_data.append({
+            'id': order.id,
+            'date': order.date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.booking_order_number,
+            'full_name': order.full_name,
+            'email': order.email,
+            'contact_number': order.contact_number,
+            'sender_city': order.sender_city,
+            'pickup_date': order.pickup_date.strftime('%d-%m-%Y'),
+            'description': order.description,
+        })
+
+    return JsonResponse({'orders': orders_data})
 
 
 def pickup_order_details(request,pk):

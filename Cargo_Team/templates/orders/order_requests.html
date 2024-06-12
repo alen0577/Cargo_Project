@@ -93,10 +93,11 @@
             type="search"
             placeholder="Search"
             aria-label="Search"
+            id="searchInput"
+            
+            oninput="filterTable()"
           />
-          <button class="btn1" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
+          
         </form>
       </div>
     </div>
@@ -123,7 +124,7 @@
             <tr class="borderstyle">
               <td class="text-white">{{forloop.counter}}</td>
 
-              <td class="text-white">{{i.date}}</td>
+              <td class="text-white">{{i.date|date:"d-m-Y"}}</td>
               <td class="text-white">{{i.booking_order_number}}</td>
 
               <td class="text-white">{{i.full_name}}</td>
@@ -343,11 +344,14 @@
     var type = document.getElementById("type").value;
     var cityDiv = document.getElementById("cityDiv");
     var searchDiv = document.getElementById("searchDiv");
+    var city = document.getElementById("city"); 
 
     if (type === "Home Pickup") {
       cityDiv.style.display = "block";
       searchDiv.style.display = "none";
+      city.value=''
       fetchOrdersByType("Home Pickup");
+      
     } else if (type === "Shipping Center") {
       cityDiv.style.display = "none";
       searchDiv.style.display = "block";
@@ -429,6 +433,32 @@
       },
     });
   }
+</script>
+
+<script>
+  function filterTable() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    table = document.getElementById('ordersTable');
+    tr = table.getElementsByTagName('tr');
+
+    for (i = 0; i < tr.length; i++) {
+      tdOrderNo = tr[i].getElementsByTagName('td')[2];
+      tdName = tr[i].getElementsByTagName('td')[3];
+      if (tdOrderNo || tdName) {
+        txtValueOrderNo = tdOrderNo.textContent || tdOrderNo.innerText;
+        txtValueName = tdName.textContent || tdName.innerText;
+        if (txtValueOrderNo.toUpperCase().indexOf(filter) > -1 || txtValueName.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+
+  
 </script>
 
 {% endblock %}
