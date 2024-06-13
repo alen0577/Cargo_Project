@@ -53,7 +53,7 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select order type to get orders in your area.</span
+        >Please select order type, city to get orders in your area.</span
       >
     </p>
     <div class="col-lg-3">
@@ -110,13 +110,14 @@
         <table class="table table-hover tablestyle mt-4">
           <thead>
             <tr>
-              <th class="text-white">Sl.No</th>
-              <th class="text-white">Ordered Date</th>
-              <th class="text-white">Order.No</th>
-              <th class="text-white">Name</th>
-              <th class="text-white">Email</th>
-              <th class="text-white">Contact</th>
-              <th class="text-white">Details</th>
+              <th scope="col" class="text-white">Sl.No</th>
+              <th scope="col" class="text-white">Ordered Date</th>
+              <th scope="col" class="text-white">Order.No</th>
+              <th scope="col" class="text-white">Name</th>
+              <th scope="col" class="text-white">Email</th>
+              <th scope="col" class="text-white">Contact</th>
+              <th scope="col" class="text-white">Details</th>
+              <th scope="col" class="text-white">Action</th>
             </tr>
           </thead>
           <tbody id="ordersTable">
@@ -132,10 +133,15 @@
               <td class="text-white">{{i.contact_number}}</td>
 
               <td class="text-white">
-                <a href="{% url 'order_request_details' i.id %}" class="btn1"
+                <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal{{i.id}}" class="btn1"
                   ><i class="fas fa-file"></i
                 ></a>
+                
               </td>
+              <td>
+                <a href="" data-bs-toggle="modal" data-bs-target="#approvemodal{{i.id}}" class="btn2 w-25 "><i class="fas fa-check-circle"></i></a>
+                <a href="" data-bs-toggle="modal" data-bs-target="#rejectmodal{{i.id}}" class="btn2 w-25"> <i class="fa fa-window-close"></i></a>
+            </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -339,6 +345,81 @@
 </div>
 {% endfor %}
 
+{% for i in orders %}
+<!--Approve Modal -->
+<div class="modal fade " id="approvemodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content ">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-check-circle"></i> Order Confirmation</h1>
+          </div>
+          <div class="modal-body rounded-2 shadow">
+              <form id="orderApprovalForm{{i.id}}"  method="post">
+                  {% csrf_token %}
+                  {% if i.shipment_type == "Home Pickup" %}
+                  <label for="">Select a date for pickup items*</label>
+                  <input type="date" class="form-control" name="pickupdate" required>
+                  <textarea name="description" class="form-control mt-2 mb-2" placeholder="Please provide details regarding the time of pickup" required></textarea>
+                  {% else %}
+                  <label for="">Are you sure to confirm this order and move to payment section?</label>
+                  {% endif %}
+                  <div class="row">
+                      <div class="col-lg-8"></div>
+                      <div class="col-lg-4">
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                              <button type="submit" class="btn1  mt-3 mb-2">Confirm</button>
+                              <button type="button" class="btn1  mt-3 mb-2" data-bs-dismiss="modal">Close</button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+
+               
+          </div>
+      
+      </div>
+  </div>
+</div>
+{% endfor %}
+
+{% for i in orders %}
+<!--Reject Modal -->
+<div class="modal fade " id="rejectmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content ">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-times-circle"></i> Order Rejection</h1>
+          </div>
+          <div class="modal-body rounded-2 shadow">
+              <form action="" method="post">
+                  {% csrf_token %}
+                  <label for="">Are you sure to reject this order?</label>
+                  <textarea name="description" class="form-control mt-2 mb-2" placeholder="Please provide details regarding the rejection*" required></textarea>
+                  
+
+                  <div class="row mt-3 mb-3">
+                      <div class="col-lg-4"></div>
+                      <div class="col-lg-8">
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                              <button type="submit" class="btn1  mt-3 mb-2">Confirm</button>
+                              <button type="button" class="btn1  mt-3 mb-2" data-bs-dismiss="modal">Close</button>
+                          </div>
+                      </div>
+                      
+                  </div>
+                  
+              </form>
+
+               
+          </div>
+      
+      </div>
+  </div>
+</div>
+{% endfor %}
+
+
+
 <script>
   function showOptions() {
     var type = document.getElementById("type").value;
@@ -385,7 +466,7 @@
                 <td class="text-white">${order.email}</td>
                 <td class="text-white">${order.contact_number}</td>
                 <td class="text-white">
-                  <a href="/order-request/${order.id}/" class="btn1">
+                  <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${order.id}" class="btn1">
                     <i class="fas fa-file"></i>
                   </a>
                 </td>
@@ -420,7 +501,7 @@
                 <td class="text-white">${order.email}</td>
                 <td class="text-white">${order.contact_number}</td>
                 <td class="text-white">
-                  <a href="/order-request/${order.id}/" class="btn1">
+                  <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${order.id}" class="btn1">
                     <i class="fas fa-file"></i>
                   </a>
                 </td>
@@ -459,6 +540,38 @@
   }
 
   
+</script>
+
+
+<script>
+  $(document).ready(function() {
+    $('#orderApprovalForm').on('submit', function(event) {
+      event.preventDefault();
+      
+      var formData = {
+        'csrfmiddlewaretoken': '{{ csrf_token }}',
+        'pickupdate': $('#pickupdate').val(),
+        'description': $('#description').val()
+      };
+
+      $.ajax({
+        url: "",
+        type: "POST",
+        data: formData,
+        success: function(response) {
+          if (response.success) {
+            $('#approvemodal').modal('hide');
+            location.reload();
+          } else {
+            alert(response.message);
+          }
+        },
+        error: function(xhr, errmsg, err) {
+          alert("An error occurred: " + errmsg);
+        }
+      });
+    });
+  });
 </script>
 
 {% endblock %}
