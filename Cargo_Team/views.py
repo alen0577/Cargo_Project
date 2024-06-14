@@ -193,7 +193,7 @@ def order_requests(request):
 
 def fetch_orders_by_city(request):
     city = request.GET.get('city')
-    orders = ShipmentBooking.objects.filter(sender_city=city,is_confirmed=0,is_active=1).order_by('date','time')
+    orders = ShipmentBooking.objects.filter(sender_city=city,shipment_type='Home Pickup',is_confirmed=0,is_active=1).order_by('date','time')
     orders_data = [
         {
             'id': order.id,
@@ -518,15 +518,77 @@ def all_orders(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
-        
+        city=City.objects.filter(is_active=True)
         context = {
             'details': dash_details,
             'orders': orders,
+            'city':city,
         }
         return render(request, 'orders/all_orders.html', context)
     else:
         return redirect('/')
 
+def fetch_allorders_by_type(request):
+    order_type = request.GET.get('type')
+    orders = ShipmentBooking.objects.filter(shipment_type=order_type,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')  # Adjust the field name based on your model
+    orders_data = [
+        {
+            'id': order.id,
+            'date': order.date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.booking_order_number,
+            'full_name': order.full_name,
+            'email': order.email,
+            'contact_number': order.contact_number,
+            'status':order.is_confirmed,
+        }
+        for order in orders
+    ]
+    return JsonResponse({'orders': orders_data})
+
+def fetch_allorders_by_city(request):
+    city = request.GET.get('city')
+    orders = ShipmentBooking.objects.filter(sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+    orders_data = [
+        {
+            'id': order.id,
+            'date': order.date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.booking_order_number,
+            'full_name': order.full_name,
+            'email': order.email,
+            'contact_number': order.contact_number,
+            'status':order.is_confirmed,
+        }
+        for order in orders
+    ]
+   
+    return JsonResponse({'orders': orders_data})
+
+def fetch_allpickuporders_by_date(request):
+    city = request.GET.get('city')
+    from_date = request.GET.get('from_date')
+    to_date = request.GET.get('to_date')
+
+    if from_date and to_date:
+        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+    elif from_date:
+        orders = ShipmentBooking.objects.filter(date__gte=from_date,sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+    elif to_date:
+        orders = ShipmentBooking.objects.filter(date__lte=to_date,sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+    else:
+        orders = ShipmentBooking.objects.filter(sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+
+    orders_data = [{
+        'id': order.id,
+        'date': order.date.strftime('%d-%m-%Y'),
+        'booking_order_number': order.booking_order_number,
+        'full_name': order.full_name,
+        'email': order.email,
+        'contact_number': order.contact_number,
+        'status':order.is_confirmed,
+    } for order in orders]
+
+    print(orders_data)
+    return JsonResponse({'orders': orders_data})
 
 def rejected_orders(request):
     if 'login_id' in request.session:

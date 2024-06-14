@@ -28,6 +28,10 @@ urlpatterns = [
     path('bill-save/<int:pk>/',views.bill_save,name='bill_save'), 
 
     path('all-orders/',views.all_orders,name='all_orders'),
+    path('fetch-allorders-by-type/', views.fetch_allorders_by_type, name='fetch_allorders_by_type'),
+    path('fetch-allorders-by-city/', views.fetch_allorders_by_city, name='fetch_allorders_by_city'),
+    path('fetch-allpickuporders-by-date/', views.fetch_allpickuporders_by_date, name='fetch_allpickuporders_by_date'),
+
     path('rejected-orders/',views.rejected_orders,name='rejected_orders'), 
 
     path('customer-support/',views.customer_support,name='customer_support'), 
