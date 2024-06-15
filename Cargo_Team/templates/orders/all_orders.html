@@ -100,6 +100,7 @@
     </div>
   </div>
 
+<!-- date filter section for pickup orders -->
   <div class="row mt-3">
     <div class="col-lg-3" id="fdate1" style="display: none">
       <label class="main-heading">From</label>
@@ -127,6 +128,36 @@
       </button>
     </div>
   </div>
+
+  <!-- date filter section for shipping center orders -->
+  <div class="row mt-3">
+    <div class="col-lg-3" id="fdate2" style="display: none">
+      <label class="main-heading">From</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fromdate2"
+        name="fromdate2"
+        required
+      />
+    </div>
+    <div class="col-lg-3" id="tdate2" style="display: none">
+      <label class="main-heading">To</label>
+      <input
+        type="date"
+        class="form-control"
+        id="todate2"
+        name="todate2"
+        required
+      />
+    </div>
+    <div class="col-lg-2" id="btn2" style="display: none">
+      <button class="btn1 mt-4" type="button" id="filterButton2" onclick="fetchshipcenterOrdersdate()">
+        <i class="fas fa-search mx-1"></i>
+      </button>
+    </div>
+  </div>
+
   
 
   <div class="row mt-5 mb-5">
@@ -390,16 +421,23 @@
     var fdate1 = document.getElementById("fdate1");
     var tdate1 = document.getElementById("tdate1");
     var btn1 = document.getElementById("btn1");
+    var fdate2 = document.getElementById("fdate2");
+    var tdate2 = document.getElementById("tdate2");
+    var btn2 = document.getElementById("btn2");
 
     // Clear date inputs
     document.getElementById("fromdate").value = "";
     document.getElementById("todate").value = "";
+    document.getElementById("fromdate2").value = "";
+    document.getElementById("todate2").value = "";
 
     if (type === "Home Pickup") {
       cityDiv.style.display = "block";
       searchDiv.style.display = "none";
       city.value = "";
-      
+      fdate2.style.display = "none";
+      tdate2.style.display = "none";
+      btn2.style.display = "none";
       fetchOrdersByType("Home Pickup");
     } else if (type === "Shipping Center") {
       cityDiv.style.display = "none";
@@ -407,6 +445,9 @@
       fdate1.style.display = "none";
       tdate1.style.display = "none";
       btn1.style.display = "none";
+      fdate2.style.display = "block";
+      tdate2.style.display = "block";
+      btn2.style.display = "block";
       fetchOrdersByType("Shipping Center");
     } else {
       cityDiv.style.display = "none";
@@ -414,6 +455,9 @@
       fdate1.style.display = "none";
       tdate1.style.display = "none";
       btn1.style.display = "none";
+      fdate2.style.display = "none";
+      tdate2.style.display = "none";
+      btn2.style.display = "none";
     }
   }
 
@@ -540,6 +584,59 @@
       type: "GET",
       data: {
         city: city,
+        from_date: fromDate,
+        to_date: toDate
+      },
+      success: function (response) {
+        var ordersTable = $("#ordersTable");
+        ordersTable.empty();
+
+        response.orders.forEach(function (order, index) {
+          var orderStatus = "";
+          if (order.status == 0) {
+            orderStatus = '<td class="text-danger">Pending</td>';
+          } else if (order.status == 1) {
+            orderStatus = '<td class="text-warning">Waiting for pickup</td>';
+          } else if (order.status == 2) {
+            orderStatus = '<td class="text-warning">Waiting for payment</td>';
+          } else if (order.status == 3) {
+            orderStatus = '<td class="text-success">Payment Completed</td>';
+          }
+          ordersTable.append(`
+                <tr class="borderstyle">
+                  <td class="text-white">${index + 1}</td>
+                  <td class="text-white">${order.date}</td>
+                  <td class="text-white">${order.booking_order_number}</td>
+                  <td class="text-white">${order.full_name}</td>
+                  <td class="text-white">${order.email}</td>
+                  <td class="text-white">${order.contact_number}</td>
+                  ${orderStatus}
+                  <td class="text-white">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
+                      order.id
+                    }" class="btn1">
+                      <i class="fas fa-file"></i>
+                    </a>
+                  </td>
+                </tr>
+              `);
+        });
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  }
+
+  function fetchshipcenterOrdersdate() {
+    
+    var fromDate = document.getElementById("fromdate2").value;
+    var toDate = document.getElementById("todate2").value;
+
+    $.ajax({
+      url: '{% url "fetch_allshipcenterorders_by_date" %}', // Adjust the URL to your view
+      type: "GET",
+      data: {
         from_date: fromDate,
         to_date: toDate
       },

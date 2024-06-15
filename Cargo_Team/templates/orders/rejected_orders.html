@@ -1,26 +1,25 @@
-{% extends 'team_base.html' %}
-{% load static %}
+{% extends 'team_base.html' %} {% load static %}
 
 <!-- title for rejected orders  page -->
-{% block title %}
-Rejected Orders
-{% endblock %}
+{% block title %} Rejected Orders {% endblock %}
 
 <!-- css link for rejected orders page -->
 {% block link %}
-<link rel="stylesheet"  href="{% static 'team/css/order.css' %}">
+<link rel="stylesheet" href="{% static 'team/css/order.css' %}" />
 {% endblock %}
-
 
 <!-- contents for  rejected orders  -->
 {% block content %}
 
-
-
 <div class="container-fluid px-4">
-    
   <ol class="breadcrumb mt-3">
-    <li class="breadcrumb-item"><a class="text-decoration-none main-heading" href="{% url 'team_dashboard' %}">Dashboard</a></li>
+    <li class="breadcrumb-item">
+      <a
+        class="text-decoration-none main-heading"
+        href="{% url 'team_dashboard' %}"
+        >Dashboard</a
+      >
+    </li>
     <li class="breadcrumb-item active">Rejeted Orders</li>
   </ol>
 
@@ -32,263 +31,664 @@ Rejected Orders
       {% for message in messages %}
       <div class="alert alert-dismissible fade show" role="alert">
         {% if message.tags == 'success' %}
-        <strong>Success <i class="fas fa-check-circle icon"></i></strong><span class="ms-2">{{message}}</span>
+        <strong>Success <i class="fas fa-check-circle icon"></i></strong
+        ><span class="ms-2">{{message}}</span>
         {% else %}
-        <strong>Sorry <i class="fas fa-warning icon"></i></strong><span class="ms-2">{{message}}</span>
+        <strong>Sorry <i class="fas fa-warning icon"></i></strong
+        ><span class="ms-2">{{message}}</span>
         {% endif %}
-        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close btn-close-white shadow-none"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
       </div>
       {% endfor %}
     </div>
   </div>
   {% endif %}
+  <div class="row mt-5">
+    <p style="text-align: justify">
+      Note* -
+      <span class="text-warning-emphasis"
+        >Please select order type, city to get orders in your area.</span
+      >
+    </p>
+    <div class="col-lg-3">
+      <select
+        class="form-select mt-1 mb-1"
+        name="type"
+        id="type"
+        onchange="showOptions()"
+      >
+        <option value="" hidden>Select Order Type*</option>
+        <option class="opt-hover" value="Home Pickup">Home Pickup</option>
+        <option class="opt-hover" value="Shipping Center">
+          Shipping Center
+        </option>
+      </select>
+    </div>
 
-  <div class="row  mt-5 mb-5">
-      <div class="col-lg-12">
-          <div class="table-responsive">
-            <h6 class="main-heading">Orders</h6>
-            <table class="table table-hover tablestyle mt-4">
-              <thead >
-                <tr>
-                  <th class="text-white">Sl.No</th>
-                  <th class="text-white">Ordered Date</th>
-                  <th class="text-white">Order.No</th>
-                  <th class="text-white">Name</th>
-                  <th class="text-white">Email</th>
-                  <th class="text-white">Contact</th>
-                  <th class="text-white">Rejection reason</th>
-                  <th class="text-white">Details</th>
-                    
-                    
-                </tr>
-              </thead>
-              <tbody>
-                {% for i in orders %}
-                <tr class="borderstyle">
-                  <td class="text-white">{{forloop.counter}}</td>
-          
-                  
-                  <td class="text-white">{{i.date}}</td>
-                  <td class="text-white">{{i.booking_order_number}}</td>
-                  
-                  <td class="text-white">{{i.full_name}}</td>
-                  <td class="text-white">{{i.email}}</td>
-                  <td class="text-white">{{i.contact_number}}</td>
-                
-                  <td class="text-white">
-                    <div><textarea name="" rows="3" cols="31" id="" readonly>{{i.description}}</textarea></div>
-                  </td>
-          
-                  <td class="text-white">
-                    <a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal{{i.id}}"><i class="fas fa-file"></i></a> 
-                  </td>
-                
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-          
+    <div class="col-lg-3" id="cityDiv" style="display: none">
+      <select
+        class="form-select mt-1 mb-1"
+        name="city"
+        id="city"
+        onchange="fetchOrders()"
+      >
+        <option value="" hidden>Select City</option>
+        {% for i in city %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-lg-3" id="searchDiv" style="display: none">
+      <div class="container-fluid mt-1 mb-1">
+        <form class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            id="searchInput"
+            oninput="filterTable()"
+          />
+        </form>
       </div>
+    </div>
   </div>
 
+  <!-- date filter section for pickup orders -->
+  <div class="row mt-3">
+    <div class="col-lg-3" id="fdate1" style="display: none">
+      <label class="main-heading">From</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fromdate"
+        name="fromdate"
+        required
+      />
+    </div>
+    <div class="col-lg-3" id="tdate1" style="display: none">
+      <label class="main-heading">To</label>
+      <input
+        type="date"
+        class="form-control"
+        id="todate"
+        name="todate"
+        required
+      />
+    </div>
+    <div class="col-lg-2" id="btn1" style="display: none">
+      <button
+        class="btn1 mt-4"
+        type="button"
+        id="filterButton1"
+        onclick="fetchpickupOrdersdate()"
+      >
+        <i class="fas fa-search mx-1"></i>
+      </button>
+    </div>
+  </div>
 
+  <!-- date filter section for shipping center orders -->
+  <div class="row mt-3">
+    <div class="col-lg-3" id="fdate2" style="display: none">
+      <label class="main-heading">From</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fromdate2"
+        name="fromdate2"
+        required
+      />
+    </div>
+    <div class="col-lg-3" id="tdate2" style="display: none">
+      <label class="main-heading">To</label>
+      <input
+        type="date"
+        class="form-control"
+        id="todate2"
+        name="todate2"
+        required
+      />
+    </div>
+    <div class="col-lg-2" id="btn2" style="display: none">
+      <button
+        class="btn1 mt-4"
+        type="button"
+        id="filterButton2"
+        onclick="fetchshipcenterOrdersdate()"
+      >
+        <i class="fas fa-search mx-1"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-5 mb-5">
+    <div class="col-lg-12">
+      <div class="table-responsive">
+        <h6 class="main-heading">Orders</h6>
+        <table class="table table-hover tablestyle mt-4">
+          <thead>
+            <tr>
+              <th class="text-white">Sl.No</th>
+              <th class="text-white">Ordered Date</th>
+              <th class="text-white">Order.No</th>
+              <th class="text-white">Name</th>
+              <th class="text-white">Email</th>
+              <th class="text-white">Contact</th>
+              <th class="text-white">Rejection reason</th>
+              <th class="text-white">Details</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable">
+            {% for i in orders %}
+            <tr class="borderstyle">
+              <td class="text-white">{{forloop.counter}}</td>
+
+              <td class="text-white">{{i.date}}</td>
+              <td class="text-white">{{i.booking_order_number}}</td>
+
+              <td class="text-white">{{i.full_name}}</td>
+              <td class="text-white">{{i.email}}</td>
+              <td class="text-white">{{i.contact_number}}</td>
+
+              <td class="text-white">
+                <div>
+                  <textarea name="" rows="3" cols="31" id="" readonly>
+{{i.description}}</textarea
+                  >
+                </div>
+              </td>
+
+              <td class="text-white">
+                <a
+                  href=""
+                  class="btn1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#detailsmodal{{i.id}}"
+                  ><i class="fas fa-file"></i
+                ></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-
-
 
 <!--Details Modal -->
 {% for i in orders %}
-<div class="modal fade " id="detailsmodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="detailsmodal{{i.id}}"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
-    <div class="modal-content ">
+    <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-file"></i> Booking Order</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <i class="fas fa-file"></i> Booking Order
+        </h1>
       </div>
       <div class="modal-body rounded-2 shadow">
-
         <div class="row g-0 mt-3">
           <div class="col-4"></div>
           <div class="col-4"></div>
           <div class="col-4">
             <div class="details2 text-end">
-                <p class="fw-bold">{{i.booking_order_number}}</p>
-                <p class="fw-bold mt-1">{{i.date}}</p>
+              <p class="fw-bold">{{i.booking_order_number}}</p>
+              <p class="fw-bold mt-1">{{i.date}}</p>
             </div>
           </div>
         </div>
 
         <div class="shipment-details-section">
           <div class="row g-0">
-              <div class="col-12">
-                  <h5 class="main-heading fw-bold">Shipment Order Details</h5>
-              </div>
+            <div class="col-12">
+              <h5 class="main-heading fw-bold">Shipment Order Details</h5>
+            </div>
           </div>
           <div class="row g-0 mt-3 lh-large">
-              <div class="col-6">
-                  <div class="row">
-                      <div class="col-5">Name</div>
-                      <div class="col-7 ">{{i.full_name|title}}</div>
-                  </div>
-                  <div class="row">
-                      <div class="col-5">Email</div>
-                      <div class="col-7 ">{{i.email}}</div>
-                  </div>
-                  <div class="row">
-                      <div class="col-5">Phone No.</div>
-                      <div class="col-7 ">{{i.contact_number}}</div>
-                  </div>
-                  <div class="row">
-                      <div class="col-5">Delivery Option</div>
-                      <div class="col-7 fw-bold ">By {{i.delivery_option|title}}</div>
-                  </div>
-                  <div class="row">
-                      <div class="col-5">Delivery Type</div>
-                      <div class="col-7 fw-bold ">{{i.delivery_type|title}} Delivery</div>
-                  </div>
-                  <div class="row">
-                      <div class="col-5">Package Weight</div>
-                      <div class="col-7 ">{{i.package_weight}} Kg</div>
-                  </div>
-                  <div class="row">
-                      <div class="col-5">No. of Packages</div>
-                      <div class="col-7 ">{{i.number_of_packages}}</div>
-                  </div>
-                  
+            <div class="col-6">
+              <div class="row">
+                <div class="col-5">Name</div>
+                <div class="col-7">{{i.full_name|title}}</div>
               </div>
-              <div class="col-6"></div>
+              <div class="row">
+                <div class="col-5">Email</div>
+                <div class="col-7">{{i.email}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Phone No.</div>
+                <div class="col-7">{{i.contact_number}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Delivery Option</div>
+                <div class="col-7 fw-bold">By {{i.delivery_option|title}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Delivery Type</div>
+                <div class="col-7 fw-bold">
+                  {{i.delivery_type|title}} Delivery
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">Package Weight</div>
+                <div class="col-7">{{i.package_weight}} Kg</div>
+              </div>
+              <div class="row">
+                <div class="col-5">No. of Packages</div>
+                <div class="col-7">{{i.number_of_packages}}</div>
+              </div>
+            </div>
+            <div class="col-6"></div>
           </div>
         </div>
 
         <div class="address-details mt-3">
-          {% if i.shipment_type == "Home Pickup" %} 
+          {% if i.shipment_type == "Home Pickup" %}
           <div class="row g-0">
-              <div class="col-5">
-                  <h5 class="main-heading fw-bold">Pickup Address</h5>
-                  <div class="row g-0 mt-3">
-                      <div class="col-12">
-                          <div class="row">
-                              <div class="col-5">Name</div>
-                              <div class="col-7 ">{{i.sender_name|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Address</div>
-                              <div class="col-7 ">{{i.sender_address|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">City</div>
-                              <div class="col-7 ">{{i.sender_city|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Pincode</div>
-                              <div class="col-7 fw-bold">{{i.sender_pincode}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">State</div>
-                              <div class="col-7 ">{{i.sender_state|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Country</div>
-                              <div class="col-7 ">{{i.sender_country|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Contact No.</div>
-                              <div class="col-7">{{i.sender_contact_no}}</div>
-                          </div>
-                      </div>
+            <div class="col-5">
+              <h5 class="main-heading fw-bold">Pickup Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{i.sender_name|title}}</div>
                   </div>
-
-              </div>
-              <div class="col-2"></div>
-              <div class="col-5">
-                  <h5 class="main-heading fw-bold">Delivery Address</h5>
-                  <div class="row g-0 mt-3">
-                      <div class="col-12">
-                          <div class="row">
-                              <div class="col-5">Name</div>
-                              <div class="col-7">{{i.receiver_name|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Address</div>
-                              <div class="col-7 ">{{i.receiver_address|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">City</div>
-                              <div class="col-7 ">{{i.receiver_city|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Pincode</div>
-                              <div class="col-7 fw-bold">{{i.receiver_pincode}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">State</div>
-                              <div class="col-7 ">{{i.receiver_state|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Country</div>
-                              <div class="col-7 ">{{i.receiver_country|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Contact No.</div>
-                              <div class="col-7 ">{{i.receiver_contact_no}}</div>
-                          </div>
-                      </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">{{i.sender_address|title}}</div>
                   </div>
-
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{i.sender_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">{{i.sender_pincode}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{i.sender_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">{{i.sender_country|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{i.sender_contact_no}}</div>
+                  </div>
+                </div>
               </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5">
+              <h5 class="main-heading fw-bold">Delivery Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{i.receiver_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">{{i.receiver_address|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{i.receiver_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">{{i.receiver_pincode}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{i.receiver_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">{{i.receiver_country|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{i.receiver_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           {% else %}
           <div class="row">
-              <div class="col-6">
-                  <h5 class="main-heading fw-bold">Delivery Address</h5>
-                  <div class="row g-0 mt-3">
-                      <div class="col-12">
-                          <div class="row">
-                              <div class="col-5">Name</div>
-                              <div class="col-7 ">{{i.receiver_name|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Address</div>
-                              <div class="col-7 ">{{i.receiver_address|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">City</div>
-                              <div class="col-7 ">{{i.receiver_city|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Pincode</div>
-                              <div class="col-7 fw-bold">{{i.receiver_pincode}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">State</div>
-                              <div class="col-7 ">{{i.receiver_state|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Country</div>
-                              <div class="col-7 ">{{i.receiver_country|title}}</div>
-                          </div>
-                          <div class="row">
-                              <div class="col-5">Contact No.</div>
-                              <div class="col-7 ">{{i.receiver_contact_no}}</div>
-                          </div>
-                      </div>
+            <div class="col-6">
+              <h5 class="main-heading fw-bold">Delivery Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{i.receiver_name|title}}</div>
                   </div>
-
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">{{i.receiver_address|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{i.receiver_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">{{i.receiver_pincode}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{i.receiver_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">{{i.receiver_country|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{i.receiver_contact_no}}</div>
+                  </div>
+                </div>
               </div>
-              <div class="col-2"></div>
-              <div class="col-5"></div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5"></div>
           </div>
           {% endif %}
         </div>
-
-          
-        
       </div>
-      
     </div>
   </div>
 </div>
 {% endfor %}
 
+<script>
+  function showOptions() {
+    var type = document.getElementById("type").value;
+    var cityDiv = document.getElementById("cityDiv");
+    var searchDiv = document.getElementById("searchDiv");
+    var city = document.getElementById("city");
+    var fdate1 = document.getElementById("fdate1");
+    var tdate1 = document.getElementById("tdate1");
+    var btn1 = document.getElementById("btn1");
+    var fdate2 = document.getElementById("fdate2");
+    var tdate2 = document.getElementById("tdate2");
+    var btn2 = document.getElementById("btn2");
+
+    // Clear date inputs
+    document.getElementById("fromdate").value = "";
+    document.getElementById("todate").value = "";
+    document.getElementById("fromdate2").value = "";
+    document.getElementById("todate2").value = "";
+
+    if (type === "Home Pickup") {
+      cityDiv.style.display = "block";
+      searchDiv.style.display = "none";
+      city.value = "";
+      fdate2.style.display = "none";
+      tdate2.style.display = "none";
+      btn2.style.display = "none";
+      fetchOrdersByType("Home Pickup");
+    } else if (type === "Shipping Center") {
+      cityDiv.style.display = "none";
+      searchDiv.style.display = "block";
+      fdate1.style.display = "none";
+      tdate1.style.display = "none";
+      btn1.style.display = "none";
+      fdate2.style.display = "block";
+      tdate2.style.display = "block";
+      btn2.style.display = "block";
+      fetchOrdersByType("Shipping Center");
+    } else {
+      cityDiv.style.display = "none";
+      searchDiv.style.display = "none";
+      fdate1.style.display = "none";
+      tdate1.style.display = "none";
+      btn1.style.display = "none";
+      fdate2.style.display = "none";
+      tdate2.style.display = "none";
+      btn2.style.display = "none";
+    }
+  }
+
+  function fetchOrders() {
+    var city = $("#city").val();
+
+    // Clear date inputs
+    document.getElementById("fromdate").value = "";
+    document.getElementById("todate").value = "";
+
+    if (city) {
+      document.getElementById("fdate1").style.display = "block";
+      document.getElementById("tdate1").style.display = "block";
+      document.getElementById("btn1").style.display = "block";
+    } else {
+      document.getElementById("fdate1").style.display = "none";
+      document.getElementById("tdate1").style.display = "none";
+      document.getElementById("btn1").style.display = "none";
+    }
+
+    $.ajax({
+      url: '{% url "fetch_rejectedorders_by_city" %}', // Adjust the URL to your view
+      type: "GET",
+      data: {
+        city: city,
+      },
+      success: function (response) {
+        var ordersTable = $("#ordersTable");
+        ordersTable.empty();
+
+        response.orders.forEach(function (order, index) {
+          ordersTable.append(`
+                  <tr class="borderstyle">
+                    <td class="text-white">${index + 1}</td>
+                    <td class="text-white">${order.date}</td>
+                    <td class="text-white">${order.booking_order_number}</td>
+                    <td class="text-white">${order.full_name}</td>
+                    <td class="text-white">${order.email}</td>
+                    <td class="text-white">${order.contact_number}</td>
+                    <td class="text-white">
+                        <div>
+                        <textarea  rows="3" cols="31" readonly>${order.reason}</textarea>
+                        </div>
+                    </td>
+                    <td class="text-white">
+                      <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
+                        order.id
+                      }" class="btn1">
+                        <i class="fas fa-file"></i>
+                      </a>
+                    </td>
+                  </tr>
+                `);
+        });
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  }
+
+  function fetchOrdersByType(type) {
+    $.ajax({
+      url: '{% url "fetch_rejectedorders_by_type" %}', // Adjust the URL to your view
+      type: "GET",
+      data: {
+        type: type,
+      },
+      success: function (response) {
+        var ordersTable = $("#ordersTable");
+        ordersTable.empty();
+
+        response.orders.forEach(function (order, index) {
+          
+          ordersTable.append(`
+                  <tr class="borderstyle">
+                    <td class="text-white">${index + 1}</td>
+                    <td class="text-white">${order.date}</td>
+                    <td class="text-white">${order.booking_order_number}</td>
+                    <td class="text-white">${order.full_name}</td>
+                    <td class="text-white">${order.email}</td>
+                    <td class="text-white">${order.contact_number}</td>
+                    <td class="text-white">
+                        <div>
+                        <textarea  rows="3" cols="31" readonly>${order.reason}</textarea>
+                        </div>
+                    </td>
+                    <td class="text-white">
+                      <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
+                        order.id
+                      }" class="btn1">
+                        <i class="fas fa-file"></i>
+                      </a>
+                    </td>
+                  </tr>
+                `);
+        });
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  }
+
+  function fetchpickupOrdersdate() {
+    var city = $("#city").val();
+    var fromDate = document.getElementById("fromdate").value;
+    var toDate = document.getElementById("todate").value;
+
+    $.ajax({
+      url: '{% url "fetch_rejectedpickuporders_by_date" %}', // Adjust the URL to your view
+      type: "GET",
+      data: {
+        city: city,
+        from_date: fromDate,
+        to_date: toDate,
+      },
+      success: function (response) {
+        var ordersTable = $("#ordersTable");
+        ordersTable.empty();
+
+        response.orders.forEach(function (order, index) {
+          
+          ordersTable.append(`
+                  <tr class="borderstyle">
+                    <td class="text-white">${index + 1}</td>
+                    <td class="text-white">${order.date}</td>
+                    <td class="text-white">${order.booking_order_number}</td>
+                    <td class="text-white">${order.full_name}</td>
+                    <td class="text-white">${order.email}</td>
+                    <td class="text-white">${order.contact_number}</td>
+                    <td class="text-white">
+                        <div>
+                        <textarea  rows="3" cols="31" readonly>${order.reason}</textarea>
+                        </div>
+                    </td>
+                    <td class="text-white">
+                      <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
+                        order.id
+                      }" class="btn1">
+                        <i class="fas fa-file"></i>
+                      </a>
+                    </td>
+                  </tr>
+                `);
+        });
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  }
+
+  function fetchshipcenterOrdersdate() {
+    var fromDate = document.getElementById("fromdate2").value;
+    var toDate = document.getElementById("todate2").value;
+
+    $.ajax({
+      url: '{% url "fetch_rejectedshipcenterorders_by_date" %}', // Adjust the URL to your view
+      type: "GET",
+      data: {
+        from_date: fromDate,
+        to_date: toDate,
+      },
+      success: function (response) {
+        var ordersTable = $("#ordersTable");
+        ordersTable.empty();
+
+        response.orders.forEach(function (order, index) {
+          
+          ordersTable.append(`
+                  <tr class="borderstyle">
+                    <td class="text-white">${index + 1}</td>
+                    <td class="text-white">${order.date}</td>
+                    <td class="text-white">${order.booking_order_number}</td>
+                    <td class="text-white">${order.full_name}</td>
+                    <td class="text-white">${order.email}</td>
+                    <td class="text-white">${order.contact_number}</td>
+                    <td class="text-white">
+                        <div>
+                        <textarea  rows="3" cols="31" readonly>${order.reason}</textarea>
+                        </div>
+                    </td>
+                    <td class="text-white">
+                      <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
+                        order.id
+                      }" class="btn1">
+                        <i class="fas fa-file"></i>
+                      </a>
+                    </td>
+                  </tr>
+                `);
+        });
+      },
+      error: function (error) {
+        console.log(error);
+      },
+    });
+  }
+</script>
+
+<script>
+  function filterTable() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("ordersTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+      tdOrderNo = tr[i].getElementsByTagName("td")[2];
+      tdName = tr[i].getElementsByTagName("td")[3];
+      if (tdOrderNo || tdName) {
+        txtValueOrderNo = tdOrderNo.textContent || tdOrderNo.innerText;
+        txtValueName = tdName.textContent || tdName.innerText;
+        if (
+          txtValueOrderNo.toUpperCase().indexOf(filter) > -1 ||
+          txtValueName.toUpperCase().indexOf(filter) > -1
+        ) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
 
 {% endblock %}

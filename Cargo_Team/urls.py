@@ -31,8 +31,13 @@ urlpatterns = [
     path('fetch-allorders-by-type/', views.fetch_allorders_by_type, name='fetch_allorders_by_type'),
     path('fetch-allorders-by-city/', views.fetch_allorders_by_city, name='fetch_allorders_by_city'),
     path('fetch-allpickuporders-by-date/', views.fetch_allpickuporders_by_date, name='fetch_allpickuporders_by_date'),
+    path('fetch-allshipcenterorders-by-date/', views.fetch_allshipcenterorders_by_date, name='fetch_allshipcenterorders_by_date'),
 
-    path('rejected-orders/',views.rejected_orders,name='rejected_orders'), 
+    path('rejected-orders/',views.rejected_orders,name='rejected_orders'),
+    path('fetch-rejectedorders-by-type/', views.fetch_rejectedorders_by_type, name='fetch_rejectedorders_by_type'),
+    path('fetch-rejectedorders-by-city/', views.fetch_rejectedorders_by_city, name='fetch_rejectedorders_by_city'),
+    path('fetch-rejectedpickuporders-by-date/', views.fetch_rejectedpickuporders_by_date, name='fetch_rejectedpickuporders_by_date'),
+    path('fetch-rejectedshipcenterorders-by-date/', views.fetch_rejectedshipcenterorders_by_date, name='fetch_rejectedshipcenterorders_by_date'), 
 
     path('customer-support/',views.customer_support,name='customer_support'), 
     path('pending-issues/',views.pending_issues,name='pending_issues'), 
