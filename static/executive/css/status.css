@@ -124,3 +124,26 @@
     right: 0;
 }
 
+.btn3{
+    background-color: rgb(255, 255, 255);
+    color:  rgb(66, 28, 82);
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.btn3:focus {
+    box-shadow: none !important; /* Remove box shadow on focus */
+    border-color: rgb(66, 28, 82);
+}
+
+/* Style the options */
+.btn3 option {
+    background-color: #fff; /* Option background color */
+    color: rgb(66, 28, 82); /* Option text color */
+}
+
+/* Style the options on hover */
+.btn3 option:hover {
+    background-color: #fff; /* Option background color */
+    color: rgb(66, 28, 82); /* Option text color */
+}

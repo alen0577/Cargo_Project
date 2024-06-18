@@ -5,6 +5,7 @@ from Admin.models import ServiceLocation
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -95,6 +96,29 @@ def shipment_status_update(request):
         return render(request, 'shipment_status.html', context)
     else:
         return redirect('/')
+
+
+def update_order_status(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        status = request.POST.get('status')
+
+        order = ShipmentTracking.objects.get(id=order_id)
+        order.status = status
+        order.save()
+
+        orders = ShipmentTracking.objects.all()
+        orders_data = [{
+            'id': order.id,
+            'date': order.shipment.date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.shipment.booking_order_number,
+            'status': order.status,
+        } for order in orders]
+        return JsonResponse({'success': True,'orders': orders_data})
+        
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
 
 
 # Order queries section page
