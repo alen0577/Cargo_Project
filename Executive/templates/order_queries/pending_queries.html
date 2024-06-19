@@ -70,7 +70,11 @@ Pending Order Queries
                   <td class="text-white">{{i.date}}</td>
                   <td class="text-white">{{i.name}}</td>
                   <td class="text-white">{{i.tracking_number}}</td>
-                  <td class="text-white">{{i.queries}}</td>
+                  <td class="text-white text-start">
+                    <div>
+                      <textarea  rows="3" cols="31"  readonly>{{i.queries}}</textarea>
+                    </div>
+                  </td>
                 
                   
           
@@ -93,7 +97,7 @@ Pending Order Queries
 </div>
 
 <!--solve Modal -->
-{% for i in issues %}
+{% for i in queries %}
 <div class="modal fade " id="solvemodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog ">
     <div class="modal-content ">
@@ -101,26 +105,23 @@ Pending Order Queries
         <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-exclamation-triangle"></i> Issue Response</h1>
       </div>
       <div class="modal-body rounded-2 shadow">
-        <form action="{% url 'issue_action_taken' i.id %}" method="post">
+        <form action="{% url 'query_action_taken' i.id %}" method="post">
           {% csrf_token %}
           <div class="row g-0 mt-3 lh-large">
               <div class="col-12">
                   <div class="row mt-1">
                       <div class="col-4">Name</div>
-                      <div class="col-8 ">{{i.full_name|title}}</div>
+                      <div class="col-8 ">{{i.name|title}}</div>
                   </div>
                   <div class="row mt-1">
-                      <div class="col-4">Email</div>
-                      <div class="col-8 ">{{i.email}}</div>
+                      <div class="col-4">Tracking Number</div>
+                      <div class="col-8 ">{{i.tracking_number}}</div>
                   </div>
                   <div class="row mt-1">
-                      <div class="col-4">Phone No.</div>
-                      <div class="col-8 ">{{i.contact_number}}</div>
+                      <div class="col-4">Queries</div>
+                      <div class="col-8 fw-bold">{{i.queries}}</div>
                   </div>
-                  <div class="row mt-1">
-                      <div class="col-4">Issue/Help</div>
-                      <div class="col-8 fw-bold">{{i.issues}}</div>
-                  </div>
+                  
                   <div class="row mt-2">
                       <div class="col-4">Response</div>
                       <div class="col-8 ">

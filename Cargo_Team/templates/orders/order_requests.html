@@ -115,10 +115,10 @@
               <th scope="col" class="text-white">Email</th>
               <th scope="col" class="text-white">Contact</th>
               <th scope="col" class="text-white">Details</th>
-              <th scope="col" class="text-white">Action</th>
+              <!-- <th scope="col" class="text-white">Action</th> -->
             </tr>
           </thead>
-          <tbody id="ordersTable">
+          <tbody id="ordersTabl">
             {% for i in orders %}
             <tr class="borderstyle">
               <td class="text-white">{{forloop.counter}}</td>
@@ -129,8 +129,14 @@
               <td class="text-white">{{i.full_name}}</td>
               <td class="text-white">{{i.email}}</td>
               <td class="text-white">{{i.contact_number}}</td>
-
               <td class="text-white">
+                <a
+                  href="{% url 'order_request_details' i.id %}"
+                  class="btn1"
+                  ><i class="fas fa-file"></i
+                ></a>
+              </td>
+              <!-- <td class="text-white">
                 <a
                   href=""
                   data-bs-toggle="modal"
@@ -155,7 +161,7 @@
                 >
                   <i class="fa fa-window-close"></i
                 ></a>
-              </td>
+              </td> -->
             </tr>
             {% endfor %}
           </tbody>

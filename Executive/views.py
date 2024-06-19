@@ -158,6 +158,28 @@ def pending_queries(request):
         return redirect('/')
 
 
+def query_action_taken(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        query=OrderQueries.objects.get(id=pk,action_taken=0)
+        if request.method == 'POST':
+            query.action_taken=1
+            query.response=request.POST.get('response')
+            query.save()
+            messages.success(request,'Action Taken')
+            return redirect('pending_queries')  
+        else:
+            return redirect('pending_queries',)
+
+    else:
+        return redirect('/')
+
+
+
 
 def all_queries(request):
     if 'login_id' in request.session:

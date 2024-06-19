@@ -244,55 +244,55 @@ def order_request_details(request,pk):
         return redirect('/')
 
 
-# def order_approval(request,pk):
-#     if 'login_id' in request.session:
-#         log_id = request.session['login_id']
-#         if 'login_id' not in request.session:
-#             return redirect('/')
-        
-#         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-#         order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
-#         if request.method == 'POST':
-#             order.pickup_date=request.POST.get('pickupdate')
-#             order.description=request.POST.get('description')
-#             if order.shipment_type == 'Home Pickup':
-#                 order.is_confirmed=1
-#             else:
-#                 order.is_confirmed=2
-
-#             order.save()
-#             messages.success(request,'Order Confirmed')
-#             return redirect('order_requests')  
-#         else:
-#             return redirect('order_requests')
-
-#     else:
-#         return redirect('/')
-
-
-def order_approval(request, pk):
+def order_approval(request,pk):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
-        dash_details = get_object_or_404(CargoTeam, id=log_id, admin_approval=1, is_active=1)
-        order = get_object_or_404(ShipmentBooking, id=pk, is_confirmed=0, is_active=1)
+        if 'login_id' not in request.session:
+            return redirect('/')
         
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
         if request.method == 'POST':
-            
-            order.pickup_date = request.POST.get('pickupdate')
-            order.description = request.POST.get('description')
-            
+            order.pickup_date=request.POST.get('pickupdate')
+            order.description=request.POST.get('description')
             if order.shipment_type == 'Home Pickup':
-                order.is_confirmed = 1
+                order.is_confirmed=1
             else:
-                order.is_confirmed = 2
-            
+                order.is_confirmed=2
+
             order.save()
-            return JsonResponse({'success': True, 'message': 'Order Confirmed'})
-            
+            messages.success(request,'Order Confirmed')
+            return redirect('order_requests')  
         else:
-            return JsonResponse({'success': False, 'message': 'Invalid request method'})
+            return redirect('order_requests')
+
     else:
-        return JsonResponse({'success': False, 'message': 'Unauthorized access'})
+        return redirect('/')
+
+
+# def order_approval(request, pk):
+#     if 'login_id' in request.session:
+#         log_id = request.session['login_id']
+#         dash_details = get_object_or_404(CargoTeam, id=log_id, admin_approval=1, is_active=1)
+#         order = get_object_or_404(ShipmentBooking, id=pk, is_confirmed=0, is_active=1)
+        
+#         if request.method == 'POST':
+            
+#             order.pickup_date = request.POST.get('pickupdate')
+#             order.description = request.POST.get('description')
+            
+#             if order.shipment_type == 'Home Pickup':
+#                 order.is_confirmed = 1
+#             else:
+#                 order.is_confirmed = 2
+            
+#             order.save()
+#             return JsonResponse({'success': True, 'message': 'Order Confirmed'})
+            
+#         else:
+#             return JsonResponse({'success': False, 'message': 'Invalid request method'})
+#     else:
+#         return JsonResponse({'success': False, 'message': 'Unauthorized access'})
 
 def order_rejection(request,pk):
     if 'login_id' in request.session:

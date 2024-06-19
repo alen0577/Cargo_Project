@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('order-queries/',views.query_section,name='query_section'),
     path('pending-queries/',views.pending_queries,name='pending_queries'),
+    path('query-action-taken/<int:pk>/',views.query_action_taken,name='query_action_taken'),
     path('all-queries/',views.all_queries,name='all_queries'),
     
 ]

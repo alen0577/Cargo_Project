@@ -266,7 +266,7 @@ Order Details
                 <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-check-circle"></i> Order Confirmation</h1>
             </div>
             <div class="modal-body rounded-2 shadow">
-                <form id="orderApprovalForm"  method="post">
+                <form id="orderApprovalForm" action="{% url 'order_approval' order.id %}"  method="post">
                     {% csrf_token %}
                     {% if order.shipment_type == "Home Pickup" %}
                     <label for="">Select a date for pickup items*</label>
@@ -328,7 +328,7 @@ Order Details
 </div>
 
 
-<script>
+<!-- <script>
     $(document).ready(function() {
       $('#orderApprovalForm').on('submit', function(event) {
         event.preventDefault();
@@ -357,7 +357,7 @@ Order Details
         });
       });
     });
-</script>
+</script> -->
 
 
 {% endblock %}
