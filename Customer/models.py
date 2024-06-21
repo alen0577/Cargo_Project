@@ -85,6 +85,18 @@ class ShipmentTracking(models.Model):
     estimated_delivery_date = models.DateField(null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
 
+    is_delivered = models.BooleanField(default=False)   
+    delivery_date = models.DateField(null=True, blank=True)  
+    is_returned = models.BooleanField(default=False)  
+    return_reason = models.TextField(null=True, blank=True) 
+    is_arrived = models.BooleanField(default=False)   
+    destination_hub_arrival_date = models.DateField(null=True, blank=True)  
+    return_processed_date = models.DateField(null=True, blank=True)  
+    shipped_date = models.DateField(null=True, blank=True)  
+    delivery_attempts = models.IntegerField(default=0)  
+    delivery_notes = models.TextField(null=True, blank=True)  
+    status_history = models.JSONField(default=list, blank=True)  
+
     def save(self, *args, **kwargs):
         if not self.tracking_number:
             self.tracking_number = str(uuid.uuid4()).replace('-', '')[:20]
@@ -93,7 +105,15 @@ class ShipmentTracking(models.Model):
         buffer = BytesIO()
         qrcode_img.save(buffer)
         self.qr_code.save(f'qrcode_{self.tracking_number}.png', File(buffer), save=False)
-        
+        if self.pk:
+            old_instance = ShipmentTracking.objects.get(pk=self.pk)
+            if old_instance.status != self.status:
+                self.status_history.append({
+                    'status': self.status,
+                    'timestamp': self.last_updated.isoformat()
+                })
+
+
         super().save(*args, **kwargs)
     
     def __str__(self):

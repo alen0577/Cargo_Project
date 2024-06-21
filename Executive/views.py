@@ -79,7 +79,7 @@ def edit_executive_profile(request):
         return redirect('/')
 
 
-# executive profile page
+# executive shipment update page
 def shipment_status_update(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -118,6 +118,33 @@ def update_order_status(request):
         
 
     return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+def all_shipment_orders(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders = ShipmentTracking.objects.all()
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'all_shipment_orders.html', context)
+    else:
+        return redirect('/')
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -57,9 +57,9 @@ Executive Dashboard
         </div>
 
 
-        <!-- pickup request card section -->
-        <!-- <div class="col-lg-4">
-            <a class="text-decoration-none" href="{% url 'pickup_orders' %}">
+        <!-- all orders card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'all_shipment_orders' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
@@ -69,15 +69,10 @@ Executive Dashboard
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Pickup Requests
-                                    {% if pickup_count %}
-                                    <sup class="text-danger">({{pickup_count}})</sup>
-                                    {% else %}
-                                    <sup class="icon">(0)</sup>
-                                    {% endif %}
+                                <h5 class="card-title main-heading text-center">All Orders
                                 </h5>
                                 <p class="text-black-50 mt-3">
-                                    Manage all approved shipment orders for home pickup.  
+                                    View all  shipment order details here.  
                                 </p>
                                 
                             </div>
@@ -86,7 +81,7 @@ Executive Dashboard
                 </div>
             </a>
 
-        </div> -->
+        </div>
 
         <!-- bill request card section -->
         <!-- <div class="col-lg-4">
