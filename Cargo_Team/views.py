@@ -798,3 +798,46 @@ def solved_issues(request):
         return render(request, 'customersupport/solved_issues.html', context)
     else:
         return redirect('/')
+
+
+# delivery management section
+def delivery_management(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        pending_count=ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).count()
+        pickup_count=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).count()
+        bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
+       
+
+        
+        context = {
+            'details': dash_details,
+            'pending_count':pending_count,
+            'pickup_count':pickup_count,
+            'bill_count':bill_count,
+        }
+        return render(request, 'delivery/delivery_management.html', context)
+    else:
+        return redirect('/')
+
+
+def pending_deliveries(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'delivery/pending_deliveries.html', context)
+    else:
+        return redirect('/')

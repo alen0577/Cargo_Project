@@ -1,0 +1,594 @@
+{% extends 'team_base.html' %} {% load static %}
+
+<!-- title for  shipment status page -->
+{% block title %} Shipment Status - Update {% endblock %}
+
+<!-- css link for shipment status page -->
+{% block link %}
+<link rel="stylesheet" href="{% static 'team/css/status.css' %}" />
+{% endblock %}
+
+<!-- contents for shipment status -->
+{% block content %}
+
+<div class="container-fluid px-4">
+  <ol class="breadcrumb mt-3">
+    <li class="breadcrumb-item">
+      <a
+        class="text-decoration-none main-heading"
+        href="{% url 'delivery_management' %}"
+        >Delivery Management</a
+      >
+    </li>
+    <li class="breadcrumb-item active">Pending Deliveries</li>
+  </ol>
+
+  {% if messages %}
+  <!-- message section -->
+  <div class="row mt-3">
+    <div class="col-lg-7"></div>
+    <div class="col-lg-5">
+      {% for message in messages %}
+      <div class="alert alert-dismissible fade show" role="alert">
+        {% if message.tags == 'success' %}
+        <strong>Success <i class="fas fa-check-circle icon"></i></strong
+        ><span class="ms-2">{{message}}</span>
+        {% else %}
+        <strong>Sorry <i class="fas fa-warning icon"></i></strong
+        ><span class="ms-2">{{message}}</span>
+        {% endif %}
+        <button
+          type="button"
+          class="btn-close btn-close-white shadow-none"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="row mt-5">
+    <!-- <p style="text-align: justify">
+      Note* -
+      <span class="text-warning-emphasis"
+        >Please select order type, city to get orders in your area.</span
+      >
+    </p>
+    <div class="col-lg-3">
+      <select
+        class="form-select mt-1 mb-1"
+        name="type"
+        id="type"
+        onchange="showOptions()"
+      >
+        <option value="" hidden>Select Order Type*</option>
+        <option class="opt-hover" value="Home Pickup">Home Pickup</option>
+        <option class="opt-hover" value="Shipping Center">
+          Shipping Center
+        </option>
+      </select>
+    </div>
+
+    <div class="col-lg-3" id="cityDiv" style="display: none">
+      <select
+        class="form-select mt-1 mb-1"
+        name="city"
+        id="city"
+        onchange="fetchOrders()"
+      >
+        <option value="" hidden>Select City</option>
+        {% for i in city %}
+        <option value="{{i.name}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div> -->
+
+    <div class="col-lg-3" id="searchDiv">
+      <div class="container-fluid mt-1 mb-1">
+        <form class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+            id="searchInput"
+            oninput="filterTable()"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-5 mb-5">
+    <div class="col-lg-12">
+      <div class="table-responsive">
+        <h6 class="main-heading">Orders</h6>
+        <table class="table table-hover tablestyle mt-4">
+          <thead>
+            <tr>
+              <th class="text-white">Sl.No</th>
+              <th class="text-white">Arrived Date</th>
+              <th class="text-white">Order.No</th>
+              <th class="text-white">Shipment Status</th>
+              <th class="text-white">Details</th>
+              <th class="text-white">Action</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable">
+            {% for i in orders %}
+            <tr class="borderstyle">
+              <td class="text-white">{{forloop.counter}}</td>
+
+              <td class="text-white">{{i.destination_hub_arrival_date|date:"d-m-Y"}}</td>
+              <td class="text-white">{{i.shipment.booking_order_number}}</td>
+              {% if i.status == 'processing' %}
+              <td class="text-danger">Processing</td>
+              {% elif i.status == 'arrived_at_destination_hub' %}
+              <td class="text-success">Arrived at Destination Hub</td>
+              {% elif i.status == 'packed' %}
+              <td class="text-warning">Packed</td>
+              {% elif i.status == 'dispatched' %}
+              <td class="text-warning">Dispatched</td>
+              {% elif i.status == 'in_transit' %}
+              <td class="text-warning">In Transit</td>
+              {% endif %}
+
+              <td class="text-white">
+                <a
+                  href=""
+                  class="btn1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#detailsmodal{{i.id}}"
+                  ><i class="fas fa-file"></i
+                ></a>
+              </td>
+              <td class="text-white">
+                <select
+                  name="status"
+                  class="status-select btn3"
+                  data-order-id="{{i.id}}"
+                >
+                  <option value="" hidden>Update Status</option>
+                  <option value="out_for_delivery">Out for Delivery</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="returned">Returned</option>
+                  <option value="delayed">
+                    Delayed
+                  </option>
+                </select>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Details Modal -->
+{% for i in orders %}
+<div
+  class="modal fade"
+  id="detailsmodal{{i.id}}"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <i class="fas fa-file"></i> Booking Order
+        </h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <div class="row g-0 mt-3">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="details2 text-end">
+              <p class="fw-bold">{{i.shipment.booking_order_number}}</p>
+              <p class="fw-bold mt-1">{{i.shipment.date}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="shipment-details-section">
+          <div class="row g-0">
+            <div class="col-12">
+              <h5 class="main-heading fw-bold">Shipment Order Details</h5>
+            </div>
+          </div>
+          <div class="row g-0 mt-3 lh-large">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-5">Name</div>
+                <div class="col-7">{{i.shipment.full_name|title}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Email</div>
+                <div class="col-7">{{i.shipment.email}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Phone No.</div>
+                <div class="col-7">{{i.shipment.contact_number}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Delivery Option</div>
+                <div class="col-7 fw-bold">
+                  By {{i.shipment.delivery_option|title}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">Delivery Type</div>
+                <div class="col-7 fw-bold">
+                  {{i.shipment.delivery_type|title}} Delivery
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">Package Weight</div>
+                <div class="col-7">
+                  {{i.shipment.shipment.package_weight}} Kg
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">No. of Packages</div>
+                <div class="col-7">{{i.shipment.number_of_packages}}</div>
+              </div>
+            </div>
+            <div class="col-6"></div>
+          </div>
+        </div>
+
+        <div class="address-details mt-3">
+          {% if i.shipment.shipment_type == "Home Pickup" %}
+          <div class="row g-0">
+            <div class="col-5">
+              <h5 class="main-heading fw-bold">Pickup Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{i.shipment.sender_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">{{i.shipment.sender_address|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{i.shipment.sender_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">
+                      {{i.shipment.sender_pincode}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{i.shipment.sender_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">{{i.shipment.sender_country|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{i.shipment.sender_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5">
+              <h5 class="main-heading fw-bold">Delivery Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{i.shipment.receiver_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">
+                      {{i.shipment.receiver_address|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{i.shipment.receiver_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">
+                      {{i.shipment.receiver_pincode}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{i.shipment.receiver_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">
+                      {{i.shipment.receiver_country|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{i.shipment.receiver_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col-6">
+              <h5 class="main-heading fw-bold">Delivery Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{i.shipment.receiver_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">
+                      {{i.shipment.receiver_address|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{i.shipment.receiver_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">
+                      {{i.shipment.receiver_pincode}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{i.shipment.receiver_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">
+                      {{i.shipment.receiver_country|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{i.shipment.receiver_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5"></div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- <script>
+  $(document).ready(function () {
+    $('select.status-select').change(function () { 
+      var status = $(this).val();
+      var orderId = $(this).data("order-id"); 
+
+      $.ajax({
+        url: "/update-order-status/",
+        type: "POST",
+        data: {
+          status: status,
+          order_id: orderId,
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+        },
+        success: function (response) {
+          var ordersTable = $("#ordersTable");
+          ordersTable.html(''); 
+
+          response.orders.forEach(function (order, index) {
+            var orderStatus = "";
+            if (order.status == "processing") {
+              orderStatus = '<td class="text-danger">Processing</td>';
+            } else if (order.status == "arrived_at_destination_hub") {
+              orderStatus =
+                '<td class="text-success">Arrived at Destination Hub</td>';
+            } else if (order.status == "packed") {
+              orderStatus =
+                '<td class="text-warning">Packed</td>';
+            }
+            else if (order.status == "dispatched") {
+              orderStatus =
+                '<td class="text-warning">Dispatched</td>';
+            }
+            else if (order.status == "in_transit") {
+              orderStatus =
+                '<td class="text-warning">In Transit</td>';
+            }
+            ordersTable.append(`
+                <tr class="borderstyle">
+                  <td class="text-white">${index + 1}</td>
+                  <td class="text-white">${order.date}</td>
+                  <td class="text-white">${order.booking_order_number}</td>
+                  ${orderStatus}
+                  <td class="text-white">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
+                      order.id
+                    }" class="btn1">
+                      <i class="fas fa-file"></i>
+                    </a>
+                  </td>
+                  <td class="text-white">
+                    <select
+                      name="status"
+                      class="status-select btn3"
+                      data-order-id="${order.id}"
+                    >
+                      <option value="" hidden>Update Status</option>
+                      <option value="packed">Packed</option>
+                      <option value="dispatched">Dispatched</option>
+                      <option value="in_transit">In Transit</option>
+                      <option value="arrived_at_destination_hub">
+                        Arrived at Destination Hub
+                      </option>
+                      <option value="delayed">Delayed</option>
+                      <option value="canceled">Canceled</option>
+                    </select>
+                  </td>
+                </tr>
+              `);
+          });
+          if (response.success) {
+            alert("Order status updated successfully!");
+          } else {
+            alert("Failed to update order status: " + response.error);
+          }
+        },
+        error: function (xhr, errmsg, err) {
+          alert("There was an error updating the order status.");
+        },
+      });
+    });
+  });
+</script> -->
+
+<script>
+  // AJAX function to update order status
+  function updateOrderStatus(orderId, newStatus) {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'update_order_status' %}", // Update this URL with your actual URL
+      data: {
+        order_id: orderId,
+        status: newStatus,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      success: function (response) {
+        if (response.success) {
+          // Update HTML table with new values from JSON response
+          updateTable(response.orders);
+        } else {
+          console.error("Failed to update order status.");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error occurred:", error);
+      },
+    });
+  }
+
+  // Function to update HTML table with new values
+  function updateTable(orders) {
+    var tableBody = $("#ordersTable");
+    tableBody.empty(); // Clear existing rows
+
+    $.each(orders, function (index, order) {
+      var orderStatus = "";
+      if (order.status == "processing") {
+        orderStatus = '<td class="text-danger">Processing</td>';
+      } else if (order.status == "arrived_at_destination_hub") {
+        orderStatus =
+          '<td class="text-success">Arrived at Destination Hub</td>';
+      } else if (
+        order.status == "packed" ||
+        order.status == "dispatched" ||
+        order.status == "in_transit"
+      ) {
+        orderStatus =
+          '<td class="text-warning">' +
+          order.status.charAt(0).toUpperCase() +
+          order.status.slice(1).replace("_", " ") +
+          "</td>";
+      } else {
+        orderStatus =
+          "<td>" +
+          order.status.charAt(0).toUpperCase() +
+          order.status.slice(1).replace("_", " ") +
+          "</td>";
+      }
+
+      var newRow =
+        '<tr class="borderstyle">' +
+        '<td class="text-white">' +
+        (index + 1) +
+        "</td>" +
+        '<td class="text-white">' +
+        order.date +
+        "</td>" +
+        '<td class="text-white">' +
+        order.booking_order_number +
+        "</td>" +
+        orderStatus +
+        '<td class="text-white">' +
+        '<a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal' +
+        order.id +
+        '"><i class="fas fa-file"></i></a>' +
+        "</td>" +
+        '<td class="text-white">' +
+        '<select name="status" class="status-select btn3" data-order-id="' +
+        order.id +
+        '">' +
+        '<option value="" hidden>Update Status</option>' +
+        '<option value="packed">Packed</option>' +
+        '<option value="dispatched">Dispatched</option>' +
+        '<option value="in_transit">In Transit</option>' +
+        '<option value="arrived_at_destination_hub">Arrived at Destination Hub</option>' +
+        '<option value="delayed">Delayed</option>' +
+        "</select>" +
+        "</td>" +
+        "</tr>";
+
+      tableBody.append(newRow);
+    });
+  }
+
+  // Event listener for status select change
+  $(document).on("change", ".status-select1", function () {
+    var orderId = $(this).data("order-id");
+    var newStatus = $(this).val();
+    updateOrderStatus(orderId, newStatus);
+  });
+</script>
+
+
+<script>
+  function filterTable() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("ordersTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) {
+      tdOrderNo = tr[i].getElementsByTagName("td")[2];
+      tdName = tr[i].getElementsByTagName("td")[3];
+      if (tdOrderNo || tdName) {
+        txtValueOrderNo = tdOrderNo.textContent || tdOrderNo.innerText;
+        txtValueName = tdName.textContent || tdName.innerText;
+        if (
+          txtValueOrderNo.toUpperCase().indexOf(filter) > -1 ||
+          txtValueName.toUpperCase().indexOf(filter) > -1
+        ) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+
+{% endblock %}

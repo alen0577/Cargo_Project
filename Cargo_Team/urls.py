@@ -43,4 +43,8 @@ urlpatterns = [
     path('pending-issues/',views.pending_issues,name='pending_issues'), 
     path('issue-action-taken/<int:pk>/',views.issue_action_taken,name='issue_action_taken'),
     path('solved-issues/',views.solved_issues,name='solved_issues'), 
+
+    path('delivery-management/',views.delivery_management,name='delivery_management'), 
+    path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),  
+
 ]
