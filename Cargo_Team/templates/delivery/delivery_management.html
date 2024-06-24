@@ -31,7 +31,7 @@ Delivery Management
     </div>
     
     <div class="row mt-5 mb-5">
-        <!-- order request card section -->
+        <!-- pending deliveries card section -->
         <div class="col-lg-4">
             <a class="text-decoration-none" href="{% url 'pending_deliveries' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
@@ -63,27 +63,27 @@ Delivery Management
         </div>
 
 
-        <!-- pickup request card section -->
-        <!-- <div class="col-lg-4">
-            <a class="text-decoration-none" href="{% url 'pickup_orders' %}">
+        <!-- all deliveries card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'all_deliveries' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
                             <div class="icons text-center mt-5 mb-5">
-                                <i class="fas fa-truck fs-1"></i>
+                                <i class="fas fa-list-alt fs-1"></i>
                             </div>
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Pickup Requests
-                                    {% if pickup_count %}
-                                    <sup class="text-danger">({{pickup_count}})</sup>
+                                <h5 class="card-title main-heading text-center">All Deliveries
+                                    {% if all_count %}
+                                    <sup class="text-danger">({{all_count}})</sup>
                                     {% else %}
                                     <sup class="icon">(0)</sup>
                                     {% endif %}
                                 </h5>
                                 <p class="text-black-50 mt-3">
-                                    Manage all approved shipment orders for home pickup.  
+                                    View all  shipment order status.  
                                 </p>
                                 
                             </div>
@@ -92,7 +92,7 @@ Delivery Management
                 </div>
             </a>
 
-        </div> -->
+        </div>
 
         <!-- bill request card section -->
         <!-- <div class="col-lg-4">

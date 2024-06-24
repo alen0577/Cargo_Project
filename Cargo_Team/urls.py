@@ -45,6 +45,10 @@ urlpatterns = [
     path('solved-issues/',views.solved_issues,name='solved_issues'), 
 
     path('delivery-management/',views.delivery_management,name='delivery_management'), 
-    path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),  
+    path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
+    path('all-city-deliveries/',views.all_deliveries_by_city,name='all_deliveries_by_city'),  
+
+
+    path('all-deliveries/',views.all_deliveries,name='all_deliveries'),  
 
 ]

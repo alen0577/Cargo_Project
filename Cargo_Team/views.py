@@ -809,7 +809,7 @@ def delivery_management(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         pending_count=ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).count()
-        pickup_count=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).count()
+        all_count=ShipmentTracking.objects.filter(is_arrived=True,).count()
         bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
        
 
@@ -817,7 +817,7 @@ def delivery_management(request):
         context = {
             'details': dash_details,
             'pending_count':pending_count,
-            'pickup_count':pickup_count,
+            'all_count':all_count,
             'bill_count':bill_count,
         }
         return render(request, 'delivery/delivery_management.html', context)
@@ -833,11 +833,48 @@ def pending_deliveries(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        
+        city=City.objects.filter(is_active=True)
+
         context = {
             'details': dash_details,
             'orders': orders,
+            'city':city,
+            
         }
         return render(request, 'delivery/pending_deliveries.html', context)
+    else:
+        return redirect('/')
+
+def all_deliveries_by_city(request):
+    if request.method == 'POST':
+       
+        city = request.POST.get('city')
+        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True).order_by('destination_hub_arrival_date')
+        orders_data = [{
+            'id': order.id,
+            'date': order.shipment.date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.shipment.booking_order_number,
+            'status': order.status,
+        } for order in orders]
+        return JsonResponse({'success': True,'orders': orders_data})
+
+
+
+def all_deliveries(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders = ShipmentTracking.objects.filter(is_arrived=True).order_by('destination_hub_arrival_date')
+        city=City.objects.filter(is_active=True)
+
+        context = {
+            'details': dash_details,
+            'orders': orders,
+            'city':city,
+        }
+        return render(request, 'delivery/all_deliveries.html', context)
     else:
         return redirect('/')
