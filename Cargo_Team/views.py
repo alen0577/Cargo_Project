@@ -845,18 +845,7 @@ def pending_deliveries(request):
     else:
         return redirect('/')
 
-def all_deliveries_by_city(request):
-    if request.method == 'POST':
-       
-        city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True).order_by('destination_hub_arrival_date')
-        orders_data = [{
-            'id': order.id,
-            'date': order.shipment.date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.status,
-        } for order in orders]
-        return JsonResponse({'success': True,'orders': orders_data})
+
 
 
 
@@ -878,3 +867,42 @@ def all_deliveries(request):
         return render(request, 'delivery/all_deliveries.html', context)
     else:
         return redirect('/')
+
+
+def all_deliveries_by_city(request):
+    if request.method == 'POST':
+       
+        city = request.POST.get('city')
+        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+        orders_data = [{
+            'id': order.id,
+            'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.shipment.booking_order_number,
+            'status': order.status,
+        } for order in orders]
+        return JsonResponse({'success': True,'orders': orders_data})
+
+
+def all_deliveries_by_date(request):
+    if request.method == 'POST':
+        city = request.POST.get('city')
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
+
+        if from_date and to_date:
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+        elif from_date:
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+        elif to_date:
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+        else:
+            orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+        
+        orders_data = [{
+            'id': order.id,
+            'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.shipment.booking_order_number,
+            'status': order.status,
+        } for order in orders]
+        
+        return JsonResponse({'success': True,'orders': orders_data})

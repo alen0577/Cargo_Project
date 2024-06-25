@@ -97,7 +97,7 @@
         class="btn1 mt-4"
         type="button"
         id="filterButton1"
-        onclick="fetchpickupOrdersdate()"
+        onclick="updatedateTabledatewise()"
       >
         <i class="fas fa-search mx-1"></i>
       </button>
@@ -394,6 +394,37 @@
         city: city,
         csrfmiddlewaretoken: "{{ csrf_token }}",
       },
+      success: function (response) {
+        if (response.success) {
+          // Update HTML table with new values from JSON response
+          updateTable(response.orders);
+        } else {
+          console.error("Failed to filter table.");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error occurred:", error);
+      },
+    });
+  }
+
+  // AJAX function to update date wise
+  function updatedateTabledatewise() {
+    var city = document.getElementById("city").value;
+    var fromDate = document.getElementById("fromdate").value;
+    var toDate = document.getElementById("todate").value;
+    
+
+    $.ajax({
+      type: "POST",
+      url: "{% url 'all_deliveries_by_date' %}", // Update this URL with your actual URL
+      data: {
+        city: city,
+        from_date: fromDate,
+        to_date: toDate,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+    
       success: function (response) {
         if (response.success) {
           // Update HTML table with new values from JSON response
