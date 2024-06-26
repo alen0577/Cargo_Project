@@ -46,6 +46,8 @@ urlpatterns = [
 
     path('delivery-management/',views.delivery_management,name='delivery_management'), 
     path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
+    path('all-city-pending-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),
+    path('pending-deliveries-by-date/',views.pending_deliveries_by_date,name='pending_deliveries_by_date'),  
     
 
 
