@@ -1,0 +1,188 @@
+{% extends 'team_base.html' %}
+{% load static %}
+
+<!-- title for the dashboard page -->
+{% block title %}
+Return Management
+{% endblock %}
+
+<!-- css link for dashboard page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'team/css/team_dashboard.css' %}">
+{% endblock %}
+
+
+<!-- contents for dashboard page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item active">Return Management</li>
+    </ol>
+    <!-- refresh button -->
+    <div class="row">
+        <div class="col-lg-11 col-8"></div>
+        <div class="col-lg-1 col-4">
+            <a class="text-decoration-none" href="{% url 'return_management' %}" type="button"><span class="refresh-btn"><i class="fas fa-refresh"></i> refresh</span></a>
+        </div>
+    </div>
+    
+    <div class="row mt-5 mb-5">
+        <!-- pending return card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-tasks fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Pending Returns 
+                                    {% if pending_count %}
+                                    <sup class="text-danger">({{pending_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
+                                   
+                                <p class="text-black-50 mt-3">
+                                    Manage and process all pending returns 
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <!-- all returns card section -->
+        <div class="col-lg-4">
+            <a class="text-decoration-none" href="">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-clipboard-list fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">All Returns
+                                    {% if all_count %}
+                                    <sup class="text-danger">({{all_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
+                                <p class="text-black-50 mt-3">
+                                    View the comprehensive list of all return orders.  
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- bill request card section -->
+        <!-- <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'bill_requests' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-money-check-alt fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Bill Requests
+                                    {% if bill_count %}
+                                    <sup class="text-danger">({{bill_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
+                                <p class="text-black-50 mt-3">
+                                    Manage all approved shipment orders for bill payment.  
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div> -->
+
+
+        <!-- bill request card section -->
+        <!-- <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'all_orders' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-3" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-receipt fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">All Orders</h5>
+                                <p class="text-black-50 mt-3">
+                                    Manage all approved shipment orders here.  
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div> -->
+
+
+        <!-- rejected card section -->
+        <!-- <div class="col-lg-4">
+            <a class="text-decoration-none" href="{% url 'rejected_orders' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-3" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-times-circle fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Rejected Orders</h5>
+                                <p class="text-black-50 mt-3">
+                                    Craft compelling all rejected orders effortlessly.  
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div> -->
+
+        <div class="col-lg-4"></div>
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}

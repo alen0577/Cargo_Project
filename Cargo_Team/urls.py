@@ -48,7 +48,8 @@ urlpatterns = [
     path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
     path('all-city-pending-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),
     path('pending-deliveries-by-date/',views.pending_deliveries_by_date,name='pending_deliveries_by_date'),  
-    
+    path('update-pending-order-status/', views.update_pending_order_status, name='update_pending_order_status'),
+
 
 
     path('all-deliveries/',views.all_deliveries,name='all_deliveries'),  
@@ -56,4 +57,15 @@ urlpatterns = [
     path('all-deliveries-by-date/',views.all_deliveries_by_date,name='all_deliveries_by_date'),  
   
 
+    path('return-management/',views.return_management,name='return_management'), 
+    # path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
+    # path('all-city-pending-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),
+    # path('pending-deliveries-by-date/',views.pending_deliveries_by_date,name='pending_deliveries_by_date'),  
+    # path('update-pending-order-status/', views.update_pending_order_status, name='update_pending_order_status'),
+
+
+
+    # path('all-deliveries/',views.all_deliveries,name='all_deliveries'),  
+    # path('all-city-deliveries/',views.all_deliveries_by_city,name='all_deliveries_by_city'),
+    # path('all-deliveries-by-date/',views.all_deliveries_by_date,name='all_deliveries_by_date'),
 ]

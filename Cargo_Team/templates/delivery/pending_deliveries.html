@@ -49,23 +49,18 @@
   </div>
   {% endif %}
 
-  <!-- date filter section -->
+  <!-- filter section -->
   <div class="row mt-5">
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select city to get delivery orders in your area.</span
+        >Please select city to update delivery status of orders in your area.</span
       >
     </p>
 
     <div class="col-lg-3" id="cityDiv">
       <label class="main-heading">City</label>
-      <select
-        class="form-select"
-        name="city"
-        id="city"
-        onchange="fetchOrders()"
-      >
+      <select class="form-select city-select" name="city" id="city">
         <option value="" hidden>Select</option>
         {% for i in city %}
         <option value="{{i.name}}">{{i.name}}</option>
@@ -73,7 +68,7 @@
       </select>
     </div>
 
-    <div class="col-lg-3" id="fdate1">
+    <div class="col-lg-3" id="fdate1" style="display: none">
       <label class="main-heading">From</label>
       <input
         type="date"
@@ -83,7 +78,7 @@
         required
       />
     </div>
-    <div class="col-lg-3" id="tdate1">
+    <div class="col-lg-3" id="tdate1" style="display: none">
       <label class="main-heading">To</label>
       <input
         type="date"
@@ -93,19 +88,20 @@
         required
       />
     </div>
-    <div class="col-lg-2" id="btn1">
+    <div class="col-lg-2" id="btn1" style="display: none">
       <button
         class="btn1 mt-4"
         type="button"
         id="filterButton1"
-        onclick="fetchpickupOrdersdate()"
+        onclick="updatedateTabledatewise()"
       >
         <i class="fas fa-search mx-1"></i>
       </button>
     </div>
   </div>
+  <!-- search option -->
   <div class="row mt-3">
-    <div class="col-lg-3" id="searchDiv">
+    <div class="col-lg-3" id="searchDiv" style="display: none">
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"
@@ -144,11 +140,11 @@
               </td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
               {% if i.status == 'arrived_at_destination_hub' %}
-              <td class="text-warning">Arrived at Destination Hub</td>
+              <td class="text-danger">Arrived at Destination Hub</td>
               {% elif i.status == 'out_for_delivery' %}
               <td class="text-warning">Out for Delivery</td>
               {% elif i.status == 'delivered' %}
-              <td class="text-warning">Delivered</td>
+              <td class="text-success">Delivered</td>
               {% elif i.status == 'returned' %}
               <td class="text-danger">Returned</td>
               {% endif %}
@@ -165,14 +161,13 @@
               <td class="text-white">
                 <select
                   name="status"
-                  class="status-select btn3"
+                  class="status-select1 btn3"
                   data-order-id="{{i.id}}"
                 >
                   <option value="" hidden>Update Status</option>
-                  <option value="out_for_delivery">Out for Delivery</option>
-                  <option value="delivered">Delivered</option>
-                  <option value="returned">Returned</option>
-                  <option value="delayed">Delayed</option>
+                  <option disabled value="out_for_delivery">Out for Delivery</option>
+                  <option disabled value="delivered">Delivered</option>
+                  <option disabled value="returned">Returned</option>
                 </select>
               </td>
             </tr>
@@ -396,96 +391,31 @@
 </div>
 {% endfor %}
 
-<!-- <script>
-  $(document).ready(function () {
-    $('select.status-select').change(function () { 
-      var status = $(this).val();
-      var orderId = $(this).data("order-id"); 
-
-      $.ajax({
-        url: "/update-order-status/",
-        type: "POST",
-        data: {
-          status: status,
-          order_id: orderId,
-          csrfmiddlewaretoken: "{{ csrf_token }}",
-        },
-        success: function (response) {
-          var ordersTable = $("#ordersTable");
-          ordersTable.html(''); 
-
-          response.orders.forEach(function (order, index) {
-            var orderStatus = "";
-            if (order.status == "processing") {
-              orderStatus = '<td class="text-danger">Processing</td>';
-            } else if (order.status == "arrived_at_destination_hub") {
-              orderStatus =
-                '<td class="text-success">Arrived at Destination Hub</td>';
-            } else if (order.status == "packed") {
-              orderStatus =
-                '<td class="text-warning">Packed</td>';
-            }
-            else if (order.status == "dispatched") {
-              orderStatus =
-                '<td class="text-warning">Dispatched</td>';
-            }
-            else if (order.status == "in_transit") {
-              orderStatus =
-                '<td class="text-warning">In Transit</td>';
-            }
-            ordersTable.append(`
-                <tr class="borderstyle">
-                  <td class="text-white">${index + 1}</td>
-                  <td class="text-white">${order.date}</td>
-                  <td class="text-white">${order.booking_order_number}</td>
-                  ${orderStatus}
-                  <td class="text-white">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
-                      order.id
-                    }" class="btn1">
-                      <i class="fas fa-file"></i>
-                    </a>
-                  </td>
-                  <td class="text-white">
-                    <select
-                      name="status"
-                      class="status-select btn3"
-                      data-order-id="${order.id}"
-                    >
-                      <option value="" hidden>Update Status</option>
-                      <option value="packed">Packed</option>
-                      <option value="dispatched">Dispatched</option>
-                      <option value="in_transit">In Transit</option>
-                      <option value="arrived_at_destination_hub">
-                        Arrived at Destination Hub
-                      </option>
-                      <option value="delayed">Delayed</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  </td>
-                </tr>
-              `);
-          });
-          if (response.success) {
-            alert("Order status updated successfully!");
-          } else {
-            alert("Failed to update order status: " + response.error);
-          }
-        },
-        error: function (xhr, errmsg, err) {
-          alert("There was an error updating the order status.");
-        },
-      });
-    });
-  });
-</script> -->
 
 <script>
+  function showOptions() {
+    var cityDiv = document.getElementById("cityDiv");
+    var fdate1 = document.getElementById("fdate1");
+    var tdate1 = document.getElementById("tdate1");
+    var btn1 = document.getElementById("btn1");
+    var searchDiv = document.getElementById("searchDiv");
+
+    // Clear date inputs
+    document.getElementById("fromdate").value = "";
+    document.getElementById("todate").value = "";
+
+    cityDiv.style.display = "block";
+    fdate1.style.display = "block";
+    tdate1.style.display = "block";
+    btn1.style.display = "block";
+    searchDiv.style.display = "block";
+  }
+
   // AJAX function to update order status
   function updateOrderStatus(orderId, newStatus) {
     $.ajax({
       type: "POST",
-      url: "{% url 'update_order_status' %}", // Update this URL with your actual URL
+      url: "{% url 'update_pending_order_status' %}", // Update this URL with your actual URL
       data: {
         order_id: orderId,
         status: newStatus,
@@ -493,10 +423,62 @@
       },
       success: function (response) {
         if (response.success) {
+          updatedateTabledatewise();
+        } else {
+          console.error("Failed to update order status.");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error occurred:", error);
+      },
+    });
+  }
+
+  // AJAX function to update city wise
+  function updateOrderTable(city) {
+    $.ajax({
+      type: "POST",
+      url: "{% url 'pending_deliveries_by_city' %}", // Update this URL with your actual URL
+      data: {
+        city: city,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+      success: function (response) {
+        if (response.success) {
           // Update HTML table with new values from JSON response
           updateTable(response.orders);
         } else {
-          console.error("Failed to update order status.");
+          console.error("Failed to filter table.");
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error occurred:", error);
+      },
+    });
+  }
+
+  // AJAX function to update date wise
+  function updatedateTabledatewise() {
+    var city = document.getElementById("city").value;
+    var fromDate = document.getElementById("fromdate").value;
+    var toDate = document.getElementById("todate").value;
+
+    $.ajax({
+      type: "POST",
+      url: "{% url 'pending_deliveries_by_date' %}", // Update this URL with your actual URL
+      data: {
+        city: city,
+        from_date: fromDate,
+        to_date: toDate,
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+      },
+
+      success: function (response) {
+        if (response.success) {
+          // Update HTML table with new values from JSON response
+          updateTable(response.orders);
+        } else {
+          console.error("Failed to filter table.");
         }
       },
       error: function (xhr, status, error) {
@@ -512,27 +494,14 @@
 
     $.each(orders, function (index, order) {
       var orderStatus = "";
-      if (order.status == "processing") {
-        orderStatus = '<td class="text-danger">Processing</td>';
-      } else if (order.status == "arrived_at_destination_hub") {
-        orderStatus =
-          '<td class="text-success">Arrived at Destination Hub</td>';
-      } else if (
-        order.status == "packed" ||
-        order.status == "dispatched" ||
-        order.status == "in_transit"
-      ) {
-        orderStatus =
-          '<td class="text-warning">' +
-          order.status.charAt(0).toUpperCase() +
-          order.status.slice(1).replace("_", " ") +
-          "</td>";
-      } else {
-        orderStatus =
-          "<td>" +
-          order.status.charAt(0).toUpperCase() +
-          order.status.slice(1).replace("_", " ") +
-          "</td>";
+      if (order.status == "arrived_at_destination_hub") {
+        orderStatus = '<td class="text-danger">Arrived at Destination Hub</td>';
+      } else if (order.status == "out_for_delivery") {
+        orderStatus = '<td class="text-warning">Out for Delivery</td>';
+      } else if (order.status == "delivered") {
+        orderStatus = '<td class="text-success">Delivered</td>';
+      } else if (order.status == "returned") {
+        orderStatus = '<td class="text-danger">Returned</td>';
       }
 
       var newRow =
@@ -553,15 +522,14 @@
         '"><i class="fas fa-file"></i></a>' +
         "</td>" +
         '<td class="text-white">' +
-        '<select name="status" class="status-select btn3" data-order-id="' +
+        '<select name="status" class="status-select1 btn3" data-order-id="' +
         order.id +
         '">' +
         '<option value="" hidden>Update Status</option>' +
-        '<option value="packed">Packed</option>' +
-        '<option value="dispatched">Dispatched</option>' +
-        '<option value="in_transit">In Transit</option>' +
-        '<option value="arrived_at_destination_hub">Arrived at Destination Hub</option>' +
-        '<option value="delayed">Delayed</option>' +
+        '<option value="out_for_delivery">Out for Delivery</option>' +
+        '<option value="delivered">Delivered</option>' +
+        '<option value="returned">Returned</option>' +
+        
         "</select>" +
         "</td>" +
         "</tr>";
@@ -575,6 +543,13 @@
     var orderId = $(this).data("order-id");
     var newStatus = $(this).val();
     updateOrderStatus(orderId, newStatus);
+  });
+
+  // Event listener for status select change
+  $(document).on("change", ".city-select", function () {
+    var city = $(this).val();
+    showOptions();
+    updateOrderTable(city);
   });
 </script>
 
