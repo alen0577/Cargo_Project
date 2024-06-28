@@ -16,11 +16,11 @@
     <li class="breadcrumb-item">
       <a
         class="text-decoration-none main-heading"
-        href="{% url 'delivery_management' %}"
-        >Delivery Management</a
+        href="{% url 'return_management' %}"
+        >Return Management</a
       >
     </li>
-    <li class="breadcrumb-item active">Pending Deliveries</li>
+    <li class="breadcrumb-item active">Pending Returns</li>
   </ol>
 
   {% if messages %}
@@ -54,7 +54,7 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select city to update delivery status of orders in your area.</span
+        >Please select city to update return status of orders in your area.</span
       >
     </p>
 
@@ -123,7 +123,7 @@
           <thead>
             <tr>
               <th class="text-white">Sl.No</th>
-              <th class="text-white">Arrived Date</th>
+              <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
               <th class="text-white">Delivery Status</th>
               <th class="text-white">Details</th>
@@ -136,17 +136,16 @@
               <td class="text-white">{{forloop.counter}}</td>
 
               <td class="text-white">
-                {{i.destination_hub_arrival_date|date:"d-m-Y"}}
+                {{i.return_processed_date|date:"d-m-Y"}}
               </td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
-              {% if i.status == 'arrived_at_destination_hub' %}
+              {% if i.return_status == 'arrived_at_destination_hub' %}
               <td class="text-danger">Arrived at Destination Hub</td>
-              {% elif i.status == 'out_for_delivery' %}
+              {% elif i.return_status == 'out_for_delivery' %}
               <td class="text-warning">Out for Delivery</td>
-              {% elif i.status == 'delivered' %}
+              {% elif i.return_status == 'delivered' %}
               <td class="text-success">Delivered</td>
-              {% elif i.status == 'returned' %}
-              <td class="text-danger">Returned</td>
+             
               {% endif %}
 
               <td class="text-white">
@@ -167,7 +166,7 @@
                   <option value="" hidden>Update Status</option>
                   <option disabled value="out_for_delivery">Out for Delivery</option>
                   <option disabled value="delivered">Delivered</option>
-                  <option disabled value="returned">Returned</option>
+                 
                 </select>
               </td>
             </tr>
@@ -391,89 +390,6 @@
 </div>
 {% endfor %}
 
-<!-- <script>
-  $(document).ready(function () {
-    $('select.status-select').change(function () { 
-      var status = $(this).val();
-      var orderId = $(this).data("order-id"); 
-
-      $.ajax({
-        url: "/update-order-status/",
-        type: "POST",
-        data: {
-          status: status,
-          order_id: orderId,
-          csrfmiddlewaretoken: "{{ csrf_token }}",
-        },
-        success: function (response) {
-          var ordersTable = $("#ordersTable");
-          ordersTable.html(''); 
-
-          response.orders.forEach(function (order, index) {
-            var orderStatus = "";
-            if (order.status == "processing") {
-              orderStatus = '<td class="text-danger">Processing</td>';
-            } else if (order.status == "arrived_at_destination_hub") {
-              orderStatus =
-                '<td class="text-success">Arrived at Destination Hub</td>';
-            } else if (order.status == "packed") {
-              orderStatus =
-                '<td class="text-warning">Packed</td>';
-            }
-            else if (order.status == "dispatched") {
-              orderStatus =
-                '<td class="text-warning">Dispatched</td>';
-            }
-            else if (order.status == "in_transit") {
-              orderStatus =
-                '<td class="text-warning">In Transit</td>';
-            }
-            ordersTable.append(`
-                <tr class="borderstyle">
-                  <td class="text-white">${index + 1}</td>
-                  <td class="text-white">${order.date}</td>
-                  <td class="text-white">${order.booking_order_number}</td>
-                  ${orderStatus}
-                  <td class="text-white">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
-                      order.id
-                    }" class="btn1">
-                      <i class="fas fa-file"></i>
-                    </a>
-                  </td>
-                  <td class="text-white">
-                    <select
-                      name="status"
-                      class="status-select btn3"
-                      data-order-id="${order.id}"
-                    >
-                      <option value="" hidden>Update Status</option>
-                      <option value="packed">Packed</option>
-                      <option value="dispatched">Dispatched</option>
-                      <option value="in_transit">In Transit</option>
-                      <option value="arrived_at_destination_hub">
-                        Arrived at Destination Hub
-                      </option>
-                      <option value="delayed">Delayed</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  </td>
-                </tr>
-              `);
-          });
-          if (response.success) {
-            alert("Order status updated successfully!");
-          } else {
-            alert("Failed to update order status: " + response.error);
-          }
-        },
-        error: function (xhr, errmsg, err) {
-          alert("There was an error updating the order status.");
-        },
-      });
-    });
-  });
-</script> -->
 
 <script>
   function showOptions() {
@@ -498,7 +414,7 @@
   function updateOrderStatus(orderId, newStatus) {
     $.ajax({
       type: "POST",
-      url: "{% url 'update_pending_order_status' %}", // Update this URL with your actual URL
+      url: "{% url 'update_pending_return_status' %}", // Update this URL with your actual URL
       data: {
         order_id: orderId,
         status: newStatus,
@@ -521,7 +437,7 @@
   function updateOrderTable(city) {
     $.ajax({
       type: "POST",
-      url: "{% url 'pending_deliveries_by_city' %}", // Update this URL with your actual URL
+      url: "{% url 'pending_returns_by_city' %}", // Update this URL with your actual URL
       data: {
         city: city,
         csrfmiddlewaretoken: "{{ csrf_token }}",
@@ -548,7 +464,7 @@
 
     $.ajax({
       type: "POST",
-      url: "{% url 'pending_deliveries_by_date' %}", // Update this URL with your actual URL
+      url: "{% url 'pending_returns_by_date' %}", // Update this URL with your actual URL
       data: {
         city: city,
         from_date: fromDate,
@@ -611,7 +527,7 @@
         '<option value="" hidden>Update Status</option>' +
         '<option value="out_for_delivery">Out for Delivery</option>' +
         '<option value="delivered">Delivered</option>' +
-        '<option value="returned">Returned</option>' +
+        
         
         "</select>" +
         "</td>" +

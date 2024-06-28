@@ -1,7 +1,7 @@
 {% extends 'team_base.html' %} {% load static %}
 
 <!-- title for  shipment status page -->
-{% block title %} All Deliveries {% endblock %}
+{% block title %} All Returns {% endblock %}
 
 <!-- css link for shipment status page -->
 {% block link %}
@@ -16,11 +16,11 @@
     <li class="breadcrumb-item">
       <a
         class="text-decoration-none main-heading"
-        href="{% url 'delivery_management' %}"
-        >Delivery Management</a
+        href="{% url 'return_management' %}"
+        >Return Management</a
       >
     </li>
-    <li class="breadcrumb-item active">All Deliveries</li>
+    <li class="breadcrumb-item active">All Returns</li>
   </ol>
 
   {% if messages %}
@@ -54,7 +54,7 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select city to get delivery orders in your area.</span
+        >Please select city to get return orders in your area.</span
       >
     </p>
 
@@ -127,7 +127,7 @@
           <thead>
             <tr>
               <th class="text-white">Sl.No</th>
-              <th class="text-white">Arrived Date</th>
+              <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
               <th class="text-white">Delivery Status</th>
               <th class="text-white">Details</th>
@@ -139,18 +139,17 @@
               <td class="text-white">{{forloop.counter}}</td>
 
               <td class="text-white">
-                {{i.destination_hub_arrival_date|date:"d-m-Y"}}
+                {{i.return_processed_date|date:"d-m-Y"}}
               </td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
 
-              {% if i.status == 'arrived_at_destination_hub' %}
+              {% if i.return_status == 'arrived_at_destination_hub' %}
               <td class="text-danger">Arrived at Destination Hub</td>
-              {% elif i.status == 'out_for_delivery' %}
+              {% elif i.return_status == 'out_for_delivery' %}
               <td class="text-warning">Out for Delivery</td>
-              {% elif i.status == 'delivered' %}
+              {% elif i.return_status == 'delivered' %}
               <td class="text-success">Delivered</td>
-              {% elif i.status == 'returned' %}
-              <td class="text-danger">Returned</td>
+              
               {% endif %}
 
               <td class="text-white">
@@ -412,7 +411,7 @@
   function updateOrderTable(city) {
     $.ajax({
       type: "POST",
-      url: "{% url 'all_deliveries_by_city' %}", // Update this URL with your actual URL
+      url: "{% url 'all_returns_by_city' %}", // Update this URL with your actual URL
       data: {
         city: city,
         csrfmiddlewaretoken: "{{ csrf_token }}",
@@ -440,7 +439,7 @@
 
     $.ajax({
       type: "POST",
-      url: "{% url 'all_deliveries_by_date' %}", // Update this URL with your actual URL
+      url: "{% url 'all_returns_by_date' %}", // Update this URL with your actual URL
       data: {
         city: city,
         from_date: fromDate,

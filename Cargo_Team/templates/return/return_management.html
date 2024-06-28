@@ -33,7 +33,7 @@ Return Management
     <div class="row mt-5 mb-5">
         <!-- pending return card section -->
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="">
+            <a class="text-decoration-none" href="{% url 'pending_returns' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
@@ -65,7 +65,7 @@ Return Management
 
         <!-- all returns card section -->
         <div class="col-lg-4">
-            <a class="text-decoration-none" href="">
+            <a class="text-decoration-none" href="{% url 'all_returns' %}">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4" id="sec1">
@@ -76,11 +76,7 @@ Return Management
                         <div class="col-8" id="sec2">
                             <div class="card-body">
                                 <h5 class="card-title main-heading text-center">All Returns
-                                    {% if all_count %}
-                                    <sup class="text-danger">({{all_count}})</sup>
-                                    {% else %}
-                                    <sup class="icon">(0)</sup>
-                                    {% endif %}
+                                    
                                 </h5>
                                 <p class="text-black-50 mt-3">
                                     View the comprehensive list of all return orders.  

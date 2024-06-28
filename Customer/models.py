@@ -81,25 +81,35 @@ class ShipmentTracking(models.Model):
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='processing')
     tracking_number = models.CharField(max_length=20, unique=True, editable=False,null=True, blank=True)
     qr_code = models.ImageField(upload_to='qrcodes/',null=True, blank=True)
+
     current_location = models.CharField(max_length=254, null=True, blank=True)
     estimated_delivery_date = models.DateField(null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
 
-    is_delivered = models.BooleanField(default=False)   
-    delivery_date = models.DateField(null=True, blank=True)  
-    is_returned = models.BooleanField(default=False)  
-    return_reason = models.TextField(null=True, blank=True) 
+    shipped_date = models.DateField(null=True, blank=True)  
+
     is_arrived = models.BooleanField(default=False)   
     destination_hub_arrival_date = models.DateField(null=True, blank=True)  
+
+    is_delivered = models.BooleanField(default=False)   
+    delivery_date = models.DateField(null=True, blank=True)
+
+    is_returned = models.BooleanField(default=False)
+    arrived_for_return = models.BooleanField(default=False)
+    return_status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='processing')
+    return_reason = models.TextField(null=True, blank=True) 
     return_processed_date = models.DateField(null=True, blank=True)  
-    shipped_date = models.DateField(null=True, blank=True)  
+    returned_date = models.DateField(null=True, blank=True) 
+    returned = models.BooleanField(default=False)
+
+
     delivery_attempts = models.IntegerField(default=0)  
     delivery_notes = models.TextField(null=True, blank=True)  
     status_history = models.JSONField(default=list, blank=True)  
 
     def save(self, *args, **kwargs):
         if not self.tracking_number:
-            self.tracking_number = str(uuid.uuid4()).replace('-', '')[:20]
+            self.tracking_number = str(uuid.uuid4()).replace('-', '')[:8]
         
         qrcode_img = qrcode.make(self.tracking_number)
         buffer = BytesIO()

@@ -46,7 +46,7 @@ urlpatterns = [
 
     path('delivery-management/',views.delivery_management,name='delivery_management'), 
     path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
-    path('all-city-pending-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),
+    path('pending-city-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),
     path('pending-deliveries-by-date/',views.pending_deliveries_by_date,name='pending_deliveries_by_date'),  
     path('update-pending-order-status/', views.update_pending_order_status, name='update_pending_order_status'),
 
@@ -58,14 +58,14 @@ urlpatterns = [
   
 
     path('return-management/',views.return_management,name='return_management'), 
-    # path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
-    # path('all-city-pending-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),
-    # path('pending-deliveries-by-date/',views.pending_deliveries_by_date,name='pending_deliveries_by_date'),  
-    # path('update-pending-order-status/', views.update_pending_order_status, name='update_pending_order_status'),
+    path('pending-returns/',views.pending_returns,name='pending_returns'),
+    path('pending-city-returns/',views.pending_returns_by_city,name='pending_returns_by_city'),
+    path('pending-returns-by-date/',views.pending_returns_by_date,name='pending_returns_by_date'),  
+    path('update-pending-return-status/', views.update_pending_return_status, name='update_pending_return_status'),
 
 
 
-    # path('all-deliveries/',views.all_deliveries,name='all_deliveries'),  
-    # path('all-city-deliveries/',views.all_deliveries_by_city,name='all_deliveries_by_city'),
-    # path('all-deliveries-by-date/',views.all_deliveries_by_date,name='all_deliveries_by_date'),
+    path('all-returns/',views.all_returns,name='all_returns'),  
+    path('all-city-returns/',views.all_returns_by_city,name='all_returns_by_city'),
+    path('all-returns-by-date/',views.all_returns_by_date,name='all_returns_by_date'),
 ]
