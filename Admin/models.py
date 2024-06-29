@@ -75,6 +75,30 @@ class ServiceLocation(models.Model):
     is_active = models.BooleanField(default=True)
 
     
+class Notifications(models.Model):
+    date_created = models.DateField(auto_now_add=True, null=True)
+    time_created = models.TimeField(auto_now_add=True, null=True)
+    title = models.CharField(max_length=255)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    date_read = models.DateField(null=True, blank=True)
+    time_read = models.TimeField(null=True, blank=True)
+    notification_type_choices = [
+        ('info', 'Information'),
+        ('warning', 'Warning'),
+        ('error', 'Error'),
+        ('success', 'Success')
+    ]
+    notification_type = models.CharField(max_length=10, choices=notification_type_choices, default='info')
+    recipient_center = models.ForeignKey(City, on_delete=models.CASCADE, related_name='notifications')
 
+    def mark_as_read(self):
+        self.is_read = True
+        self.date_read = timezone.now().date()
+        self.time_read = timezone.now().time()
+        self.save()
+
+    def __str__(self):
+        return f"{self.title} - {'Read' if self.is_read else 'Unread'}"
     
    

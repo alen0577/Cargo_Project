@@ -1,0 +1,69 @@
+{% extends 'team_base.html' %}
+{% load static %}
+
+<!-- title for the dashboard page -->
+{% block title %}
+Team Dashboard
+{% endblock %}
+
+<!-- css link for dashboard page -->
+{% block link %}
+<link rel="stylesheet"  href="{% static 'team/css/team_dashboard.css' %}">
+{% endblock %}
+
+
+<!-- contents for dashboard page -->
+{% block content %}
+
+
+
+<div class="container-fluid px-4">
+    
+    <ol class="breadcrumb mt-3">
+        <li class="breadcrumb-item active">Notifications</li>
+    </ol>
+    <!-- refresh button -->
+    <div class="row">
+        <div class="col-lg-11 col-8"></div>
+        <div class="col-lg-1 col-4">
+            <a class="text-decoration-none " href="{% url 'team_notifications' %}" type="button"><span class="refresh-btn"><i class="fas fa-refresh"></i> refresh</span></a>
+        </div>
+    </div>
+    
+    <div class="row mt-5 mb-5">
+        <!-- order request card section -->
+        <div class="col-lg-12">
+            <a class="text-decoration-none" href="{% url 'order_requests' %}">
+                <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
+                    <div class="row g-0">
+                        <div class="col-4 col-lg-2" id="sec1">
+                            <div class="icons text-center mt-5 mb-5">
+                                <i class="fas fa-exclamation-triangle fs-1"></i>
+                            </div>
+                        </div>
+                        <div class="col-8 col-lg-10" id="sec2">
+                            <div class="card-body">
+                                <h5 class="card-title main-heading text-center">Order Requests 
+                                    
+                                </h5>
+                                   
+                                <p class="text-black mt-3 font-monospace">
+                                    You have a new order for approval 
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+    </div>
+    
+    
+</div>
+
+
+
+{% endblock %}

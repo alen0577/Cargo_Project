@@ -1119,7 +1119,29 @@ def all_returns_by_date(request):
         
         return JsonResponse({'success': True,'orders': orders_data})
 
+# team notifications
+def team_notifications(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        order_count=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).count()
+        pickup_count=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).count()
+        bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
+       
 
+        
+        context = {
+            'details': dash_details,
+            'order_count':order_count,
+            'pickup_count':pickup_count,
+            'bill_count':bill_count,
+        }
+        return render(request, 'team_notifications.html', context)
+    else:
+        return redirect('/')
 
 
 

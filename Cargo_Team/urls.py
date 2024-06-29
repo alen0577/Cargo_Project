@@ -5,6 +5,7 @@ urlpatterns = [
     path('team-dashboard/',views.team_dashboard,name='team_dashboard'),  
     path('team-profile/',views.team_profile,name='team_profile'),
     path('update-team-profile/',views.edit_team_profile,name='edit_team_profile'),
+    path('team-notifications/',views.team_notifications,name='team_notifications'),
 
     path('order-booking',views.order_booking,name='order_booking'),
     path('order-booking-save',views.order_booking_save,name='order_booking_save'),
