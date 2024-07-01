@@ -3,6 +3,7 @@ import uuid
 import qrcode  # Add this line to import the qrcode library
 from io import BytesIO
 from django.core.files import File
+from Admin.models import City
 
 # Create your models here.
 
@@ -18,6 +19,7 @@ class ShipmentBooking(models.Model):
 
     # Shipment type field
     shipment_type = models.CharField(max_length=30,default='Home Pickup')
+    shipping_center = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
 
     # customer details
     full_name = models.CharField(max_length=100,null=True,blank=True)
@@ -109,20 +111,17 @@ class ShipmentTracking(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.tracking_number:
-            self.tracking_number = str(uuid.uuid4()).replace('-', '')[:8]
+            self.tracking_number = str(uuid.uuid4()).replace('-', '')[:10]
         
-        qrcode_img = qrcode.make(self.tracking_number)
-        buffer = BytesIO()
-        qrcode_img.save(buffer)
-        self.qr_code.save(f'qrcode_{self.tracking_number}.png', File(buffer), save=False)
-        if self.pk:
-            old_instance = ShipmentTracking.objects.get(pk=self.pk)
-            if old_instance.status != self.status:
-                self.status_history.append({
-                    'status': self.status,
-                    'timestamp': self.last_updated.isoformat()
-                })
+        qr_data = f"Tracking Number: {self.tracking_number}\nShipment Type: {self.shipment.shipment_type}\nSender: {self.shipment.sender_name}\nReceiver: {self.shipment.receiver_name}\nStatus: {self.status}"
+        qr_image = make_qr(qr_data)
+        qr_offset = Image.new('RGB', (qr_image.size[0] + 30, qr_image.size[1] + 30), 'white')
+        qr_offset.paste(qr_image, (15, 15))
 
+        stream = BytesIO()
+        qr_offset.save(stream, format='PNG')
+        self.qr_code.save(f'{self.tracking_number}_qr.png', File(stream), save=False)
+        stream.close()
 
         super().save(*args, **kwargs)
     

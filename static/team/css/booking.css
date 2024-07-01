@@ -72,6 +72,15 @@
     border-color: rgb(66, 28, 82);
 }
 
+.form-select {
+    border-color: rgb(66, 28, 82); 
+}
+
+.form-select:focus {
+    box-shadow: none !important; /* Remove box shadow on focus */
+    border-color: rgb(66, 28, 82);
+}
+
 .form-check-input[type="radio"]:focus {
     box-shadow: none !important; /* Remove box shadow on focus */
     border-color: rgb(66, 28, 82);

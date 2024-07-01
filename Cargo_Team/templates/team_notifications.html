@@ -32,8 +32,9 @@ Team Dashboard
     
     <div class="row mt-5 mb-5">
         <!-- order request card section -->
+        {% for i in notifications %}
         <div class="col-lg-12">
-            <a class="text-decoration-none" href="{% url 'order_requests' %}">
+            <a class="text-decoration-none" href="">
                 <div class="card shadow bg-body-tertiary rounded mt-2" style="max-width: 100%;">
                     <div class="row g-0">
                         <div class="col-4 col-lg-2" id="sec1">
@@ -43,13 +44,14 @@ Team Dashboard
                         </div>
                         <div class="col-8 col-lg-10" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Order Requests 
+                                <h5 class="card-title main-heading ">{{i.title}} 
                                     
                                 </h5>
                                    
                                 <p class="text-black mt-3 font-monospace">
-                                    You have a new order for approval 
+                                    {{i.message}}
                                 </p>
+                                <small class="text-black-50">{{i.date_created}}, <span class="ms-1">{{i.time_created}}</span></small>
                                 
                             </div>
                         </div>
@@ -57,6 +59,7 @@ Team Dashboard
                 </div>
             </a>
         </div>
+        {% endfor %}
 
 
     </div>

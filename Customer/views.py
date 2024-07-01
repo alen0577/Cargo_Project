@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from . models import *
+from Admin.models import City,Notifications
 import uuid
 from django.contrib import messages
 from django.http import HttpResponse
@@ -13,7 +14,11 @@ from io import BytesIO
 
 # booking request page
 def booking_request(request):
-    return render(request, 'booking_request.html')
+    city = City.objects.filter(is_active=True)
+    context={
+        'city':city
+    }
+    return render(request, 'booking_request.html', context)
 
 def home_pickup_booking(request):
     if request.method == 'POST':
@@ -42,6 +47,8 @@ def home_pickup_booking(request):
         receiver_state = request.POST.get('receiver_state')
         receiver_country = request.POST.get('receiver_country')
         receiver_contact_no = request.POST.get('receiver_contact_no')
+        shipping_center_id = request.POST.get('center-select')
+        center=City.objects.get(id=shipping_center_id)
         
         # Create an instance of the ShipmentBooking model
         shipment = ShipmentBooking(
@@ -54,6 +61,7 @@ def home_pickup_booking(request):
             pickup_time=pickup_time,
             package_weight=package_weight,
             number_of_packages=number_of_packages,
+            shipping_center=center,
             sender_name=sender_name,
             sender_address=sender_address,
             sender_city=sender_city,
@@ -76,7 +84,14 @@ def home_pickup_booking(request):
         # Assign the shipping order number
         shipment.booking_order_number = f'CARSO{shipment.id}'
         shipment.save()
+
+        # notification section
+        title = 'Order Request'
+        message = 'Your center receives an order that is pending approval and requires immediate attention to ensure timely processing.'
         
+        notification=Notifications(title=title,message=message,recipient_center=center)
+        notification.save()
+
         # Redirect to a success page
         messages.success(request, 'Success')
         return redirect('booking_details', shipment.uid)
@@ -103,6 +118,8 @@ def shipping_center_booking(request):
         receiver_state = request.POST.get('receiver_state')
         receiver_country = request.POST.get('receiver_country')
         receiver_contact_no = request.POST.get('receiver_contact_no')
+        shipping_center_id = request.POST.get('center-select')
+        center=City.objects.get(id=shipping_center_id)
         
         # Create an instance of the ShipmentBooking model
         shipment = ShipmentBooking(
@@ -114,6 +131,7 @@ def shipping_center_booking(request):
             delivery_type=delivery_type,
             package_weight=package_weight,
             number_of_packages=number_of_packages,
+            shipping_center=center,
             receiver_name=receiver_name,
             receiver_address=receiver_address,
             receiver_city=receiver_city,
@@ -129,6 +147,13 @@ def shipping_center_booking(request):
         # Assign the shipping order number
         shipment.booking_order_number = f'CARSO{shipment.id}'
         shipment.save()
+
+        # notification section
+        title = 'Order Request'
+        message = 'Your center receives an order that is pending approval and requires immediate attention to ensure timely processing.'
+        
+        notification = Notifications(title=title,message=message,recipient_center=center)
+        notification.save()
         
         # Redirect to a success page
         messages.success(request, 'Success')

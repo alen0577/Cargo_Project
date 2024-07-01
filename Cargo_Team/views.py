@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from Register_Login.models import CargoTeam
 from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues
-from Admin.models import ServiceLocation, City
+from Admin.models import ServiceLocation, City, Notifications
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
@@ -26,14 +26,16 @@ def team_dashboard(request):
         order_count=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).count()
         pickup_count=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).count()
         bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
-       
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
-        
+       
         context = {
             'details': dash_details,
             'order_count':order_count,
             'pickup_count':pickup_count,
             'bill_count':bill_count,
+            'noti_count':noti_count,
         }
         return render(request, 'team_dashboard.html', context)
     else:
@@ -47,9 +49,11 @@ def team_profile(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        
+        city=City.objects.filter(is_active=True)
+
         context = {
             'details': dash_details,
+            'city': city
         }
         return render(request, 'team_profile.html', context)
     else:
@@ -76,6 +80,9 @@ def edit_team_profile(request):
             data.country=request.POST.get('country')
             data.contact=request.POST.get('contact')
             data.pincode=request.POST.get('pincode')
+            center_id=request.POST.get('center-select')
+            center=City.objects.get(id=center_id)
+            data.work_center=center
             if img:
                 data.profile_picture=img
         
@@ -96,9 +103,10 @@ def order_booking(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        
+        city = City.objects.filter(is_active=True)
         context = {
             'details': dash_details,
+            'city':city,
         }
         return render(request, 'order_booking.html', context)
     else:
@@ -129,6 +137,8 @@ def order_booking_save(request):
             receiver_state = request.POST.get('receiver_state')
             receiver_country = request.POST.get('receiver_country')
             receiver_contact_no = request.POST.get('receiver_contact_no')
+            shipping_center_id = request.POST.get('center-select')
+            center=City.objects.get(id=shipping_center_id)
             
             # Create an instance of the ShipmentBooking model
             shipment = ShipmentBooking(
@@ -140,6 +150,7 @@ def order_booking_save(request):
                 delivery_type=delivery_type,
                 package_weight=package_weight,
                 number_of_packages=number_of_packages,
+                shipping_center=center,
                 receiver_name=receiver_name,
                 receiver_address=receiver_address,
                 receiver_city=receiver_city,
@@ -156,7 +167,7 @@ def order_booking_save(request):
             shipment.booking_order_number = f'CARSO{shipment.id}'
             shipment.is_confirmed=2
             shipment.save()
-            
+ 
             # Redirect to a success page
             return redirect('bill_request_details', shipment.id)
         else:
@@ -1130,7 +1141,10 @@ def team_notifications(request):
         order_count=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).count()
         pickup_count=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).count()
         bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
-       
+        today=date.today()
+        notifications = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).order_by('-date_created','-time_created')
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+
 
         
         context = {
@@ -1138,6 +1152,8 @@ def team_notifications(request):
             'order_count':order_count,
             'pickup_count':pickup_count,
             'bill_count':bill_count,
+            'notifications':notifications,
+            'noti_count':noti_count,
         }
         return render(request, 'team_notifications.html', context)
     else:

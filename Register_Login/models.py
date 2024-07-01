@@ -1,4 +1,5 @@
 from django.db import models
+from Admin.models import City
 
 # Create your models here.
 
@@ -20,4 +21,4 @@ class CargoTeam(models.Model):
     profile_picture = models.ImageField(null=True,blank = True,upload_to = 'image/profile_picture')
     admin_approval = models.IntegerField(default=0,null=True,blank=True)
     is_active = models.BooleanField(default=1,null=True,blank=True)
-
+    work_center = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)

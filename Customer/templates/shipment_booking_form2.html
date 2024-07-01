@@ -84,6 +84,19 @@
                 <div class="col-lg-6"></div>
 
             </div>
+            <div class="row g-0 mt-3">
+                <div class="col-lg-2">
+                    <label for="">Shipping Center</label>
+                </div>
+                <div class="col-lg-4">
+                    <select name="center-select" class="form-select mt-1 mb-1" required>
+                        <option value="" hidden>Select</option>
+                        {% for i in city %}
+                        <option value="{{i.id}}">{{i.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
             
         </div>
 

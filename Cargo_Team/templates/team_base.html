@@ -43,7 +43,11 @@
                 <div class="input-group">
                     <!-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                     <button class="btn btn-dark" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> -->
+                    {% if noti_count %}
+                    <a href="{% url 'team_notifications' %}"><i class="fas fa-bell text-white-50"><sup>( {{noti_count}} )</sup></i></a>
+                    {% else %}
                     <a href="{% url 'team_notifications' %}"><i class="fas fa-bell text-white-50"></i></a>
+                    {% endif %}
                 </div>
             </form>
             <!-- Navbar-->
