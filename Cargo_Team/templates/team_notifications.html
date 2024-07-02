@@ -31,7 +31,9 @@ Team Dashboard
     </div>
     
     <div class="row mt-5 mb-5">
-        <!-- order request card section -->
+        <!-- notification card section -->
+        {% if notifications %}
+
         {% for i in notifications %}
         <div class="col-lg-12">
             <a class="text-decoration-none" href="">
@@ -44,7 +46,7 @@ Team Dashboard
                         </div>
                         <div class="col-8 col-lg-10" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading ">{{i.title}} 
+                                <h5 class="card-title main-heading fw-bold">{{i.title}} 
                                     
                                 </h5>
                                    
@@ -60,6 +62,10 @@ Team Dashboard
             </a>
         </div>
         {% endfor %}
+
+        {% else %}
+        <h5 class="main-heading font-monospace">No new notifications...</h5>
+        {% endif %}
 
 
     </div>

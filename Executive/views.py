@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from Register_Login.models import CargoTeam
 from Customer.models import ShipmentBooking,ShipmentTracking,CustomerIssues,OrderQueries
-from Admin.models import ServiceLocation
+from Admin.models import ServiceLocation,City,Notifications
 from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
@@ -87,7 +87,7 @@ def shipment_status_update(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.all()
+        orders = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False)
         
         context = {
             'details': dash_details,
@@ -102,12 +102,25 @@ def update_order_status(request):
     if request.method == 'POST':
         order_id = request.POST.get('order_id')
         status = request.POST.get('status')
-
+        today=date.today()
         order = ShipmentTracking.objects.get(id=order_id)
         order.status = status
+        if status == 'dispatched':
+            order.shipped_date=today
+        if status == 'arrived_at_destination_hub':
+            order.is_arrived=True
+            order.destination_hub_arrival_date=today
+            # notification section
+            title = 'Order Delivery'
+            message = 'Your center receives an order for delivery updates that requires immediate attention to ensure timely processing and accurate tracking.'
+            pincode = order.shipment.receiver_pincode
+            postal_code=ServiceLocation.objects.get(postal_code=pincode)
+            notification = Notifications(title=title,message=message,recipient_center=postal_code.city)
+            notification.save()
+
         order.save()
 
-        orders = ShipmentTracking.objects.all()
+        orders = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False)
         orders_data = [{
             'id': order.id,
             'date': order.shipment.date.strftime('%d-%m-%Y'),

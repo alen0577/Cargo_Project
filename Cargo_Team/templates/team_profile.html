@@ -303,7 +303,7 @@ Profile
                     <label for="">Work Center</label>
                     {% if details.work_center %}
                     <select name="center-select" class="form-select mt-2 mb-2" required>
-                        <option value="{{details.work_center}}" hidden>{{details.work_center.name}}</option>
+                        <option value="{{details.work_center.id}}" hidden>{{details.work_center.name}}</option>
                         {% for i in city %} 
                         <option value="{{i.id}}">{{i.name}}</option>
                         {% endfor %}

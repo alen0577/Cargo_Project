@@ -50,10 +50,13 @@ def team_profile(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
-            'city': city
+            'city': city,
+            'noti_count':noti_count,
         }
         return render(request, 'team_profile.html', context)
     else:
@@ -81,6 +84,7 @@ def edit_team_profile(request):
             data.contact=request.POST.get('contact')
             data.pincode=request.POST.get('pincode')
             center_id=request.POST.get('center-select')
+            print(center_id)
             center=City.objects.get(id=center_id)
             data.work_center=center
             if img:
@@ -104,9 +108,13 @@ def order_booking(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         city = City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+       
         context = {
             'details': dash_details,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'order_booking.html', context)
     else:
@@ -193,10 +201,14 @@ def order_requests(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_confirmed=0,is_active=1).order_by('date','time')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+ 
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/order_requests.html', context)
     else:
@@ -245,10 +257,14 @@ def order_request_details(request,pk):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         order=ShipmentBooking.objects.get(id=pk,is_confirmed=0,is_active=1)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+
         
         context = {
             'details': dash_details,
             'order': order,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/order_request_details.html', context)
     else:
@@ -355,10 +371,14 @@ def pickup_orders(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('date','time')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/pickup_orders.html', context)
     else:
@@ -466,10 +486,13 @@ def bill_requests(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).order_by('date','time')
-        
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+       
         context = {
             'details': dash_details,
             'orders': orders,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/bill_requests.html', context)
     else:
@@ -484,10 +507,13 @@ def bill_request_details(request,pk):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         order=ShipmentBooking.objects.get(id=pk,is_confirmed=2,is_active=1)
-        
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+       
         context = {
             'details': dash_details,
             'data': order,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/bill_request_details.html', context)
     else:
@@ -530,10 +556,14 @@ def all_orders(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/all_orders.html', context)
     else:
@@ -637,10 +667,14 @@ def rejected_orders(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders=ShipmentBooking.objects.filter(is_confirmed=4,is_active=1).order_by('-date','-time')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'orders/rejected_orders.html', context)
     else:
@@ -744,10 +778,13 @@ def customer_support(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         issues_count = CustomerIssues.objects.filter(action_taken=0).count()
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
         
         context = {
             'details': dash_details,
-            'issues_count':issues_count
+            'issues_count':issues_count,
+            'noti_count':noti_count,
         }
         return render(request, 'customersupport/customer_support.html', context)
     else:
@@ -762,10 +799,13 @@ def pending_issues(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         pending_issues = CustomerIssues.objects.filter(action_taken=0).order_by('date','time')
-        
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+       
         context = {
             'details': dash_details,
             'issues':pending_issues,
+            'noti_count':noti_count,
         }
         return render(request, 'customersupport/pending_issues.html', context)
     else:
@@ -801,10 +841,13 @@ def solved_issues(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         solved_issues = CustomerIssues.objects.filter(action_taken=1).order_by('-date','-time')
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
         
         context = {
             'details': dash_details,
             'issues':solved_issues,
+            'noti_count':noti_count,
         }
         return render(request, 'customersupport/solved_issues.html', context)
     else:
@@ -822,6 +865,8 @@ def delivery_management(request):
         pending_count=ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).count()
         all_count=ShipmentTracking.objects.filter(is_arrived=True,).count()
         bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
        
 
         
@@ -830,6 +875,7 @@ def delivery_management(request):
             'pending_count':pending_count,
             'all_count':all_count,
             'bill_count':bill_count,
+            'noti_count':noti_count,
         }
         return render(request, 'delivery/delivery_management.html', context)
     else:
@@ -845,11 +891,14 @@ def pending_deliveries(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
             
         }
         return render(request, 'delivery/pending_deliveries.html', context)
@@ -919,11 +968,14 @@ def all_deliveries(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_arrived=True).order_by('destination_hub_arrival_date')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'delivery/all_deliveries.html', context)
     else:
@@ -982,6 +1034,8 @@ def return_management(request):
         pending_count=ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).count()
         all_count=ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).count()
         bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
        
 
         
@@ -990,6 +1044,7 @@ def return_management(request):
             'pending_count':pending_count,
             'all_count':all_count,
             'bill_count':bill_count,
+            'noti_count':noti_count,
         }
         return render(request, 'return/return_management.html', context)
     else:
@@ -1005,11 +1060,14 @@ def pending_returns(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
         city=City.objects.filter(is_active=True)
-    
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+   
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
             
         }
         return render(request, 'return/pending_returns.html', context)
@@ -1079,11 +1137,14 @@ def all_returns(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         city=City.objects.filter(is_active=True)
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
             'city':city,
+            'noti_count':noti_count,
         }
         return render(request, 'return/all_returns.html', context)
     else:
@@ -1144,7 +1205,7 @@ def team_notifications(request):
         today=date.today()
         notifications = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).order_by('-date_created','-time_created')
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
-
+        noti_status = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).update(is_read=True)
 
         
         context = {

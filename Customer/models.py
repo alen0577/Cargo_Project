@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
-import qrcode  # Add this line to import the qrcode library
+from qrcode import make as make_qr
+from PIL import Image
 from io import BytesIO
 from django.core.files import File
 from Admin.models import City
