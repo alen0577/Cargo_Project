@@ -114,7 +114,6 @@
               <th class="text-white">Order.No</th>
               <th class="text-white">Shipment Status</th>
               <th class="text-white">Details</th>
-              <th class="text-white">Action</th>
             </tr>
           </thead>
           <tbody id="ordersTable">
@@ -134,6 +133,12 @@
               <td class="text-warning">Dispatched</td>
               {% elif i.status == 'in_transit' %}
               <td class="text-warning">In Transit</td>
+              {% elif i.status == 'out_for_delivery' %}
+              <td class="text-success">Out for Delivery</td>
+              {% elif i.status == 'delivered' %}
+              <td class="text-success">Delivered</td>
+              {% elif i.status == 'returned' %}
+              <td class="text-danger">Returned</td>
               {% endif %}
 
               <td class="text-white">
@@ -145,22 +150,7 @@
                   ><i class="fas fa-file"></i
                 ></a>
               </td>
-              <td class="text-white">
-                <select
-                  name="status"
-                  class="status-select btn3"
-                  data-order-id="{{i.id}}"
-                >
-                  <option value="" hidden>Update Status</option>
-                  <option value="packed">Packed</option>
-                  <option value="dispatched">Dispatched</option>
-                  <option value="in_transit">In Transit</option>
-                  <option value="arrived_at_destination_hub">
-                    Arrived at Destination Hub
-                  </option>
-                  <option value="delayed">Delayed</option>
-                </select>
-              </td>
+              
             </tr>
             {% endfor %}
           </tbody>

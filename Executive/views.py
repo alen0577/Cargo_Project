@@ -93,7 +93,7 @@ def shipment_status_update(request):
             'details': dash_details,
             'orders': orders,
         }
-        return render(request, 'shipment_status.html', context)
+        return render(request, 'shipment/shipment_status.html', context)
     else:
         return redirect('/')
 
@@ -110,6 +110,7 @@ def update_order_status(request):
         if status == 'arrived_at_destination_hub':
             order.is_arrived=True
             order.destination_hub_arrival_date=today
+            
             # notification section
             title = 'Order Delivery'
             message = 'Your center receives an order for delivery updates that requires immediate attention to ensure timely processing and accurate tracking.'
@@ -145,7 +146,7 @@ def all_shipment_orders(request):
             'details': dash_details,
             'orders': orders,
         }
-        return render(request, 'all_shipment_orders.html', context)
+        return render(request, 'shipment/all_orders_status.html', context)
     else:
         return redirect('/')
 
