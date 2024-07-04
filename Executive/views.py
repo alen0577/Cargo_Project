@@ -153,6 +153,100 @@ def all_shipment_orders(request):
 
 
 
+# executive shipment update page
+
+def executive_return_management(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        
+        context = {
+            'details': dash_details,
+            
+        }
+        return render(request, 'return-section/return_management.html', context)
+    else:
+        return redirect('/')
+
+
+def return_shipment_status(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders = ShipmentTracking.objects.filter(is_returned=True,returned=False)
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'return-section/return_shipment_status.html', context)
+    else:
+        return redirect('/')
+
+
+def update_return_order_status(request):
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id')
+        status = request.POST.get('status')
+        today=date.today()
+        order = ShipmentTracking.objects.get(id=order_id)
+        order.status = status
+        if status == 'dispatched':
+            order.shipped_date=today
+        if status == 'arrived_at_destination_hub':
+            order.is_arrived=True
+            order.destination_hub_arrival_date=today
+            
+            # notification section
+            title = 'Order Delivery'
+            message = 'Your center receives an order for delivery updates that requires immediate attention to ensure timely processing and accurate tracking.'
+            pincode = order.shipment.receiver_pincode
+            postal_code=ServiceLocation.objects.get(postal_code=pincode)
+            notification = Notifications(title=title,message=message,recipient_center=postal_code.city)
+            notification.save()
+
+        order.save()
+
+        orders = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False)
+        orders_data = [{
+            'id': order.id,
+            'date': order.shipment.date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.shipment.booking_order_number,
+            'status': order.status,
+        } for order in orders]
+        return JsonResponse({'success': True,'orders': orders_data})
+        
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'})
+
+def all_return_orders(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders = ShipmentTracking.objects.filter(is_returned=True)
+        
+        context = {
+            'details': dash_details,
+            'orders': orders,
+        }
+        return render(request, 'return-section/all_return_orders.html', context)
+    else:
+        return redirect('/')
+
+
+
+
+
+
 
 
 

@@ -10,6 +10,11 @@ urlpatterns = [
     path('update-order-status/', views.update_order_status, name='update_order_status'),
     path('all-shipment-orders/',views.all_shipment_orders,name='all_shipment_orders'),
 
+    path('executive-return-management/',views.executive_return_management,name='executive_return_management'), 
+    path('return-status/update/',views.return_shipment_status,name='return_shipment_status'),
+    path('update-return-order-status/', views.update_return_order_status, name='update_return_order_status'),
+    path('all-return-orders/',views.all_return_orders,name='all_return_orders'),
+
 
     path('order-queries/',views.query_section,name='query_section'),
     path('pending-queries/',views.pending_queries,name='pending_queries'),
