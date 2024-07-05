@@ -16,11 +16,11 @@
     <li class="breadcrumb-item">
       <a
         class="text-decoration-none main-heading"
-        href="{% url 'executive_dashboard' %}"
-        >Dashboard</a
+        href="{% url 'executive_return_management' %}"
+        >Return Management</a
       >
     </li>
-    <li class="breadcrumb-item active">All Shipment Orders</li>
+    <li class="breadcrumb-item active">All Returns</li>
   </ol>
 
   {% if messages %}
@@ -50,56 +50,65 @@
   {% endif %}
 
   <div class="row mt-5">
-    <!-- <p style="text-align: justify">
+    <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select order type, city to get orders in your area.</span
+        >Select a date range to retrieve return orders within that period.</span
       >
     </p>
-    <div class="col-lg-3">
-      <select
-        class="form-select mt-1 mb-1"
-        name="type"
-        id="type"
-        onchange="showOptions()"
-      >
-        <option value="" hidden>Select Order Type*</option>
-        <option class="opt-hover" value="Home Pickup">Home Pickup</option>
-        <option class="opt-hover" value="Shipping Center">
-          Shipping Center
-        </option>
-      </select>
+
+    
+
+    <div class="col-lg-3" id="fdate1" >
+      <label class="main-heading">From</label>
+      <input
+        type="date"
+        class="form-control"
+        id="fromdate"
+        name="fromdate"
+        required
+      />
     </div>
-
-    <div class="col-lg-3" id="cityDiv" style="display: none">
-      <select
-        class="form-select mt-1 mb-1"
-        name="city"
-        id="city"
-        onchange="fetchOrders()"
+    <div class="col-lg-3" id="tdate1">
+      <label class="main-heading">To</label>
+      <input
+        type="date"
+        class="form-control"
+        id="todate"
+        name="todate"
+        required
+      />
+    </div>
+    <div class="col-lg-2" id="btn1" >
+      <button
+        class="btn1 mt-4"
+        type="button"
+        id="filterButton1"
+        onclick="updatedateTabledatewise()"
       >
-        <option value="" hidden>Select City</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
-      </select>
-    </div> -->
-
-    <div class="col-lg-3" id="searchDiv">
-      <div class="container-fluid mt-1 mb-1">
-        <form class="d-flex" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            id="searchInput"
-            oninput="filterTable()"
-          />
-        </form>
-      </div>
+        <i class="fas fa-search mx-1"></i>
+      </button>
     </div>
   </div>
+  <!-- search option -->
+  <div class="row mt-3">
+    <div class="col-lg-3" id="searchDiv">
+      <form class="d-flex" role="search">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+          id="searchInput"
+          oninput="filterTable()"
+        />
+      </form>
+    </div>
+  </div>
+
+
+
+
 
 
   <div class="row mt-5 mb-5">
@@ -110,7 +119,7 @@
           <thead>
             <tr>
               <th class="text-white">Sl.No</th>
-              <th class="text-white">Ordered Date</th>
+              <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
               <th class="text-white">Shipment Status</th>
               <th class="text-white">Details</th>
@@ -121,23 +130,23 @@
             <tr class="borderstyle">
               <td class="text-white">{{forloop.counter}}</td>
 
-              <td class="text-white">{{i.shipment.date|date:"d-m-Y"}}</td>
+              <td class="text-white">{{i.return_processed_date|date:"d-m-Y"}}</td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
-              {% if i.status == 'processing' %}
+              {% if i.return_status == 'processing' %}
               <td class="text-danger">Processing</td>
-              {% elif i.status == 'arrived_at_destination_hub' %}
+              {% elif i.return_status == 'arrived_at_destination_hub' %}
               <td class="text-success">Arrived at Destination Hub</td>
-              {% elif i.status == 'packed' %}
+              {% elif i.return_status == 'packed' %}
               <td class="text-warning">Packed</td>
-              {% elif i.status == 'dispatched' %}
+              {% elif i.return_status == 'dispatched' %}
               <td class="text-warning">Dispatched</td>
-              {% elif i.status == 'in_transit' %}
+              {% elif i.return_status == 'in_transit' %}
               <td class="text-warning">In Transit</td>
-              {% elif i.status == 'out_for_delivery' %}
+              {% elif i.return_status == 'out_for_delivery' %}
               <td class="text-success">Out for Delivery</td>
-              {% elif i.status == 'delivered' %}
+              {% elif i.return_status == 'delivered' %}
               <td class="text-success">Delivered</td>
-              {% elif i.status == 'returned' %}
+              {% elif i.return_status == 'returned' %}
               <td class="text-danger">Returned</td>
               {% endif %}
 

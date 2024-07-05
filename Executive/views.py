@@ -179,7 +179,7 @@ def return_shipment_status(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.filter(is_returned=True,returned=False)
+        orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=False)
         
         context = {
             'details': dash_details,
@@ -242,15 +242,31 @@ def all_return_orders(request):
     else:
         return redirect('/')
 
+def return_status_by_date(request):
+    if request.method == 'POST':
+        city = request.POST.get('city')
+        from_date = request.POST.get('from_date')
+        to_date = request.POST.get('to_date')
 
-
-
-
-
-
-
-
-
+        if from_date and to_date:
+            orders = ShipmentTracking.objects.filter(return_processed_date__range=[from_date, to_date],shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+        elif from_date:
+            orders = ShipmentTracking.objects.filter(return_processed_date__gte=from_date,shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+        elif to_date:
+            orders = ShipmentTracking.objects.filter(return_processed_date__lte=to_date,shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+        elif city:
+            orders = ShipmentTracking.objects.filter(shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+        else:
+            orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+        
+        orders_data = [{
+            'id': order.id,
+            'date': order.return_processed_date.strftime('%d-%m-%Y'),
+            'booking_order_number': order.shipment.booking_order_number,
+            'status': order.return_status,
+        } for order in orders]
+        
+        return JsonResponse({'success': True,'orders': orders_data})
 
 
 
