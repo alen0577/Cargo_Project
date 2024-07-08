@@ -101,7 +101,6 @@
     </div>
   </div>
 
-
   <div class="row mt-5 mb-5">
     <div class="col-lg-12">
       <div class="table-responsive">
@@ -146,20 +145,13 @@
                 ></a>
               </td>
               <td class="text-white">
-                <select
-                  name="status"
-                  class="status-select btn3"
-                  data-order-id="{{i.id}}"
-                >
-                  <option value="" hidden>Update Status</option>
-                  <option value="packed">Packed</option>
-                  <option value="dispatched">Dispatched</option>
-                  <option value="in_transit">In Transit</option>
-                  <option value="arrived_at_destination_hub">
-                    Arrived at Destination Hub
-                  </option>
-                  <option value="delayed">Delayed</option>
-                </select>
+                <a
+                  href=""
+                  class="btn1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#actionmodal{{i.id}}"
+                  ><i class="fas fa-edit"></i
+                ></a>
               </td>
             </tr>
             {% endfor %}
@@ -382,187 +374,121 @@
 </div>
 {% endfor %}
 
-<!-- <script>
-  $(document).ready(function () {
-    $('select.status-select').change(function () { 
-      var status = $(this).val();
-      var orderId = $(this).data("order-id"); 
+<!--Action Modal -->
+{% for i in orders %}
+<div
+  class="modal fade"
+  id="actionmodal{{i.id}}"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <i class="fas fa-edit"></i> Shipment Status
+        </h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <div class="row g-0 mt-3">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="details2 text-end">
+              <p class="fw-bold">{{i.shipment.booking_order_number}}</p>
+              <p class="fw-bold mt-1">{{i.shipment.date}}</p>
+            </div>
+          </div>
+        </div>
+        <form action="{% url 'update_return_order_status' i.id %}" method="post">
+          {% csrf_token %}
+          <div class="shipment-details-section mt-5 mb-5">
+            <div class="row ">
+              <div class="col-6">
+                <select
+                  name="status"
+                  class="status-select btn3 form-select"
+                  data-order-id="{{i.id}}"
+                >
+                  <option value="" hidden>Update Status</option>
+                  <option value="packed">Packed</option>
+                  <option value="dispatched">Dispatched</option>
+                  <option value="in_transit">In Transit</option>
+                  <option value="arrived_at_destination_hub">
+                    Arrived at Destination Hub
+                  </option>
+                </select>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-5">
+                <label>Current Status:</label>
+  
+                <span class="main-heading font-monospace ms-2">
+                  {% if i.return_status == 'processing' %} Processing 
+                  {% elif i.return_status == 'packed' %} Packed 
+                  {% elif i.return_status == 'dispatched' %} Dispatched 
+                  {% elif i.return_status == 'in_transit' %} In Transit 
+                  {% elif i.return_status == 'arrived_at_destination_hub' %} 
+                  Arrived at Destination Hub 
+                  {% elif i.return_status == 'out_for_delivery' %} Out for Delivery
+                  {% elif i.return_status == 'delivered' %} Delivered 
+                  {% elif i.return_status == 'returned' %} Returned 
+                  {% endif %}
+                </span>
+              </div>
+              
+            </div>
+            <div class="row mt-3">
+              <div class="col-6">
+                <label for="">Expected Delivery Date</label>
+                <input
+                  type="date"
+                  name="estimated_delivery_date"
+                  class="form-control"
+                  
+                />
+              </div>
+              <div class="col-1"></div>
+              <div class="col-5">
+                <label for="">Expected Date:</label> <span class="main-heading font-monospace ms-2">{{i.estimated_delivery_date}}</span>
+              </div>
+            </div>
 
-      $.ajax({
-        url: "/update-order-status/",
-        type: "POST",
-        data: {
-          status: status,
-          order_id: orderId,
-          csrfmiddlewaretoken: "{{ csrf_token }}",
-        },
-        success: function (response) {
-          var ordersTable = $("#ordersTable");
-          ordersTable.html(''); 
+            <div class="row mt-3 ">
+              <div class="col-6">
+                <label for="">Current Location:</label>
+                {% if i.current_return_location %}
+                <input
+                  type="text"
+                  name="current_location"
+                  class="form-control"
+                  value="{{i.current_return_location}}"
+                />
+                {% else %}
+                <input type="text" name="current_location" class="form-control" />
+                {% endif %}
+                <small class="main-heading">note: "Update current location of order if status is 'In Transit' "</small>
+              </div>
+            </div>
+            <div class="row mt-5">
+              <div class="col-4"></div>
+              <div class="col-4">
+                <button type="submit" class="btn1 w-100">Save</button>
+              </div>
+              <div class="col-4"></div>
+            </div>
+          </div>
 
-          response.orders.forEach(function (order, index) {
-            var orderStatus = "";
-            if (order.status == "processing") {
-              orderStatus = '<td class="text-danger">Processing</td>';
-            } else if (order.status == "arrived_at_destination_hub") {
-              orderStatus =
-                '<td class="text-success">Arrived at Destination Hub</td>';
-            } else if (order.status == "packed") {
-              orderStatus =
-                '<td class="text-warning">Packed</td>';
-            }
-            else if (order.status == "dispatched") {
-              orderStatus =
-                '<td class="text-warning">Dispatched</td>';
-            }
-            else if (order.status == "in_transit") {
-              orderStatus =
-                '<td class="text-warning">In Transit</td>';
-            }
-            ordersTable.append(`
-                <tr class="borderstyle">
-                  <td class="text-white">${index + 1}</td>
-                  <td class="text-white">${order.date}</td>
-                  <td class="text-white">${order.booking_order_number}</td>
-                  ${orderStatus}
-                  <td class="text-white">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
-                      order.id
-                    }" class="btn1">
-                      <i class="fas fa-file"></i>
-                    </a>
-                  </td>
-                  <td class="text-white">
-                    <select
-                      name="status"
-                      class="status-select btn3"
-                      data-order-id="${order.id}"
-                    >
-                      <option value="" hidden>Update Status</option>
-                      <option value="packed">Packed</option>
-                      <option value="dispatched">Dispatched</option>
-                      <option value="in_transit">In Transit</option>
-                      <option value="arrived_at_destination_hub">
-                        Arrived at Destination Hub
-                      </option>
-                      <option value="delayed">Delayed</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
-                  </td>
-                </tr>
-              `);
-          });
-          if (response.success) {
-            alert("Order status updated successfully!");
-          } else {
-            alert("Failed to update order status: " + response.error);
-          }
-        },
-        error: function (xhr, errmsg, err) {
-          alert("There was an error updating the order status.");
-        },
-      });
-    });
-  });
-</script> -->
+        </form>
 
-<script>
-  // AJAX function to update order status
-  function updateOrderStatus(orderId, newStatus) {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'update_order_status' %}", // Update this URL with your actual URL
-      data: {
-        order_id: orderId,
-        status: newStatus,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      success: function (response) {
-        if (response.success) {
-          // Update HTML table with new values from JSON response
-          updateTable(response.orders);
-        } else {
-          console.error("Failed to update order status.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 
-  // Function to update HTML table with new values
-  function updateTable(orders) {
-    var tableBody = $("#ordersTable");
-    tableBody.empty(); // Clear existing rows
 
-    $.each(orders, function (index, order) {
-      var orderStatus = "";
-      if (order.status == "processing") {
-        orderStatus = '<td class="text-danger">Processing</td>';
-      } else if (order.status == "arrived_at_destination_hub") {
-        orderStatus =
-          '<td class="text-success">Arrived at Destination Hub</td>';
-      } else if (
-        order.status == "packed" ||
-        order.status == "dispatched" ||
-        order.status == "in_transit"
-      ) {
-        orderStatus =
-          '<td class="text-warning">' +
-          order.status.charAt(0).toUpperCase() +
-          order.status.slice(1).replace("_", " ") +
-          "</td>";
-      } else {
-        orderStatus =
-          "<td>" +
-          order.status.charAt(0).toUpperCase() +
-          order.status.slice(1).replace("_", " ") +
-          "</td>";
-      }
-
-      var newRow =
-        '<tr class="borderstyle">' +
-        '<td class="text-white">' +
-        (index + 1) +
-        "</td>" +
-        '<td class="text-white">' +
-        order.date +
-        "</td>" +
-        '<td class="text-white">' +
-        order.booking_order_number +
-        "</td>" +
-        orderStatus +
-        '<td class="text-white">' +
-        '<a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal' +
-        order.id +
-        '"><i class="fas fa-file"></i></a>' +
-        "</td>" +
-        '<td class="text-white">' +
-        '<select name="status" class="status-select btn3" data-order-id="' +
-        order.id +
-        '">' +
-        '<option value="" hidden>Update Status</option>' +
-        '<option value="packed">Packed</option>' +
-        '<option value="dispatched">Dispatched</option>' +
-        '<option value="in_transit">In Transit</option>' +
-        '<option value="arrived_at_destination_hub">Arrived at Destination Hub</option>' +
-        '<option value="delayed">Delayed</option>' +
-        "</select>" +
-        "</td>" +
-        "</tr>";
-
-      tableBody.append(newRow);
-    });
-  }
-
-  // Event listener for status select change
-  $(document).on("change", ".status-select", function () {
-    var orderId = $(this).data("order-id");
-    var newStatus = $(this).val();
-    updateOrderStatus(orderId, newStatus);
-  });
-</script>
 
 
 <script>

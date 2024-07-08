@@ -14,7 +14,7 @@ urlpatterns = [
 
     path('executive-return-management/',views.executive_return_management,name='executive_return_management'), 
     path('return-status/update/',views.return_shipment_status,name='return_shipment_status'),
-    path('update-return-order-status/', views.update_return_order_status, name='update_return_order_status'),
+    path('update-return-order-status/<int:pk>/', views.update_return_order_status, name='update_return_order_status'),
     path('all-return-orders/',views.all_return_orders,name='all_return_orders'),
     path('all-return-orders-by-date/',views.return_status_by_date,name='return_status_by_date'),
 

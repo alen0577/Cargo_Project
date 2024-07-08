@@ -412,9 +412,9 @@
     $.each(orders, function (index, order) {
       var orderStatus = "";
       if (order.status == "arrived_at_destination_hub") {
-        orderStatus = '<td class="text-danger">Arrived at Destination Hub</td>';
+        orderStatus = '<td class="text-success">Arrived at Destination Hub</td>';
       } else if (order.status == "out_for_delivery") {
-        orderStatus = '<td class="text-warning">Out for Delivery</td>';
+        orderStatus = '<td class="text-success">Out for Delivery</td>';
       } else if (order.status == "delivered") {
         orderStatus = '<td class="text-success">Delivered</td>';
       } else if (order.status == "returned") {
@@ -422,11 +422,11 @@
       } else if (order.status == "processing") {
         orderStatus = '<td class="text-danger">Processing</td>';
       } else if (order.status == "packed") {
-        orderStatus = '<td class="text-danger">Packed</td>';
+        orderStatus = '<td class="text-warning">Packed</td>';
       } else if (order.status == "dispatched") {
-        orderStatus = '<td class="text-danger">Dispatched</td>';
+        orderStatus = '<td class="text-warning">Dispatched</td>';
       } else if (order.status == "in_transit") {
-        orderStatus = '<td class="text-danger">In Transit</td>';
+        orderStatus = '<td class="text-warning">In Transit</td>';
       }
       var newRow =
         '<tr class="borderstyle">' +

@@ -90,18 +90,21 @@ class ShipmentTracking(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     shipped_date = models.DateField(null=True, blank=True)  
-
     is_arrived = models.BooleanField(default=False)   
     destination_hub_arrival_date = models.DateField(null=True, blank=True)  
-
     is_delivered = models.BooleanField(default=False)   
     delivery_date = models.DateField(null=True, blank=True)
 
     is_returned = models.BooleanField(default=False)
-    arrived_for_return = models.BooleanField(default=False)
     return_status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='processing')
     return_reason = models.TextField(null=True, blank=True) 
-    return_processed_date = models.DateField(null=True, blank=True)  
+    return_processed_date = models.DateField(null=True, blank=True) 
+    return_shipped_date = models.DateField(null=True, blank=True)
+    arrived_for_return = models.BooleanField(default=False)
+    destination_hub_return_arrival_date = models.DateField(null=True, blank=True)  
+    current_return_location = models.CharField(max_length=254, null=True, blank=True)
+
+    
     returned_date = models.DateField(null=True, blank=True) 
     returned = models.BooleanField(default=False)
 

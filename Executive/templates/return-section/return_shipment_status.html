@@ -49,59 +49,9 @@
   </div>
   {% endif %}
 
-  <!-- filter section -->
-  <!-- <div class="row mt-5">
-    <p style="text-align: justify">
-      Note* -
-      <span class="text-warning-emphasis"
-        >Please select city to update return status of orders in your area.</span
-      >
-    </p>
-
-    <div class="col-lg-3" id="cityDiv">
-      <label class="main-heading">City</label>
-      <select class="form-select city-select" name="city" id="city">
-        <option value="" hidden>Select</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <div class="col-lg-3" id="fdate1" style="display: none">
-      <label class="main-heading">From</label>
-      <input
-        type="date"
-        class="form-control"
-        id="fromdate"
-        name="fromdate"
-        required
-      />
-    </div>
-    <div class="col-lg-3" id="tdate1" style="display: none">
-      <label class="main-heading">To</label>
-      <input
-        type="date"
-        class="form-control"
-        id="todate"
-        name="todate"
-        required
-      />
-    </div>
-    <div class="col-lg-2" id="btn1" style="display: none">
-      <button
-        class="btn1 mt-4"
-        type="button"
-        id="filterButton1"
-        onclick="updatedateTabledatewise()"
-      >
-        <i class="fas fa-search mx-1"></i>
-      </button>
-    </div>
-  </div> -->
   <!-- search option -->
   <div class="row mt-5">
-    <div class="col-lg-3" id="searchDiv" >
+    <div class="col-lg-3" id="searchDiv">
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"
@@ -125,9 +75,9 @@
               <th class="text-white">Sl.No</th>
               <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
-              <th class="text-white">Delivery Status</th>
+              <th class="text-white">Return Status</th>
               <th class="text-white">Details</th>
-              <th class="text-white">Action</th>
+              <th class="text-white">Update</th>
             </tr>
           </thead>
           <tbody id="ordersTable">
@@ -166,20 +116,13 @@
                 ></a>
               </td>
               <td class="text-white">
-                <select
-                  name="status"
-                  class="status-select btn3"
-                  data-order-id="{{i.id}}"
-                >
-                  <option value="" hidden>Update Status</option>
-                  <option value="packed">Packed</option>
-                  <option value="dispatched">Dispatched</option>
-                  <option value="in_transit">In Transit</option>
-                  <option value="arrived_at_destination_hub">
-                    Arrived at Destination Hub
-                  </option>
-                  <option value="delayed">Delayed</option>
-                </select>
+                <a
+                  href=""
+                  class="btn1"
+                  data-bs-toggle="modal"
+                  data-bs-target="#actionmodal{{i.id}}"
+                  ><i class="fas fa-edit"></i
+                ></a>
               </td>
             </tr>
             {% endfor %}
@@ -402,167 +345,121 @@
 </div>
 {% endfor %}
 
+<!--Action Modal -->
+{% for i in orders %}
+<div
+  class="modal fade"
+  id="actionmodal{{i.id}}"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <i class="fas fa-edit"></i> Shipment Status
+        </h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <div class="row g-0 mt-3">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="details2 text-end">
+              <p class="fw-bold">{{i.shipment.booking_order_number}}</p>
+              <p class="fw-bold mt-1">{{i.shipment.date}}</p>
+            </div>
+          </div>
+        </div>
+        <form action="{% url 'update_return_order_status' i.id %}" method="post">
+          {% csrf_token %}
+          <div class="shipment-details-section mt-5 mb-5">
+            <div class="row ">
+              <div class="col-6">
+                <select
+                  name="status"
+                  class="status-select btn3 form-select"
+                  data-order-id="{{i.id}}"
+                >
+                  <option value="" hidden>Update Status</option>
+                  <option value="packed">Packed</option>
+                  <option value="dispatched">Dispatched</option>
+                  <option value="in_transit">In Transit</option>
+                  <option value="arrived_at_destination_hub">
+                    Arrived at Destination Hub
+                  </option>
+                </select>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-5">
+                <label>Current Status:</label>
+  
+                <span class="main-heading font-monospace ms-2">
+                  {% if i.return_status == 'processing' %} Processing 
+                  {% elif i.return_status == 'packed' %} Packed 
+                  {% elif i.return_status == 'dispatched' %} Dispatched 
+                  {% elif i.return_status == 'in_transit' %} In Transit 
+                  {% elif i.return_status == 'arrived_at_destination_hub' %} 
+                  Arrived at Destination Hub 
+                  {% elif i.return_status == 'out_for_delivery' %} Out for Delivery
+                  {% elif i.return_status == 'delivered' %} Delivered 
+                  {% elif i.return_status == 'returned' %} Returned 
+                  {% endif %}
+                </span>
+              </div>
+              
+            </div>
+            <div class="row mt-3">
+              <div class="col-6">
+                <label for="">Expected Delivery Date</label>
+                <input
+                  type="date"
+                  name="estimated_delivery_date"
+                  class="form-control"
+                  
+                />
+              </div>
+              <div class="col-1"></div>
+              <div class="col-5">
+                <label for="">Expected Date:</label> <span class="main-heading font-monospace ms-2">{{i.estimated_delivery_date}}</span>
+              </div>
+            </div>
 
-<script>
-  function showOptions() {
-    var cityDiv = document.getElementById("cityDiv");
-    var fdate1 = document.getElementById("fdate1");
-    var tdate1 = document.getElementById("tdate1");
-    var btn1 = document.getElementById("btn1");
-    var searchDiv = document.getElementById("searchDiv");
+            <div class="row mt-3 ">
+              <div class="col-6">
+                <label for="">Current Location:</label>
+                {% if i.current_return_location %}
+                <input
+                  type="text"
+                  name="current_location"
+                  class="form-control"
+                  value="{{i.current_return_location}}"
+                />
+                {% else %}
+                <input type="text" name="current_location" class="form-control" />
+                {% endif %}
+                <small class="main-heading">note: "Update current location of order if status is 'In Transit' "</small>
+              </div>
+            </div>
+            <div class="row mt-5">
+              <div class="col-4"></div>
+              <div class="col-4">
+                <button type="submit" class="btn1 w-100">Save</button>
+              </div>
+              <div class="col-4"></div>
+            </div>
+          </div>
 
-    // Clear date inputs
-    document.getElementById("fromdate").value = "";
-    document.getElementById("todate").value = "";
+        </form>
 
-    cityDiv.style.display = "block";
-    fdate1.style.display = "block";
-    tdate1.style.display = "block";
-    btn1.style.display = "block";
-    searchDiv.style.display = "block";
-  }
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
 
-  // AJAX function to update order status
-  function updateOrderStatus(orderId, newStatus) {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'update_pending_return_status' %}", // Update this URL with your actual URL
-      data: {
-        order_id: orderId,
-        status: newStatus,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      success: function (response) {
-        if (response.success) {
-          updatedateTabledatewise();
-        } else {
-          console.error("Failed to update order status.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
 
-  // AJAX function to update city wise
-  function updateOrderTable(city) {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'pending_returns_by_city' %}", // Update this URL with your actual URL
-      data: {
-        city: city,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      success: function (response) {
-        if (response.success) {
-          // Update HTML table with new values from JSON response
-          updateTable(response.orders);
-        } else {
-          console.error("Failed to filter table.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
-
-  // AJAX function to update date wise
-  function updatedateTabledatewise() {
-    var city = document.getElementById("city").value;
-    var fromDate = document.getElementById("fromdate").value;
-    var toDate = document.getElementById("todate").value;
-
-    $.ajax({
-      type: "POST",
-      url: "{% url 'pending_returns_by_date' %}", // Update this URL with your actual URL
-      data: {
-        city: city,
-        from_date: fromDate,
-        to_date: toDate,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-
-      success: function (response) {
-        if (response.success) {
-          // Update HTML table with new values from JSON response
-          updateTable(response.orders);
-        } else {
-          console.error("Failed to filter table.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
-
-  // Function to update HTML table with new values
-  function updateTable(orders) {
-    var tableBody = $("#ordersTable");
-    tableBody.empty(); // Clear existing rows
-
-    $.each(orders, function (index, order) {
-      var orderStatus = "";
-      if (order.status == "arrived_at_destination_hub") {
-        orderStatus = '<td class="text-danger">Arrived at Destination Hub</td>';
-      } else if (order.status == "out_for_delivery") {
-        orderStatus = '<td class="text-warning">Out for Delivery</td>';
-      } else if (order.status == "delivered") {
-        orderStatus = '<td class="text-success">Delivered</td>';
-      } else if (order.status == "returned") {
-        orderStatus = '<td class="text-danger">Returned</td>';
-      }
-
-      var newRow =
-        '<tr class="borderstyle">' +
-        '<td class="text-white">' +
-        (index + 1) +
-        "</td>" +
-        '<td class="text-white">' +
-        order.date +
-        "</td>" +
-        '<td class="text-white">' +
-        order.booking_order_number +
-        "</td>" +
-        orderStatus +
-        '<td class="text-white">' +
-        '<a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal' +
-        order.id +
-        '"><i class="fas fa-file"></i></a>' +
-        "</td>" +
-        '<td class="text-white">' +
-        '<select name="status" class="status-select1 btn3" data-order-id="' +
-        order.id +
-        '">' +
-        '<option value="" hidden>Update Status</option>' +
-        '<option value="out_for_delivery">Out for Delivery</option>' +
-        '<option value="delivered">Delivered</option>' +
-        
-        
-        "</select>" +
-        "</td>" +
-        "</tr>";
-
-      tableBody.append(newRow);
-    });
-  }
-
-  // Event listener for status select change
-  $(document).on("change", ".status-select1", function () {
-    var orderId = $(this).data("order-id");
-    var newStatus = $(this).val();
-    updateOrderStatus(orderId, newStatus);
-  });
-
-  // Event listener for status select change
-  $(document).on("change", ".city-select", function () {
-    var city = $(this).val();
-    showOptions();
-    updateOrderTable(city);
-  });
-</script>
 
 <script>
   function filterTable() {
@@ -592,3 +489,12 @@
 </script>
 
 {% endblock %}
+
+<select name="status" class="status-select btn3" data-order-id="{{i.id}}">
+  <option value="" hidden>Update Status</option>
+  <option value="packed">Packed</option>
+  <option value="dispatched">Dispatched</option>
+  <option value="in_transit">In Transit</option>
+  <option value="arrived_at_destination_hub">Arrived at Destination Hub</option>
+  <option value="delayed">Delayed</option>
+</select>
