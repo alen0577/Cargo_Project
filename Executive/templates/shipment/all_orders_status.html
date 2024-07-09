@@ -375,29 +375,6 @@
 
 
 <script>
-  // AJAX function to update order status
-  function updateOrderStatus(orderId, newStatus) {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'update_order_status' %}", // Update this URL with your actual URL
-      data: {
-        order_id: orderId,
-        status: newStatus,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      success: function (response) {
-        if (response.success) {
-          // Update HTML table with new values from JSON response
-          updateTable(response.orders);
-        } else {
-          console.error("Failed to update order status.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
 
   // AJAX function to update date wise
   function updatedateTabledatewise() {

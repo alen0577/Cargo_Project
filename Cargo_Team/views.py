@@ -909,7 +909,7 @@ def pending_deliveries_by_city(request):
     if request.method == 'POST':
        
         city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('-destination_hub_arrival_date')
+        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         orders_data = [{
             'id': order.id,
             'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
@@ -925,15 +925,15 @@ def pending_deliveries_by_date(request):
         to_date = request.POST.get('to_date')
 
         if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         elif from_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         elif to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         elif city:
-            orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         else:
-            orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
 
         
         orders_data = [{
@@ -951,7 +951,16 @@ def update_pending_order_status(request):
         status = request.POST.get('status')
 
         order = ShipmentTracking.objects.get(id=order_id)
+        today=date.today()
         order.status = status
+        if status == 'delivered':
+            order.is_delivered=True
+            order.delivery_date=today
+        if status == 'returned':
+            order.is_returned=True
+            order.return_processed_date=today
+            order.estimated_delivery_date=None
+
         order.save()
 
         
@@ -966,7 +975,7 @@ def all_deliveries(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.filter(is_arrived=True).order_by('destination_hub_arrival_date')
+        orders = ShipmentTracking.objects.filter(is_arrived=True).order_by('-destination_hub_arrival_date')
         city=City.objects.filter(is_active=True)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
@@ -1120,7 +1129,12 @@ def update_pending_return_status(request):
         status = request.POST.get('status')
 
         order = ShipmentTracking.objects.get(id=order_id)
+        today=date.today()
         order.return_status = status
+        if status == 'delivered':
+            order.returned=True
+            order.returned_date=today
+        
         order.save()
 
         

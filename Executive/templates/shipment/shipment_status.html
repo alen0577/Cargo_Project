@@ -401,7 +401,7 @@
             </div>
           </div>
         </div>
-        <form action="{% url 'update_return_order_status' i.id %}" method="post">
+        <form action="{% url 'update_order_status' i.id %}" method="post">
           {% csrf_token %}
           <div class="shipment-details-section mt-5 mb-5">
             <div class="row ">
@@ -425,15 +425,15 @@
                 <label>Current Status:</label>
   
                 <span class="main-heading font-monospace ms-2">
-                  {% if i.return_status == 'processing' %} Processing 
-                  {% elif i.return_status == 'packed' %} Packed 
-                  {% elif i.return_status == 'dispatched' %} Dispatched 
-                  {% elif i.return_status == 'in_transit' %} In Transit 
-                  {% elif i.return_status == 'arrived_at_destination_hub' %} 
+                  {% if i.status == 'processing' %} Processing 
+                  {% elif i.status == 'packed' %} Packed 
+                  {% elif i.status == 'dispatched' %} Dispatched 
+                  {% elif i.status == 'in_transit' %} In Transit 
+                  {% elif i.status == 'arrived_at_destination_hub' %} 
                   Arrived at Destination Hub 
-                  {% elif i.return_status == 'out_for_delivery' %} Out for Delivery
-                  {% elif i.return_status == 'delivered' %} Delivered 
-                  {% elif i.return_status == 'returned' %} Returned 
+                  {% elif i.status == 'out_for_delivery' %} Out for Delivery
+                  {% elif i.status == 'delivered' %} Delivered 
+                  {% elif i.status == 'returned' %} Returned 
                   {% endif %}
                 </span>
               </div>

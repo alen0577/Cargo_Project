@@ -7,7 +7,7 @@ urlpatterns = [
     path('update-executive-profile/',views.edit_executive_profile,name='edit_executive_profile'),
 
     path('shipment-status/update/',views.shipment_status_update,name='shipment_status_update'),
-    path('update-order-status/', views.update_order_status, name='update_order_status'),
+    path('update-order-status/<int:pk>/', views.update_order_status, name='update_order_status'),
     path('all-shipment-orders/',views.all_shipment_orders,name='all_shipment_orders'),
     path('all-shipment-orders-by-date/',views.all_shipment_orders_by_date,name='all_shipment_orders_by_date'),
 

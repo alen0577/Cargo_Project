@@ -98,37 +98,48 @@ def shipment_status_update(request):
         return redirect('/')
 
 
-def update_order_status(request):
-    if request.method == 'POST':
-        order_id = request.POST.get('order_id')
-        status = request.POST.get('status')
-        today=date.today()
-        order = ShipmentTracking.objects.get(id=order_id)
-        order.status = status
-        if status == 'dispatched':
-            order.shipped_date=today
-        if status == 'arrived_at_destination_hub':
-            order.is_arrived=True
-            order.destination_hub_arrival_date=today
-            
-            # notification section
-            title = 'Order Delivery'
-            message = 'Your center receives an order for delivery updates that requires immediate attention to ensure timely processing and accurate tracking.'
-            pincode = order.shipment.receiver_pincode
-            postal_code=ServiceLocation.objects.get(postal_code=pincode)
-            notification = Notifications(title=title,message=message,recipient_center=postal_code.city)
-            notification.save()
+def update_order_status(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        if request.method == 'POST':
+            order_id = pk
+            status = request.POST.get('status')
+            location = request.POST['current_location']
+            expected_date = request.POST['estimated_delivery_date']
+            today=date.today()
+            order = ShipmentTracking.objects.get(id=order_id)
+            order.status = status
+            order.current_location=location
+            if expected_date:
+                order.estimated_delivery_date=expected_date
+            if status == 'dispatched':
+                order.shipped_date=today
+            if status == 'arrived_at_destination_hub':
+                order.is_arrived=True
+                order.destination_hub_arrival_date=today
+                
+                # notification section
+                title = 'Order Delivery'
+                order_number=order.shipment.booking_order_number
+                message = f'Your center has received an order with the number {order_number} for delivery updates. Immediate attention is required to ensure timely processing and accurate tracking.'
+                pincode = order.shipment.receiver_pincode
+                postal_code=ServiceLocation.objects.get(postal_code=pincode)
+                notification = Notifications(title=title,message=message,recipient_center=postal_code.city)
+                notification.save()
 
-        order.save()
+            order.save()
+            # Redirect to a success page
+            messages.success(request, 'Updated')
+            return redirect('shipment_status_update')   
+        else:
+            return redirect('/')
+    else:
+        return redirect('/')
 
-        orders = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False)
-        orders_data = [{
-            'id': order.id,
-            'date': order.shipment.date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.status,
-        } for order in orders]
-        return JsonResponse({'success': True,'orders': orders_data})
+        
         
 
     return JsonResponse({'success': False, 'error': 'Invalid request'})
@@ -176,7 +187,6 @@ def all_shipment_orders_by_date(request):
 
 
 # executive return shipment update page
-
 def executive_return_management(request):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -248,10 +258,9 @@ def update_return_order_status(request,pk):
             order.save()
             # Redirect to a success page
             messages.success(request, 'Updated')
-            return redirect('return_shipment_status')
-
-        
-        
+            return redirect('return_shipment_status')   
+        else:
+            return redirect('/')
     else:
         return redirect('/')
 
