@@ -43,8 +43,14 @@ Executive Dashboard
                         </div>
                         <div class="col-8" id="sec2">
                             <div class="card-body">
-                                <h5 class="card-title main-heading text-center">Update Shipment Status</h5>
-                                   
+                                <h5 class="card-title main-heading text-center">Update Status
+                                    {% if orders_count %}
+                                    <sup class="text-danger">({{orders_count}})</sup>
+                                    {% else %}
+                                    <sup class="icon">(0)</sup>
+                                    {% endif %}
+                                </h5>
+                                
                                 <p class="text-black-50 mt-3">
                                     Efficiently manage and update the status of cargo deliveries. 
                                 </p>

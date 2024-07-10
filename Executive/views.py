@@ -20,9 +20,11 @@ def executive_dashboard(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        
+        orders_count = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False).count()
+
         context = {
             'details': dash_details,
+            'orders_count':orders_count,
             
         }
         return render(request, 'executive_dashboard.html', context)
@@ -194,9 +196,11 @@ def executive_return_management(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        orders_count = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=False).count()
         
         context = {
             'details': dash_details,
+            'orders_count':orders_count,
             
         }
         return render(request, 'return-section/return_management.html', context)

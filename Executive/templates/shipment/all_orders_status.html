@@ -236,7 +236,7 @@
           </div>
         </div>
 
-        <div class="address-details mt-3">
+        <div class="address-details mt-5">
           {% if i.shipment.shipment_type == "Home Pickup" %}
           <div class="row g-0">
             <div class="col-5">
@@ -366,6 +366,70 @@
             <div class="col-5"></div>
           </div>
           {% endif %}
+
+          <div class="shipment-details-section mt-5 mb-5">
+            <div class="row g-0">
+              <div class="col-12">
+                <h5 class="main-heading fw-bold">Delivery Status Details</h5>
+              </div>
+            </div>
+            <div class="row g-0 mt-3 lh-large">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-6">Status</div>
+                  <div class="col-6 fw-bold">{{i.status|title}}</div>
+                </div>
+                <div class="row">
+                  <div class="col-6">Tracking Number</div>
+                  <div class="col-6 fw-bold">{{i.tracking_number}}</div>
+                </div>
+                {% if i.estimated_delivery_date %}
+                <div class="row">
+                  <div class="col-6">Expected Delivery Date</div>
+                  <div class="col-6">{{i.estimated_delivery_date}}</div>
+                </div>
+                {% endif %}
+
+                {% if i.current_location %}
+                <div class="row">
+                  <div class="col-6">Current Location</div>
+                  <div class="col-6">{{i.current_location}}</div>
+                </div>
+                {% endif %}
+
+                {% if i.shipped_date %}
+                <div class="row">
+                  <div class="col-6">Shipped Date</div>
+                  <div class="col-6">
+                   {{i.shipped_date}}
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if i.destination_hub_arrival_date %}
+                <div class="row">
+                  <div class="col-6">Destination Hub Arrival Date</div>
+                  <div class="col-6">
+                    {{i.destination_hub_arrival_date}}
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if i.return_processed_date %}
+                <div class="row">
+                  <div class="col-6">Return Processed Date</div>
+                  <div class="col-6">
+                    {{i.return_processed_date}}
+                  </div>
+                </div>
+                {% endif %}
+
+
+                
+              </div>
+              <div class="col-6"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
