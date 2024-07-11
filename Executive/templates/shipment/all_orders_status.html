@@ -114,6 +114,7 @@
               <th class="text-white">Sl.No</th>
               <th class="text-white">Ordered Date</th>
               <th class="text-white">Order.No</th>
+              <th class="text-white">Tracking Number</th>
               <th class="text-white">Shipment Status</th>
               <th class="text-white">Details</th>
             </tr>
@@ -125,6 +126,7 @@
 
               <td class="text-white">{{i.shipment.date|date:"d-m-Y"}}</td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
+              <td class="text-white">{{i.tracking_number}}</td>
               {% if i.status == 'processing' %}
               <td class="text-danger">Processing</td>
               {% elif i.status == 'arrived_at_destination_hub' %}
@@ -503,6 +505,9 @@
         "</td>" +
         '<td class="text-white">' +
         order.booking_order_number +
+        "</td>" +
+        '<td class="text-white">' +
+        order.tracking_number +
         "</td>" +
         orderStatus +
         '<td class="text-white">' +

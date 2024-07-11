@@ -59,57 +59,87 @@
 
 <section id="tracking-details-section">
   <div class="container">
-    {% if messages %}
-    <!-- message section -->
-    <div class="row mt-3">
-      <div class="col-lg-7"></div>
-      <div class="col-lg-5">
-        {% for message in messages %}
-        <div class="alert alert-dismissible fade show" role="alert">
-          {% if message.tags == 'success' %}
-          <strong>Success <i class="fas fa-check-circle icon"></i></strong
-          ><span class="ms-2">{{message}}</span>
-          {% else %}
-          <strong>Sorry <i class="fas fa-warning icon"></i></strong
-          ><span class="ms-2">{{message}}</span>
-          {% endif %}
-          <button
-            type="button"
-            class="btn-close btn-close-white shadow-none"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% endif %}
+    <div class="container tracking-progress">
+      <div class="card">
+        <div class="card-body">
+          
+          
+          <div class="main">
 
-    <div class="row mt-3 mb-3 mt-lg-5">
-      <div class="col-lg-5 mt-lg-5 mt-0">
-        <h2 class="main-heading fw-bold">
-          Book and Track Orders Anytime, Anywhere
-        </h2>
-        <h6
-          class="mt-lg-3 mt-0 lh-base"
-          style="text-align: justify; color: rgba(31, 31, 31, 0.8)"
-        >
-        Stay informed with the real-time status of your shipment. 
-        Our tracking system allows you to monitor the journey of your cargo with ease and transparency. 
-        Simply enter your tracking code to get the latest updates of your package.
-        Hassle-free tracking to ensure peace of mind. 
-        If you have any questions or concerns, our dedicated support team is here to assist you.
-        </h6>
-      </div>
-      <div class="col-lg-2"></div>
-      <div class="col-lg-5 mt-lg-5 mt-3">
-       
+            <div class="head">
+                <p class="head_1">Order<span class="ms-2 main-heading">Tracking</span></p>
+            </div>
+    
+            <ul>
+                <li>
+                    <i class="icon uil uil-capture"></i>
+                    <div class="progress one">
+                        <p>1</p>
+                        <i class="uil uil-check"></i>
+                    </div>
+                    <p class="text">Add To Cart</p>
+                </li>
+                <li>
+                    <i class="icon uil uil-clipboard-notes"></i>
+                    <div class="progress two">
+                        <p>2</p>
+                        <i class="uil uil-check"></i>
+                    </div>
+                    <p class="text">Fill Details</p>
+                </li>
+                <li>
+                    <i class="icon uil uil-credit-card"></i>
+                    <div class="progress three">
+                        <p>3</p>
+                        <i class="uil uil-check"></i>
+                    </div>
+                    <p class="text">Make Payment</p>
+                </li>
+                <li>
+                    <i class="icon uil uil-exchange"></i>
+                    <div class="progress four">
+                        <p>4</p>
+                        <i class="uil uil-check"></i>
+                    </div>
+                    <p class="text">Order in Progress</p>
+                </li>
+                <li>
+                    <i class="icon uil uil-map-marker"></i>
+                    <div class="progress five">
+                        <p>5</p>
+                        <i class="uil uil-check"></i>
+                    </div>
+                    <p class="text">Order Arrived</p>
+                </li>
+            </ul>
+    
+        </div>
+    
+         
+  
+          <div class="tracking-details animated">
+            <h5>Shipment ID: {{ data.tracking_number }}</h5>
+            <p>Status: {{ data.get_status_display }}</p>
+            <p>Current Location: {{ data.current_location }}</p>
+            <p>Last Updated: {{ data.last_updated }}</p>
+            <p>Estimated Delivery: {{ data.estimated_delivery_date }}</p>
+          </div>
+  
+          <div class="qr-code">
+            <img src="{{ data.qr_code.url }}" alt="QR Code" class="img-fluid">
+          </div>
+        </div>
       </div>
     </div>
+    
   </div>
 </section>
 
 <!-- end tracking section -->
+
+
+
+
 
 
 <!-- start footer section -->
@@ -119,5 +149,178 @@
 </section>
 
 <!-- end footer section -->
+
+
+
+<style>
+  
+@font-face {
+    font-family: pop;
+    src: url(./Fonts/Poppins-Medium.ttf);
+}
+
+
+.head_2{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 3px;
+}
+ul{
+    display: flex;
+    
+}
+ul li{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ul li .icon{
+    font-size: 35px;
+    color: #ff4732;
+    margin: 0 60px;
+}
+ul li .text{
+    font-size: 14px;
+    font-weight: 600;
+    color: #ff4732;
+}
+
+/* Progress Div Css  */
+
+ul li .progress{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(68, 68, 68, 0.781);
+    margin: 14px 0;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    position: relative;
+    cursor: pointer;
+}
+.progress::after{
+    content: " ";
+    position: absolute;
+    width: 125px;
+    height: 5px;
+    background-color: rgba(68, 68, 68, 0.781);
+    right: 30px;
+}
+.one::after{
+    width: 0;
+    height: 0;
+}
+ul li .progress .uil{
+    display: none;
+}
+ul li .progress p{
+    font-size: 13px;
+}
+
+/* Active Css  */
+
+ul li .active{
+    background-color: #ff4732;
+    display: grid;
+    place-items: center;
+}
+li .active::after{
+    background-color: #ff4732;
+}
+ul li .active p{
+    display: none;
+}
+ul li .active .uil{
+    font-size: 20px;
+    display: flex;
+}
+
+/* Responsive Css  */
+
+@media (max-width: 980px) {
+    ul{
+        flex-direction: column;
+    }
+    ul li{
+        flex-direction: row;
+    }
+    ul li .progress{
+        margin: 0 30px;
+    }
+    .progress::after{
+        width: 5px;
+        height: 55px;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: -1;
+    }
+    .one::after{
+        height: 0;
+    }
+    ul li .icon{
+        margin: 15px 0;
+    }
+}
+
+@media (max-width:600px) {
+    .head .head_1{
+        font-size: 24px;
+    }
+    .head .head_2{
+        font-size: 16px;
+    }
+}
+
+</style>
+
+<script>
+  const one = document.querySelector(".one");
+const two = document.querySelector(".two");
+const three = document.querySelector(".three");
+const four = document.querySelector(".four");
+const five = document.querySelector(".five");
+
+one.onclick = function() {
+    one.classList.add("active");
+    two.classList.remove("active");
+    three.classList.remove("active");
+    four.classList.remove("active");
+    five.classList.remove("active");
+}
+
+two.onclick = function() {
+    one.classList.add("active");
+    two.classList.add("active");
+    three.classList.remove("active");
+    four.classList.remove("active");
+    five.classList.remove("active");
+}
+three.onclick = function() {
+    one.classList.add("active");
+    two.classList.add("active");
+    three.classList.add("active");
+    four.classList.remove("active");
+    five.classList.remove("active");
+}
+four.onclick = function() {
+    one.classList.add("active");
+    two.classList.add("active");
+    three.classList.add("active");
+    four.classList.add("active");
+    five.classList.remove("active");
+}
+five.onclick = function() {
+    one.classList.add("active");
+    two.classList.add("active");
+    three.classList.add("active");
+    four.classList.add("active");
+    five.classList.add("active");
+}
+
+</script>
 
 {% endblock %}

@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from io import BytesIO
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -219,15 +220,31 @@ def tracking(request):
     return render(request, 'shipment_tracking.html')
 
 
+def check_tracking_number(request):
+    if request.method == "POST":
+        tracking_number = request.POST['tracking_number']
+        
+        if tracking_number:
+            exists = ShipmentTracking.objects.filter(tracking_number__exact=tracking_number).exists()
+            response = {'found': exists}
+        else:
+            response = {'found': False}
+        
+        return JsonResponse(response)
+    
+    return JsonResponse({'found': False}, status=400)
+
+
 def tracking_details(request):
     shipment_order = None
     
     if request.method == "POST":
-        tracking_number = request.POST.get('tracking_number')
+        tracking_number = request.POST['tracking_number']
         
         if tracking_number:
-            shipment_order = get_object_or_404(ShipmentTracking, tracking_number=tracking_number)
-    
+            shipment_order = ShipmentTracking.objects.get(tracking_number=tracking_number)
+
+    print(shipment_order.status)   
     context = {
         'data': shipment_order,
     }

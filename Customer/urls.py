@@ -8,6 +8,7 @@ urlpatterns = [
     path('booking-details/<uuid:pk>/', views.booking_details, name='booking_details'),
     path('download-pdf/<int:pk>/', views.download_pdf, name='download_pdf'),
     path('tracking/', views.tracking, name='tracking'),
+    path('check-tracking-number/', views.check_tracking_number, name='check_tracking_number'),
     path('tracking-details/', views.tracking_details, name='tracking_details'),
     path('query-submission/', views.query_submission, name='query_submission'),
 ]

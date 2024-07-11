@@ -133,3 +133,16 @@
 .icon{
     color: rgb(254, 171, 120);
 }
+
+
+.head{
+    text-align: center;
+}
+.head_1{
+    font-size: 30px;
+    font-weight: 600;
+    color: #333;
+}
+.head_1 span{
+    color: rgb(66, 28, 82);;
+}

@@ -181,6 +181,7 @@ def all_shipment_orders_by_date(request):
             'id': order.id,
             'date': order.shipment.date.strftime('%d-%m-%Y'),
             'booking_order_number': order.shipment.booking_order_number,
+            'tracking_number': order.tracking_number,
             'status': order.status,
         } for order in orders]
         
@@ -310,6 +311,7 @@ def return_status_by_date(request):
             'id': order.id,
             'date': order.return_processed_date.strftime('%d-%m-%Y'),
             'booking_order_number': order.shipment.booking_order_number,
+            'tracking_number': order.tracking_number,
             'status': order.return_status,
         } for order in orders]
         

@@ -91,38 +91,30 @@
     <div class="row mt-5 mb-5">
       <div class="col-lg-5 mt-3">
         <div class="tracking-box">
-          <div
-            class="card shadow mb-5 bg-body-tertiary rounded"
-            style="width: 100%; height: 180px"
-          >
+          <div class="card shadow mb-5 bg-body-tertiary rounded" style="width: 100%; height: 180px;">
             <div class="card-body">
               <div class="container mt-4">
-                <label for="search-query" class="main-heading"
-                  >Enter Tracking Number</label
-                >
-
-                <form
-                  method="post"
-                  action="{% url 'tracking_details' %}"
-                  class="d-flex"
-                  role="search"
-                >
+                <label for="tracking_number" class="main-heading">Enter Tracking Number</label>
+                <form id="tracking-form" class="d-flex" method="post" action="{% url 'tracking_details' %}">
                   {% csrf_token %}
                   <input
+                    id="tracking_number"
                     class="form-control me-2"
                     type="search"
                     name="tracking_number"
                     aria-label="Search"
                     required
                   />
-                  <button class="btn1 p-2 rounded mx-2" type="submit">
+                  <button class="btn1  p-2 rounded mx-2" type="submit">
                     <i class="fas fa-search"></i>
                   </button>
                 </form>
+                <div id="error-message" class="text-danger mt-2" style="display: none;"></div>
               </div>
             </div>
           </div>
         </div>
+        
       </div>
       <div class="col-lg-2"></div>
       <div class="col-lg-5 mt-3">
@@ -146,5 +138,41 @@
 </section>
 
 <!-- end footer section -->
+
+
+<script>
+  $(document).ready(function() {
+    $('#tracking-form').on('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting
+
+      var trackingNumber = $('#tracking_number').val();
+      var csrfToken = '{{ csrf_token }}';
+
+      if (trackingNumber.length !== 10) {
+        $('#error-message').text('Enter a valid tracking number').show();
+        return;
+      }
+
+      $.ajax({
+        url: '{% url "check_tracking_number" %}',
+        method: 'POST',
+        data: {
+          'tracking_number': trackingNumber,
+          'csrfmiddlewaretoken': csrfToken
+        },
+        success: function(response) {
+          if (response.found) {
+            $('#tracking-form')[0].submit(); // If tracking number is found, submit the form
+          } else {
+            $('#error-message').text('Sorry! No order found for this tracking number.').show();
+          }
+        },
+        error: function() {
+          $('#error-message').text('An error occurred. Please try again.').show();
+        }
+      });
+    });
+  });
+</script>
 
 {% endblock %}
