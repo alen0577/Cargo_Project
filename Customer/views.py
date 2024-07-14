@@ -87,8 +87,9 @@ def home_pickup_booking(request):
         shipment.save()
 
         # notification section
+        order_number=shipment.booking_order_number
         title = 'Order Request'
-        message = 'Your center receives an order that is pending approval and requires immediate attention to ensure timely processing.'
+        message = f'Your center receives an order {order_number}, that is pending approval and requires immediate attention to ensure timely processing.'
         
         notification=Notifications(title=title,message=message,recipient_center=center)
         notification.save()
@@ -150,8 +151,9 @@ def shipping_center_booking(request):
         shipment.save()
 
         # notification section
+        order_number=shipment.booking_order_number
         title = 'Order Request'
-        message = 'Your center receives an order that is pending approval and requires immediate attention to ensure timely processing.'
+        message = f'Your center receives an order {order_number}, that is pending approval and requires immediate attention to ensure timely processing.'
         
         notification = Notifications(title=title,message=message,recipient_center=center)
         notification.save()
@@ -244,7 +246,7 @@ def tracking_details(request):
         if tracking_number:
             shipment_order = ShipmentTracking.objects.get(tracking_number=tracking_number)
 
-    print(shipment_order.status)   
+      
     context = {
         'data': shipment_order,
     }

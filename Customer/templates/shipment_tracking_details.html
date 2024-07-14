@@ -6,6 +6,7 @@
 <!-- css link for tracking details -->
 {% block link %}
 <link rel="stylesheet" href="{% static 'css/tracking.css' %}" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css">
 {% endblock %}
 
 <!-- contents for tracking details -->
@@ -58,86 +59,76 @@
 <!-- start tracking details section -->
 
 <section id="tracking-details-section">
-  <div class="container">
-    <div class="container tracking-progress">
-      <div class="card">
-        <div class="card-body">
-          
-          
-          <div class="main">
-
-            <div class="head">
-                <p class="head_1">Order<span class="ms-2 main-heading">Tracking</span></p>
+<div class="row mt-lg-5 mb-lg-5">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10 mt-lg-5 mb-lg-5">
+        <div class="container padding-bottom-3x mb-1">
+            <div class="card mt-3 mb-5 shadow  bg-body-tertiary rounded">
+                <div class="p-4 text-center text-white text-lg bgcolour rounded-top"><span class="text-uppercase">Tracking Number - </span><span class="text-medium">{{data.tracking_number}}</span></div>
+                <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Number:</span> {{data.shipment.booking_order_number}}</div>
+                {% if data.is_returned %}
+                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Return Status:</span> {{data.return_status}}</div>
+                {% else %}
+                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{data.status}}</div>
+                {% endif %}
+                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> {{data.estimated_delivery_date}}</div>
+                </div>
+                <div class="card-body">
+                <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step completed" id="step1">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fas fa-box"></i></div>
+                    </div>
+                    <h4 class="step-title">Processing</h4>
+                    </div>
+                    <div class="step" id="step2">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
+                    </div>
+                    <h4 class="step-title">Dispatched</h4>
+                    </div>
+                    <div class="step" id="step3">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                    </div>
+                    <h4 class="step-title">In Transit</h4>
+                    </div>
+                    <div class="step" id="step4">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fas fa-warehouse"></i></div>
+                    </div>
+                    <h4 class="step-title">Arrived at Destination Hub</h4>
+                    </div>
+                    <div class="step" id="step5">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon"><i class="fas fa-route"></i></div>
+                        </div>
+                        <h4 class="step-title">Out for delivery</h4>
+                        </div>
+                    <div class="step" id="step6">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fas fa-home"></i></div>
+                    </div>
+                    <h4 class="step-title">Delivered</h4>
+                    </div>
+                </div>
+                </div>
             </div>
-    
-            <ul>
-                <li>
-                    <i class="icon uil uil-capture"></i>
-                    <div class="progress one">
-                        <p>1</p>
-                        <i class="uil uil-check"></i>
-                    </div>
-                    <p class="text">Add To Cart</p>
-                </li>
-                <li>
-                    <i class="icon uil uil-clipboard-notes"></i>
-                    <div class="progress two">
-                        <p>2</p>
-                        <i class="uil uil-check"></i>
-                    </div>
-                    <p class="text">Fill Details</p>
-                </li>
-                <li>
-                    <i class="icon uil uil-credit-card"></i>
-                    <div class="progress three">
-                        <p>3</p>
-                        <i class="uil uil-check"></i>
-                    </div>
-                    <p class="text">Make Payment</p>
-                </li>
-                <li>
-                    <i class="icon uil uil-exchange"></i>
-                    <div class="progress four">
-                        <p>4</p>
-                        <i class="uil uil-check"></i>
-                    </div>
-                    <p class="text">Order in Progress</p>
-                </li>
-                <li>
-                    <i class="icon uil uil-map-marker"></i>
-                    <div class="progress five">
-                        <p>5</p>
-                        <i class="uil uil-check"></i>
-                    </div>
-                    <p class="text">Order Arrived</p>
-                </li>
-            </ul>
-    
+            <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-sm-between align-items-center">
+                <div class="text-end"><a class="btn1 btn-rounded btn-sm text-decoration-none" href="" data-bs-toggle="modal" data-bs-target="#detailsmodal"><span class="mx-2">More Details</span></a></div>
+              
+            </div>
+            
         </div>
     
-         
-  
-          <div class="tracking-details animated">
-            <h5>Shipment ID: {{ data.tracking_number }}</h5>
-            <p>Status: {{ data.get_status_display }}</p>
-            <p>Current Location: {{ data.current_location }}</p>
-            <p>Last Updated: {{ data.last_updated }}</p>
-            <p>Estimated Delivery: {{ data.estimated_delivery_date }}</p>
-          </div>
-  
-          <div class="qr-code">
-            <img src="{{ data.qr_code.url }}" alt="QR Code" class="img-fluid">
-          </div>
-        </div>
-      </div>
     </div>
-    
-  </div>
+    <div class="col-lg-1"></div>
+
+</div>    
 </section>
 
 <!-- end tracking section -->
-
-
 
 
 
@@ -152,175 +143,400 @@
 
 
 
-<style>
-  
-@font-face {
-    font-family: pop;
-    src: url(./Fonts/Poppins-Medium.ttf);
-}
+<!--Details Modal -->
+<div
+  class="modal fade"
+  id="detailsmodal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          <i class="fas fa-file"></i> Order Details
+        </h1>
+      </div>
+      <div class="modal-body rounded-2 shadow bg-body-tertiary">
+        <div class="row g-0 mt-3">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="details2 text-end">
+              <p class="fw-bold">{{data.shipment.booking_order_number}}</p>
+              <p class="fw-bold mt-1">{{data.shipment.date}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="shipment-details-section">
+          <div class="row g-0">
+            <div class="col-12">
+              <h5 class="main-heading fw-bold">Shipment Order Details</h5>
+            </div>
+          </div>
+          <div class="row g-0 mt-3 lh-large">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-5">Name</div>
+                <div class="col-7">{{data.shipment.full_name|title}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Email</div>
+                <div class="col-7">{{data.shipment.email}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Phone No.</div>
+                <div class="col-7">{{data.shipment.contact_number}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Delivery Option</div>
+                <div class="col-7 fw-bold">
+                  By {{data.shipment.delivery_option|title}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">Delivery Type</div>
+                <div class="col-7 fw-bold">
+                  {{data.shipment.delivery_type|title}} Delivery
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">Package Weight</div>
+                <div class="col-7">
+                  {{data.shipment.shipment.package_weight}} Kg
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-5">No. of Packages</div>
+                <div class="col-7">{{data.shipment.number_of_packages}}</div>
+              </div>
+            </div>
+            <div class="col-6"></div>
+          </div>
+        </div>
+
+        <div class="address-details mt-3">
+          {% if data.shipment.shipment_type == "Home Pickup" %}
+          <div class="row g-0">
+            <div class="col-5">
+              <h5 class="main-heading fw-bold">Pickup Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{data.shipment.sender_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">{{data.shipment.sender_address|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{data.shipment.sender_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">
+                      {{data.shipment.sender_pincode}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{data.shipment.sender_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">{{data.shipment.sender_country|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{data.shipment.sender_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5">
+              <h5 class="main-heading fw-bold">Delivery Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{data.shipment.receiver_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">
+                      {{data.shipment.receiver_address|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{data.shipment.receiver_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">
+                      {{data.shipment.receiver_pincode}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{data.shipment.receiver_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">
+                      {{data.shipment.receiver_country|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{data.shipment.receiver_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="row">
+            <div class="col-6">
+              <h5 class="main-heading fw-bold">Delivery Address</h5>
+              <div class="row g-0 mt-3">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-5">Name</div>
+                    <div class="col-7">{{data.shipment.receiver_name|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Address</div>
+                    <div class="col-7">
+                      {{data.shipment.receiver_address|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">City</div>
+                    <div class="col-7">{{data.shipment.receiver_city|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Pincode</div>
+                    <div class="col-7 fw-bold">
+                      {{data.shipment.receiver_pincode}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">State</div>
+                    <div class="col-7">{{data.shipment.receiver_state|title}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Country</div>
+                    <div class="col-7">
+                      {{data.shipment.receiver_country|title}}
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">Contact No.</div>
+                    <div class="col-7">{{data.shipment.receiver_contact_no}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-5"></div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="shipment-details-section mt-5 mb-5">
+          <div class="row g-0">
+            <div class="col-12">
+              <h5 class="main-heading fw-bold">Shipment Details</h5>
+            </div>
+          </div>
+          <div class="row g-0 mt-3 lh-large">
+            <div class="col-6">
+              <h6 class="main-heading">Delivery Status</h6>
+              <div class="row">
+                <div class="col-6">Status</div>
+                <div class="col-6 fw-bold">{{data.status|title}}</div>
+              </div>
+              {% if data.is_returned == False %}
+              <div class="row">
+                <div class="col-6">Tracking Number</div>
+                <div class="col-6">{{data.tracking_number}}</div>
+              </div>
+              {% if data.estimated_delivery_date %}
+              <div class="row">
+                <div class="col-6">Expected Delivery Date</div>
+                <div class="col-6">{{data.estimated_delivery_date}}</div>
+              </div>
+              {% endif %}
+              {% endif %}
+
+               {% if data.is_returned == False  %}
+               {% if data.is_arrived == False  %}
+                <div class="row">
+                    <div class="col-6">Current Location</div>
+                    <div class="col-6">{{ data.current_location }}</div>
+                </div>
+                {% endif %}
+                {% endif %}
+
+              {% if data.shipped_date %}
+              <div class="row">
+                <div class="col-6">Shipped Date</div>
+                <div class="col-6">
+                 {{data.shipped_date}}
+                </div>
+              </div>
+              {% endif %}
+
+              {% if data.destination_hub_arrival_date %}
+              <div class="row">
+                <div class="col-6">Destination Hub Arrival Date</div>
+                <div class="col-6">
+                  {{data.destination_hub_arrival_date}}
+                </div>
+              </div>
+              {% endif %}
+
+              {% if data.delivery_date %}
+              <div class="row">
+                <div class="col-6">Delivered Date</div>
+                <div class="col-6">
+                 {{data.delivery_date}}
+                </div>
+              </div>
+              {% endif %}
+
+              {% if data.return_processed_date %}
+              <div class="row">
+                <div class="col-6">Return Processed Date</div>
+                <div class="col-6">
+                  {{data.return_processed_date}}
+                </div>
+              </div>
+              {% endif %}
 
 
-.head_2{
-    font-size: 16px;
-    font-weight: 600;
-    color: #333;
-    margin-top: 3px;
-}
-ul{
-    display: flex;
-    
-}
-ul li{
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-ul li .icon{
-    font-size: 35px;
-    color: #ff4732;
-    margin: 0 60px;
-}
-ul li .text{
-    font-size: 14px;
-    font-weight: 600;
-    color: #ff4732;
-}
+              
+            </div>
+            <div class="col-6">
+              {% if data.is_returned %}
+              <h6 class="main-heading">Return Status</h6>
+              <div class="row">
+                <div class="col-6">Status</div>
+                <div class="col-6 fw-bold">{{data.return_status|title}}</div>
+              </div>
+              
+              <div class="row">
+                <div class="col-6">Tracking Number</div>
+                <div class="col-6">{{data.tracking_number}}</div>
+              </div>
+              {% if data.estimated_delivery_date %}
+              <div class="row">
+                <div class="col-6">Expected Delivery Date</div>
+                <div class="col-6">{{data.estimated_delivery_date}}</div>
+              </div>
+              {% endif %}
 
-/* Progress Div Css  */
+              
 
-ul li .progress{
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgba(68, 68, 68, 0.781);
-    margin: 14px 0;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    position: relative;
-    cursor: pointer;
-}
-.progress::after{
-    content: " ";
-    position: absolute;
-    width: 125px;
-    height: 5px;
-    background-color: rgba(68, 68, 68, 0.781);
-    right: 30px;
-}
-.one::after{
-    width: 0;
-    height: 0;
-}
-ul li .progress .uil{
-    display: none;
-}
-ul li .progress p{
-    font-size: 13px;
-}
+              {% if data.return_shipped_date %}
+              <div class="row">
+                <div class="col-6">Shipped Date</div>
+                <div class="col-6">
+                 {{data.return_shipped_date}}
+                </div>
+              </div>
+              {% endif %}
 
-/* Active Css  */
+              {% if data.arrived_for_return == False  %}
+              {% if data.current_return_location %}
+              <div class="row">
+                <div class="col-6">Current Location</div>
+                <div class="col-6">{{data.current_return_location}}</div>
+              </div>
+              {% endif %}
+              {% endif %}
 
-ul li .active{
-    background-color: #ff4732;
-    display: grid;
-    place-items: center;
-}
-li .active::after{
-    background-color: #ff4732;
-}
-ul li .active p{
-    display: none;
-}
-ul li .active .uil{
-    font-size: 20px;
-    display: flex;
-}
+              {% if data.destination_hub_return_arrival_date %}
+              <div class="row">
+                <div class="col-6">Destination Hub Arrival Date</div>
+                <div class="col-6">
+                  {{data.destination_hub_return_arrival_date}}
+                </div>
+              </div>
+              {% endif %}
 
-/* Responsive Css  */
+              {% if data.returned_date %}
+              <div class="row">
+                <div class="col-6">Order Returned Date</div>
+                <div class="col-6">
+                 {{data.returned_date}}
+                </div>
+              </div>
+              {% endif %}
 
-@media (max-width: 980px) {
-    ul{
-        flex-direction: column;
-    }
-    ul li{
-        flex-direction: row;
-    }
-    ul li .progress{
-        margin: 0 30px;
-    }
-    .progress::after{
-        width: 5px;
-        height: 55px;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: -1;
-    }
-    .one::after{
-        height: 0;
-    }
-    ul li .icon{
-        margin: 15px 0;
-    }
-}
+              
+              {% endif %}
+            </div>
+          </div>
+        </div>
 
-@media (max-width:600px) {
-    .head .head_1{
-        font-size: 24px;
-    }
-    .head .head_2{
-        font-size: 16px;
-    }
-}
+      </div>
+    </div>
+  </div>
+</div>
 
-</style>
+
 
 <script>
-  const one = document.querySelector(".one");
-const two = document.querySelector(".two");
-const three = document.querySelector(".three");
-const four = document.querySelector(".four");
-const five = document.querySelector(".five");
-
-one.onclick = function() {
-    one.classList.add("active");
-    two.classList.remove("active");
-    three.classList.remove("active");
-    four.classList.remove("active");
-    five.classList.remove("active");
-}
-
-two.onclick = function() {
-    one.classList.add("active");
-    two.classList.add("active");
-    three.classList.remove("active");
-    four.classList.remove("active");
-    five.classList.remove("active");
-}
-three.onclick = function() {
-    one.classList.add("active");
-    two.classList.add("active");
-    three.classList.add("active");
-    four.classList.remove("active");
-    five.classList.remove("active");
-}
-four.onclick = function() {
-    one.classList.add("active");
-    two.classList.add("active");
-    three.classList.add("active");
-    four.classList.add("active");
-    five.classList.remove("active");
-}
-five.onclick = function() {
-    one.classList.add("active");
-    two.classList.add("active");
-    three.classList.add("active");
-    four.classList.add("active");
-    five.classList.add("active");
-}
-
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the status and return status from your backend data
+        let status = "{{ data.status }}";
+        const isReturned = "{{ data.is_returned }}"; // is_returned will be a string "True" or "False"
+    
+        // Convert isReturned to a boolean
+        const isReturnedBoolean = (isReturned.toLowerCase() === 'true');
+    
+        // Use return status if the item is returned
+        if (isReturnedBoolean) {
+            status = "{{ data.return_status }}";
+        }
+    
+        // Trim and convert status to lowercase for consistent comparison
+        status = status.trim().toLowerCase();
+    
+        console.log("Order status:", status); // Debugging line
+    
+        const steps = {
+            "processing": 1,
+            "dispatched": 2,
+            "in_transit": 3,
+            "arrived_at_destination_hub": 4,
+            "out_for_delivery": 5,
+            "delivered": 6
+        };
+    
+        function updateSteps(status) {
+            const stepNumber = steps[status];
+            console.log("Step number:", stepNumber); // Debugging line
+            if (stepNumber) {
+                for (let i = 1; i <= stepNumber; i++) {
+                    document.getElementById(`step${i}`).classList.add("completed");
+                    console.log(`Added completed to step${i}`); // Debugging line
+                }
+            } else {
+                console.error("Status not found in steps mapping:", status);
+            }
+        }
+    
+        updateSteps(status);
+    });
 </script>
+    
+        
 
 {% endblock %}

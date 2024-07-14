@@ -75,6 +75,7 @@
               <th class="text-white">Sl.No</th>
               <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
+              <th class="text-white">Tracking Number</th>
               <th class="text-white">Return Status</th>
               <th class="text-white">Details</th>
               <th class="text-white">Update</th>
@@ -89,6 +90,7 @@
                 {{i.return_processed_date|date:"d-m-Y"}}
               </td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
+              <td class="text-white">{{i.tracking_number}}</td>
               {% if i.return_status == 'processing' %}
               <td class="text-danger">Processing</td>
               {% elif i.return_status == 'arrived_at_destination_hub' %}

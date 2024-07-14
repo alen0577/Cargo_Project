@@ -23,5 +23,11 @@ urlpatterns = [
     path('pending-queries/',views.pending_queries,name='pending_queries'),
     path('query-action-taken/<int:pk>/',views.query_action_taken,name='query_action_taken'),
     path('all-queries/',views.all_queries,name='all_queries'),
+
+    path('customer-support/',views.customer_support,name='customer_support'), 
+    path('pending-issues/',views.pending_issues,name='pending_issues'), 
+    path('issue-action-taken/<int:pk>/',views.issue_action_taken,name='issue_action_taken'),
+    path('solved-issues/',views.solved_issues,name='solved_issues'), 
+
     
 ]

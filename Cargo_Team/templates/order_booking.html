@@ -226,10 +226,10 @@ Order Booking
                     },
                     success: function(data) {
                         if (data.is_available) {
-                            $('#pincode-result').text('Serivice is available for this location.').removeClass().addClass('available');
+                            $('#pincode-result').text('Serivice is available.').removeClass().addClass('available');
                             $('#submit-button').prop('disabled', false);
                         } else {
-                            $('#pincode-result').text('Service  is not available for this location.').removeClass().addClass('not-available');
+                            $('#pincode-result').text('Service  is not available.').removeClass().addClass('not-available');
                             $('#submit-button').prop('disabled', true);
                         }
                     },

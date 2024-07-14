@@ -12,7 +12,6 @@ urlpatterns = [
     path('check-pincode/', views.check_pincode, name='check_pincode'),
 
     path('order-requests/',views.order_requests,name='order_requests'),
-    path('fetch-orders-by-city/', views.fetch_orders_by_city, name='fetch_orders_by_city'),
     path('fetch-orders-by-type/', views.fetch_orders_by_type, name='fetch_orders_by_type'),
     path('order-request/<int:pk>/',views.order_request_details,name='order_request_details'),
     path('order-approval/<int:pk>/',views.order_approval,name='order_approval'),
@@ -40,11 +39,7 @@ urlpatterns = [
     path('fetch-rejectedpickuporders-by-date/', views.fetch_rejectedpickuporders_by_date, name='fetch_rejectedpickuporders_by_date'),
     path('fetch-rejectedshipcenterorders-by-date/', views.fetch_rejectedshipcenterorders_by_date, name='fetch_rejectedshipcenterorders_by_date'), 
 
-    path('customer-support/',views.customer_support,name='customer_support'), 
-    path('pending-issues/',views.pending_issues,name='pending_issues'), 
-    path('issue-action-taken/<int:pk>/',views.issue_action_taken,name='issue_action_taken'),
-    path('solved-issues/',views.solved_issues,name='solved_issues'), 
-
+    
     path('delivery-management/',views.delivery_management,name='delivery_management'), 
     path('pending-deliveries/',views.pending_deliveries,name='pending_deliveries'),
     path('pending-city-deliveries/',views.pending_deliveries_by_city,name='pending_deliveries_by_city'),

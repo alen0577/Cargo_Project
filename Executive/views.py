@@ -6,6 +6,8 @@ from django.contrib import messages
 from datetime import date
 from datetime import datetime, timedelta
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Create your views here.
@@ -370,6 +372,40 @@ def query_action_taken(request,pk):
             query.action_taken=1
             query.response=request.POST.get('response')
             query.save()
+
+            # mail sending section
+            customer_name=query.name
+            queries=query.queries
+            response=query.response
+            tracking_number=query.tracking_number
+            order=ShipmentTracking.objects.get(tracking_number=tracking_number)
+            email=order.shipment.email
+
+            subject = f'Response to Your Order Query {tracking_number}'
+            message = f'''
+            Dear {customer_name},
+
+            Thank you for reaching out to us with your query regarding order {tracking_number}.
+            We have reviewed your inquiry and would like to provide you with the following information:
+
+            Here are the details:
+
+            - Tracking Number: {tracking_number}
+            - Query: {queries}
+            - Response/Action: {response}
+            
+            We hope this information helps address your query. 
+            If you have any other questions or need further assistance, please feel free to contact us.
+
+            Best regards,
+            Cargo
+            info@altostechnologies.com
+            +91 90741 56818
+            '''
+
+            recipient_email = email
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+
             messages.success(request,'Action Taken')
             return redirect('pending_queries')  
         else:
@@ -397,3 +433,124 @@ def all_queries(request):
         return render(request, 'order_queries/all_queries.html', context)
     else:
         return redirect('/')
+
+
+# customer support section
+def customer_support(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issues_count = CustomerIssues.objects.filter(action_taken=0).count()
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+        
+        context = {
+            'details': dash_details,
+            'issues_count':issues_count,
+            'noti_count':noti_count,
+        }
+        return render(request, 'customersupport/customer_support.html', context)
+    else:
+        return redirect('/')
+
+
+def pending_issues(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        pending_issues = CustomerIssues.objects.filter(action_taken=0).order_by('date','time')
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+       
+        context = {
+            'details': dash_details,
+            'issues':pending_issues,
+            'noti_count':noti_count,
+        }
+        return render(request, 'customersupport/pending_issues.html', context)
+    else:
+        return redirect('/')
+
+
+def issue_action_taken(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue=CustomerIssues.objects.get(id=pk,action_taken=0)
+        if request.method == 'POST':
+            issue.action_taken=1
+            issue.response=request.POST.get('response')
+            issue.save()
+
+            # mail sending section
+            customer_name=issue.full_name
+            issues=issue.issues
+            response=issue.response
+            delivery_date=date.today()
+           
+
+            subject = f'Regarding Your Recent Issue/Help Request'
+            message = f'''
+            Dear {customer_name},
+
+            Thank you for reaching out to us regarding your recent issue/help request. 
+            We have reviewed your issues/help and would like to provide you with the following information:
+
+            Here are the details:
+
+            - Issue: {issues}
+            - Response/Action: {response}
+
+            In the meantime, if you have any additional information or questions, 
+            please feel free to reply to this email or contact our support team at support@example.com or (123) 456-7890.
+
+            We appreciate your patience and understanding.
+            
+            Best regards,
+            Cargo
+            info@altostechnologies.com
+            +91 90741 56818
+            '''
+
+            recipient_email = issue.email
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+
+
+            messages.success(request,'Action Taken')
+            return redirect('pending_issues')  
+        else:
+            return redirect('pending_issues',)
+
+    else:
+        return redirect('/')
+
+
+def solved_issues(request):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        solved_issues = CustomerIssues.objects.filter(action_taken=1).order_by('-date','-time')
+        today=date.today()
+        noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+        
+        context = {
+            'details': dash_details,
+            'issues':solved_issues,
+            'noti_count':noti_count,
+        }
+        return render(request, 'customersupport/solved_issues.html', context)
+    else:
+        return redirect('/')
+

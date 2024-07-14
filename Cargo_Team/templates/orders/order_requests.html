@@ -71,19 +71,7 @@
       </select>
     </div>
 
-    <div class="col-lg-3" id="cityDiv" style="display: none">
-      <select
-        class="form-select mt-1 mb-1"
-        name="city"
-        id="city"
-        onchange="fetchOrders()"
-      >
-        <option value="" hidden>Select City</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
-      </select>
-    </div>
+    
 
     <div class="col-lg-3" id="searchDiv" style="display: none">
       <div class="container-fluid mt-1 mb-1">
@@ -115,10 +103,11 @@
               <th scope="col" class="text-white">Email</th>
               <th scope="col" class="text-white">Contact</th>
               <th scope="col" class="text-white">Details</th>
-              <!-- <th scope="col" class="text-white">Action</th> -->
+              
             </tr>
           </thead>
-          <tbody id="ordersTabl">
+          <div id="ordersContainer" data-dash-details-id="{{ details.id }}"></div>
+          <tbody id="ordersTable">
             {% for i in orders %}
             <tr class="borderstyle">
               <td class="text-white">{{forloop.counter}}</td>
@@ -130,9 +119,7 @@
               <td class="text-white">{{i.email}}</td>
               <td class="text-white">{{i.contact_number}}</td>
               <td class="text-white">
-                <a
-                  href="{% url 'order_request_details' i.id %}"
-                  class="btn1"
+                <a href="{% url 'order_request_details' i.id %}" class="btn1"
                   ><i class="fas fa-file"></i
                 ></a>
               </td>
@@ -468,70 +455,29 @@
 <script>
   function showOptions() {
     var type = document.getElementById("type").value;
-    var cityDiv = document.getElementById("cityDiv");
     var searchDiv = document.getElementById("searchDiv");
-    var city = document.getElementById("city");
+   
 
     if (type === "Home Pickup") {
-      cityDiv.style.display = "block";
       searchDiv.style.display = "none";
-      city.value = "";
       fetchOrdersByType("Home Pickup");
     } else if (type === "Shipping Center") {
-      cityDiv.style.display = "none";
       searchDiv.style.display = "block";
       fetchOrdersByType("Shipping Center");
     } else {
-      cityDiv.style.display = "none";
       searchDiv.style.display = "none";
     }
   }
 
-  function fetchOrders() {
-    var city = $("#city").val();
-
-    $.ajax({
-      url: '{% url "fetch_orders_by_city" %}', // Adjust the URL to your view
-      type: "GET",
-      data: {
-        city: city,
-      },
-      success: function (response) {
-        var ordersTable = $("#ordersTable");
-        ordersTable.empty();
-
-        response.orders.forEach(function (order, index) {
-          ordersTable.append(`
-              <tr class="borderstyle">
-                <td class="text-white">${index + 1}</td>
-                <td class="text-white">${order.date}</td>
-                <td class="text-white">${order.booking_order_number}</td>
-                <td class="text-white">${order.full_name}</td>
-                <td class="text-white">${order.email}</td>
-                <td class="text-white">${order.contact_number}</td>
-                <td class="text-white">
-                  <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
-                    order.id
-                  }" class="btn1">
-                    <i class="fas fa-file"></i>
-                  </a>
-                </td>
-              </tr>
-            `);
-        });
-      },
-      error: function (error) {
-        console.log(error);
-      },
-    });
-  }
 
   function fetchOrdersByType(type) {
+    var dashDetailsId = $("#ordersContainer").data("dash-details-id");
     $.ajax({
       url: '{% url "fetch_orders_by_type" %}', // Adjust the URL to your view
       type: "GET",
       data: {
         type: type,
+        log_id: dashDetailsId,
       },
       success: function (response) {
         var ordersTable = $("#ordersTable");
@@ -589,37 +535,6 @@
       }
     }
   }
-</script>
-
-<script>
-  $(document).ready(function () {
-    $("#orderApprovalForm").on("submit", function (event) {
-      event.preventDefault();
-
-      var formData = {
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-        pickupdate: $("#pickupdate").val(),
-        description: $("#description").val(),
-      };
-
-      $.ajax({
-        url: "",
-        type: "POST",
-        data: formData,
-        success: function (response) {
-          if (response.success) {
-            $("#approvemodal").modal("hide");
-            location.reload();
-          } else {
-            alert(response.message);
-          }
-        },
-        error: function (xhr, errmsg, err) {
-          alert("An error occurred: " + errmsg);
-        },
-      });
-    });
-  });
 </script>
 
 {% endblock %}
