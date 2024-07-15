@@ -52,7 +52,7 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select order type, city to get orders in your area.</span
+        >Please select order type, to filter orders.</span
       >
     </p>
     <div class="col-lg-3">
@@ -67,20 +67,6 @@
         <option class="opt-hover" value="Shipping Center">
           Shipping Center
         </option>
-      </select>
-    </div>
-
-    <div class="col-lg-3" id="cityDiv" style="display: none">
-      <select
-        class="form-select mt-1 mb-1"
-        name="city"
-        id="city"
-        onchange="fetchOrders()"
-      >
-        <option value="" hidden>Select City</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
       </select>
     </div>
 
@@ -185,6 +171,7 @@
               <th class="text-white">Details</th>
             </tr>
           </thead>
+          <div id="ordersContainer" data-dash-details-id="{{ details.id }}"></div>
           <tbody id="ordersTable">
             {% for i in orders %}
             <tr class="borderstyle">
@@ -288,6 +275,10 @@
               <div class="row">
                 <div class="col-5">No. of Packages</div>
                 <div class="col-7">{{i.number_of_packages}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Shipping Center</div>
+                <div class="col-7">{{i.shipping_center.name}}</div>
               </div>
             </div>
             <div class="col-6"></div>
@@ -437,15 +428,15 @@
     document.getElementById("todate2").value = "";
 
     if (type === "Home Pickup") {
-      cityDiv.style.display = "block";
-      searchDiv.style.display = "none";
-      city.value = "";
+      searchDiv.style.display = "block";
+      fdate1.style.display = "block";
+      tdate1.style.display = "block";
+      btn1.style.display = "block";
       fdate2.style.display = "none";
       tdate2.style.display = "none";
       btn2.style.display = "none";
       fetchOrdersByType("Home Pickup");
     } else if (type === "Shipping Center") {
-      cityDiv.style.display = "none";
       searchDiv.style.display = "block";
       fdate1.style.display = "none";
       tdate1.style.display = "none";
@@ -455,7 +446,6 @@
       btn2.style.display = "block";
       fetchOrdersByType("Shipping Center");
     } else {
-      cityDiv.style.display = "none";
       searchDiv.style.display = "none";
       fdate1.style.display = "none";
       tdate1.style.display = "none";
@@ -466,70 +456,14 @@
     }
   }
 
-  function fetchOrders() {
-    var city = $("#city").val();
-
-    // Clear date inputs
-    document.getElementById("fromdate").value = "";
-    document.getElementById("todate").value = "";
-
-    if (city) {
-      document.getElementById("fdate1").style.display = "block";
-      document.getElementById("tdate1").style.display = "block";
-      document.getElementById("btn1").style.display = "block";
-    } else {
-      document.getElementById("fdate1").style.display = "none";
-      document.getElementById("tdate1").style.display = "none";
-      document.getElementById("btn1").style.display = "none";
-    }
-
-    $.ajax({
-      url: '{% url "fetch_rejectedorders_by_city" %}', // Adjust the URL to your view
-      type: "GET",
-      data: {
-        city: city,
-      },
-      success: function (response) {
-        var ordersTable = $("#ordersTable");
-        ordersTable.empty();
-
-        response.orders.forEach(function (order, index) {
-          ordersTable.append(`
-                  <tr class="borderstyle">
-                    <td class="text-white">${index + 1}</td>
-                    <td class="text-white">${order.date}</td>
-                    <td class="text-white">${order.booking_order_number}</td>
-                    <td class="text-white">${order.full_name}</td>
-                    <td class="text-white">${order.email}</td>
-                    <td class="text-white">${order.contact_number}</td>
-                    <td class="text-white">
-                        <div>
-                        <textarea  rows="3" cols="31" readonly>${order.reason}</textarea>
-                        </div>
-                    </td>
-                    <td class="text-white">
-                      <a href="" data-bs-toggle="modal" data-bs-target="#detailsmodal${
-                        order.id
-                      }" class="btn1">
-                        <i class="fas fa-file"></i>
-                      </a>
-                    </td>
-                  </tr>
-                `);
-        });
-      },
-      error: function (error) {
-        console.log(error);
-      },
-    });
-  }
-
   function fetchOrdersByType(type) {
+    var dashDetailsId = $("#ordersContainer").data("dash-details-id");
     $.ajax({
       url: '{% url "fetch_rejectedorders_by_type" %}', // Adjust the URL to your view
       type: "GET",
       data: {
         type: type,
+        log_id: dashDetailsId,
       },
       success: function (response) {
         var ordersTable = $("#ordersTable");
@@ -568,7 +502,7 @@
   }
 
   function fetchpickupOrdersdate() {
-    var city = $("#city").val();
+    var dashDetailsId = $("#ordersContainer").data("dash-details-id");
     var fromDate = document.getElementById("fromdate").value;
     var toDate = document.getElementById("todate").value;
 
@@ -576,7 +510,7 @@
       url: '{% url "fetch_rejectedpickuporders_by_date" %}', // Adjust the URL to your view
       type: "GET",
       data: {
-        city: city,
+        log_id: dashDetailsId,
         from_date: fromDate,
         to_date: toDate,
       },
@@ -617,6 +551,7 @@
   }
 
   function fetchshipcenterOrdersdate() {
+    var dashDetailsId = $("#ordersContainer").data("dash-details-id");
     var fromDate = document.getElementById("fromdate2").value;
     var toDate = document.getElementById("todate2").value;
 
@@ -624,6 +559,7 @@
       url: '{% url "fetch_rejectedshipcenterorders_by_date" %}', // Adjust the URL to your view
       type: "GET",
       data: {
+        log_id: dashDetailsId,
         from_date: fromDate,
         to_date: toDate,
       },

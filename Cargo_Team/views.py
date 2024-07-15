@@ -235,9 +235,6 @@ def fetch_orders_by_type(request):
     return JsonResponse({"success": True,'orders': orders_data})
         
     
-
-
-
 def order_request_details(request,pk):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -318,30 +315,6 @@ def order_approval(request,pk):
         return redirect('/')
 
 
-# def order_approval(request, pk):
-#     if 'login_id' in request.session:
-#         log_id = request.session['login_id']
-#         dash_details = get_object_or_404(CargoTeam, id=log_id, admin_approval=1, is_active=1)
-#         order = get_object_or_404(ShipmentBooking, id=pk, is_confirmed=0, is_active=1)
-        
-#         if request.method == 'POST':
-            
-#             order.pickup_date = request.POST.get('pickupdate')
-#             order.description = request.POST.get('description')
-            
-#             if order.shipment_type == 'Home Pickup':
-#                 order.is_confirmed = 1
-#             else:
-#                 order.is_confirmed = 2
-            
-#             order.save()
-#             return JsonResponse({'success': True, 'message': 'Order Confirmed'})
-            
-#         else:
-#             return JsonResponse({'success': False, 'message': 'Invalid request method'})
-#     else:
-#         return JsonResponse({'success': False, 'message': 'Unauthorized access'})
-
 def order_rejection(request,pk):
     if 'login_id' in request.session:
         log_id = request.session['login_id']
@@ -393,26 +366,6 @@ def order_rejection(request,pk):
     else:
         return redirect('/')
 
-def fetch_orders(request):
-    if 'login_id' in request.session:
-        orders = ShipmentBooking.objects.filter(is_confirmed=0, is_active=1)
-        order_list = []
-        for order in orders:
-            order_list.append({
-                'id': order.id,
-                'date': order.date,
-                'booking_order_number': order.booking_order_number,
-                'full_name': order.full_name,
-                'email': order.email,
-                'contact_number': order.contact_number,
-                'sender_city': order.sender_city,
-                'pickup_date': order.pickup_date,
-                'description': order.description,
-            })
-        return JsonResponse({'orders': order_list})
-    else:
-        return JsonResponse({'error': 'Unauthorized access'}, status=403)
-
 
 def pickup_orders(request):
     if 'login_id' in request.session:
@@ -421,15 +374,14 @@ def pickup_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('date','time')
-        city=City.objects.filter(is_active=True)
+        orders=ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,is_confirmed=1,is_active=1).order_by('date','time')
+        
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
-            'city':city,
             'noti_count':noti_count,
         }
         return render(request, 'orders/pickup_orders.html', context)
@@ -437,22 +389,17 @@ def pickup_orders(request):
         return redirect('/')
 
 def pickup_orders_by_city(request):
-    city = request.GET.get('city')
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     filter_date = request.GET.get('filter_date')
-    
     today = date.today()
     
-    if city:
-        if filter_date == "Today":
-            orders = ShipmentBooking.objects.filter(sender_city=city, pickup_date=today,is_confirmed=1,is_active=1).order_by('date','time')
-        else:
-            orders = ShipmentBooking.objects.filter(sender_city=city,is_confirmed=1,is_active=1).order_by('date','time')
-
+    
+    if filter_date == "Today":
+        orders = ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,pickup_date=today,is_confirmed=1,is_active=1).order_by('date','time')
     else:
-        if filter_date == "Today":
-            orders = ShipmentBooking.objects.filter(pickup_date=today,is_confirmed=1,is_active=1).order_by('date','time')
-        else:
-            orders = ShipmentBooking.objects.filter(is_confirmed=1,is_active=1).order_by('date','time')
+        orders = ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,is_confirmed=1,is_active=1).order_by('date','time')
+
     
     orders_data = []
     for order in orders:
@@ -636,7 +583,7 @@ def all_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders=ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
         city=City.objects.filter(is_active=True)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
@@ -652,8 +599,10 @@ def all_orders(request):
         return redirect('/')
 
 def fetch_allorders_by_type(request):
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     order_type = request.GET.get('type')
-    orders = ShipmentBooking.objects.filter(shipment_type=order_type,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')  # Adjust the field name based on your model
+    orders = ShipmentBooking.objects.filter(shipment_type=order_type,shipping_center=dash_details.work_center,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')  # Adjust the field name based on your model
     orders_data = [
         {
             'id': order.id,
@@ -668,37 +617,22 @@ def fetch_allorders_by_type(request):
     ]
     return JsonResponse({'orders': orders_data})
 
-def fetch_allorders_by_city(request):
-    city = request.GET.get('city')
-    orders = ShipmentBooking.objects.filter(sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
-    orders_data = [
-        {
-            'id': order.id,
-            'date': order.date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.booking_order_number,
-            'full_name': order.full_name,
-            'email': order.email,
-            'contact_number': order.contact_number,
-            'status':order.is_confirmed,
-        }
-        for order in orders
-    ]
-   
-    return JsonResponse({'orders': orders_data})
+
 
 def fetch_allpickuporders_by_date(request):
-    city = request.GET.get('city')
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
     if from_date and to_date:
-        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
     elif from_date:
-        orders = ShipmentBooking.objects.filter(date__gte=from_date,sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__gte=from_date,shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
     elif to_date:
-        orders = ShipmentBooking.objects.filter(date__lte=to_date,sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__lte=to_date,shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
     else:
-        orders = ShipmentBooking.objects.filter(sender_city=city,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
 
     orders_data = [{
         'id': order.id,
@@ -714,17 +648,19 @@ def fetch_allpickuporders_by_date(request):
 
 
 def fetch_allshipcenterorders_by_date(request):
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
     if from_date and to_date:
-        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],shipment_type='Shipping Center',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
     elif from_date:
-        orders = ShipmentBooking.objects.filter(date__gte=from_date,shipment_type='Shipping Center',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__gte=from_date,shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
     elif to_date:
-        orders = ShipmentBooking.objects.filter(date__lte=to_date,shipment_type='Shipping Center',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__lte=to_date,shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
     else:
-        orders = ShipmentBooking.objects.filter(shipment_type='Shipping Center',is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1).exclude(is_confirmed=4).order_by('-date','-time')
 
     orders_data = [{
         'id': order.id,
@@ -747,15 +683,13 @@ def rejected_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders=ShipmentBooking.objects.filter(is_confirmed=4,is_active=1).order_by('-date','-time')
-        city=City.objects.filter(is_active=True)
+        orders=ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,is_confirmed=4,is_active=1).order_by('-date','-time')
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
-            'city':city,
             'noti_count':noti_count,
         }
         return render(request, 'orders/rejected_orders.html', context)
@@ -764,8 +698,10 @@ def rejected_orders(request):
 
 
 def fetch_rejectedorders_by_type(request):
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     order_type = request.GET.get('type')
-    orders = ShipmentBooking.objects.filter(shipment_type=order_type,is_confirmed=4,is_active=1).order_by('-date','-time')  # Adjust the field name based on your model
+    orders = ShipmentBooking.objects.filter(shipment_type=order_type,shipping_center=dash_details.work_center,is_confirmed=4,is_active=1).order_by('-date','-time')  # Adjust the field name based on your model
     orders_data = [
         {
             'id': order.id,
@@ -799,18 +735,19 @@ def fetch_rejectedorders_by_city(request):
     return JsonResponse({'orders': orders_data})
 
 def fetch_rejectedpickuporders_by_date(request):
-    city = request.GET.get('city')
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
     if from_date and to_date:
-        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],sender_city=city,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
     elif from_date:
-        orders = ShipmentBooking.objects.filter(date__gte=from_date,sender_city=city,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__gte=from_date,shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
     elif to_date:
-        orders = ShipmentBooking.objects.filter(date__lte=to_date,sender_city=city,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__lte=to_date,shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
     else:
-        orders = ShipmentBooking.objects.filter(sender_city=city,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(shipping_center=dash_details.work_center,shipment_type='Home Pickup',is_active=1,is_confirmed=4).order_by('-date','-time')
 
     orders_data = [{
         'id': order.id,
@@ -826,17 +763,19 @@ def fetch_rejectedpickuporders_by_date(request):
 
 
 def fetch_rejectedshipcenterorders_by_date(request):
+    log_id = request.GET.get('log_id')   
+    dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
     from_date = request.GET.get('from_date')
     to_date = request.GET.get('to_date')
 
     if from_date and to_date:
-        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],shipment_type='Shipping Center',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__range=[from_date, to_date],shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1,is_confirmed=4).order_by('-date','-time')
     elif from_date:
-        orders = ShipmentBooking.objects.filter(date__gte=from_date,shipment_type='Shipping Center',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__gte=from_date,shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1,is_confirmed=4).order_by('-date','-time')
     elif to_date:
-        orders = ShipmentBooking.objects.filter(date__lte=to_date,shipment_type='Shipping Center',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(date__lte=to_date,shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1,is_confirmed=4).order_by('-date','-time')
     else:
-        orders = ShipmentBooking.objects.filter(shipment_type='Shipping Center',is_active=1,is_confirmed=4).order_by('-date','-time')
+        orders = ShipmentBooking.objects.filter(shipment_type='Shipping Center',shipping_center=dash_details.work_center,is_active=1,is_confirmed=4).order_by('-date','-time')
 
     orders_data = [{
         'id': order.id,
@@ -860,9 +799,6 @@ def delivery_management(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        pending_count=ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).count()
-        all_count=ShipmentTracking.objects.filter(is_arrived=True,).count()
-        bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
        
@@ -870,9 +806,6 @@ def delivery_management(request):
         
         context = {
             'details': dash_details,
-            'pending_count':pending_count,
-            'all_count':all_count,
-            'bill_count':bill_count,
             'noti_count':noti_count,
         }
         return render(request, 'delivery/delivery_management.html', context)
@@ -1138,9 +1071,6 @@ def return_management(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        pending_count=ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).count()
-        all_count=ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).count()
-        bill_count=ShipmentBooking.objects.filter(is_confirmed=2,is_active=1).count()
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
        
@@ -1148,9 +1078,6 @@ def return_management(request):
         
         context = {
             'details': dash_details,
-            'pending_count':pending_count,
-            'all_count':all_count,
-            'bill_count':bill_count,
             'noti_count':noti_count,
         }
         return render(request, 'return/return_management.html', context)

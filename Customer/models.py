@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 import uuid
+import qrcode
 from qrcode import make as make_qr
 from PIL import Image
 from io import BytesIO
@@ -87,7 +89,8 @@ class ShipmentTracking(models.Model):
 
     current_location = models.CharField(max_length=254, null=True, blank=True)
     estimated_delivery_date = models.DateField(null=True, blank=True)
-    last_updated = models.DateTimeField(auto_now=True)
+    last_updated_date = models.DateField(auto_now=True)
+    last_updated_time = models.TimeField(auto_now=True)
 
     shipped_date = models.DateField(null=True, blank=True)  
     is_arrived = models.BooleanField(default=False)   
@@ -103,11 +106,8 @@ class ShipmentTracking(models.Model):
     arrived_for_return = models.BooleanField(default=False)
     destination_hub_return_arrival_date = models.DateField(null=True, blank=True)  
     current_return_location = models.CharField(max_length=254, null=True, blank=True)
-
-    
     returned_date = models.DateField(null=True, blank=True) 
     returned = models.BooleanField(default=False)
-
 
     delivery_attempts = models.IntegerField(default=0)  
     delivery_notes = models.TextField(null=True, blank=True)  
@@ -117,18 +117,39 @@ class ShipmentTracking(models.Model):
         if not self.tracking_number:
             self.tracking_number = str(uuid.uuid4()).replace('-', '')[:10]
         
-        qr_data = f"Tracking Number: {self.tracking_number}\nShipment Type: {self.shipment.shipment_type}\nSender: {self.shipment.sender_name}\nReceiver: {self.shipment.receiver_name}\nStatus: {self.status}"
-        qr_image = make_qr(qr_data)
-        qr_offset = Image.new('RGB', (qr_image.size[0] + 30, qr_image.size[1] + 30), 'white')
-        qr_offset.paste(qr_image, (15, 15))
+        if not self.qr_code:
+            qr_data = f"Tracking Number: {self.tracking_number}\nOrder Number: {self.shipment.booking_order_number}\nShipment Type: {self.shipment.shipment_type}\nSender: {self.shipment.sender_name}\nReceiver: {self.shipment.receiver_name}"
+            qr_image = self.make_qr(qr_data)
+            qr_offset = Image.new('RGB', (qr_image.size[0] + 30, qr_image.size[1] + 30), 'white')
+            qr_offset.paste(qr_image, (15, 15))
 
-        stream = BytesIO()
-        qr_offset.save(stream, format='PNG')
-        self.qr_code.save(f'{self.tracking_number}_qr.png', File(stream), save=False)
-        stream.close()
+            stream = BytesIO()
+            qr_offset.save(stream, format='PNG')
+            self.qr_code.save(f'{self.tracking_number}_qr.png', File(stream), save=False)
+            stream.close()
 
         super().save(*args, **kwargs)
-    
+        
+        
+       # Updating status history after saving
+        self.update_status_history()
+        super().save(update_fields=['status_history'])  # Save the updated status history
+
+    def update_status_history(self):
+        history = self.status_history
+        history.append({
+            'status': self.status,
+            'timestamp': timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+        })
+        self.status_history = history
+
+    def make_qr(self, data):
+        qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+        qr.add_data(data)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        return img
+
     def __str__(self):
         return f'{self.shipment.booking_order_number} - {self.status}'
 

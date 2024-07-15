@@ -62,65 +62,67 @@
 <div class="row mt-lg-5 mb-lg-5">
     <div class="col-lg-1"></div>
     <div class="col-lg-10 mt-lg-5 mb-lg-5">
-        <div class="container padding-bottom-3x mb-1">
-            <div class="card mt-3 mb-5 shadow  bg-body-tertiary rounded">
-                <div class="p-4 text-center text-white text-lg bgcolour rounded-top"><span class="text-uppercase">Tracking Number - </span><span class="text-medium">{{data.tracking_number}}</span></div>
-                <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
-                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Number:</span> {{data.shipment.booking_order_number}}</div>
-                {% if data.is_returned %}
-                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Return Status:</span> {{data.return_status}}</div>
-                {% else %}
-                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{data.status}}</div>
-                {% endif %}
-                <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> {{data.estimated_delivery_date}}</div>
-                </div>
-                <div class="card-body">
-                <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                    <div class="step completed" id="step1">
-                    <div class="step-icon-wrap">
-                        <div class="step-icon"><i class="fas fa-box"></i></div>
-                    </div>
-                    <h4 class="step-title">Processing</h4>
-                    </div>
-                    <div class="step" id="step2">
-                    <div class="step-icon-wrap">
-                        <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
-                    </div>
-                    <h4 class="step-title">Dispatched</h4>
-                    </div>
-                    <div class="step" id="step3">
-                    <div class="step-icon-wrap">
-                        <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
-                    </div>
-                    <h4 class="step-title">In Transit</h4>
-                    </div>
-                    <div class="step" id="step4">
-                    <div class="step-icon-wrap">
-                        <div class="step-icon"><i class="fas fa-warehouse"></i></div>
-                    </div>
-                    <h4 class="step-title">Arrived at Destination Hub</h4>
-                    </div>
-                    <div class="step" id="step5">
-                        <div class="step-icon-wrap">
-                            <div class="step-icon"><i class="fas fa-route"></i></div>
-                        </div>
-                        <h4 class="step-title">Out for delivery</h4>
-                        </div>
-                    <div class="step" id="step6">
-                    <div class="step-icon-wrap">
-                        <div class="step-icon"><i class="fas fa-home"></i></div>
-                    </div>
-                    <h4 class="step-title">Delivered</h4>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-sm-between align-items-center">
-                <div class="text-end"><a class="btn1 btn-rounded btn-sm text-decoration-none" href="" data-bs-toggle="modal" data-bs-target="#detailsmodal"><span class="mx-2">More Details</span></a></div>
-              
-            </div>
-            
-        </div>
+      
+      <div class="container padding-bottom-3x mb-1">
+          <div class="card mt-3 mb-5 shadow  bg-body-tertiary rounded">
+              <div class="p-4 text-center text-white text-lg bgcolour rounded-top"><span class="text-uppercase">Tracking Number - </span><span class="text-medium">{{data.tracking_number}}</span></div>
+              <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Number:</span> {{data.shipment.booking_order_number}}</div>
+              {% if data.is_returned %}
+              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Return Status:</span> {{data.return_status}}</div>
+              {% else %}
+              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{data.status}}</div>
+              {% endif %}
+              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> {{data.estimated_delivery_date}}</div>
+              </div>
+              <div class="card-body">
+              <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                  <div class="step completed" id="step1">
+                  <div class="step-icon-wrap">
+                      <div class="step-icon"><i class="fas fa-box"></i></div>
+                  </div>
+                  <h4 class="step-title">Processing</h4>
+                  </div>
+                  <div class="step" id="step2">
+                  <div class="step-icon-wrap">
+                      <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
+                  </div>
+                  <h4 class="step-title">Dispatched</h4>
+                  </div>
+                  <div class="step" id="step3">
+                  <div class="step-icon-wrap">
+                      <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                  </div>
+                  <h4 class="step-title">In Transit</h4>
+                  </div>
+                  <div class="step" id="step4">
+                  <div class="step-icon-wrap">
+                      <div class="step-icon"><i class="fas fa-warehouse"></i></div>
+                  </div>
+                  <h4 class="step-title">Arrived at Destination Hub</h4>
+                  </div>
+                  <div class="step" id="step5">
+                      <div class="step-icon-wrap">
+                          <div class="step-icon"><i class="fas fa-route"></i></div>
+                      </div>
+                      <h4 class="step-title">Out for delivery</h4>
+                      </div>
+                  <div class="step" id="step6">
+                  <div class="step-icon-wrap">
+                      <div class="step-icon"><i class="fas fa-home"></i></div>
+                  </div>
+                  <h4 class="step-title">Delivered</h4>
+                  </div>
+              </div>
+              </div>
+          </div>
+          <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-sm-between align-items-center mt-2 mb-5">
+            <div class="text-end"><a class="btn1 btn-rounded btn-sm text-decoration-none" href="" data-bs-toggle="modal" data-bs-target="#detailsmodal"><span class="mx-2">More Details</span></a></div>
+            <small class="text-end text-muted mt-2 mt-lg-0">Last Updated : <span>{{data.last_updated_date}}, {{data.last_updated_time}}</span></small>
+             
+          </div>
+          
+      </div>
     
     </div>
     <div class="col-lg-1"></div>
@@ -211,6 +213,10 @@
               <div class="row">
                 <div class="col-5">No. of Packages</div>
                 <div class="col-7">{{data.shipment.number_of_packages}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Shipping Center</div>
+                <div class="col-7">{{data.shipment.shipping_center}}</div>
               </div>
             </div>
             <div class="col-6"></div>

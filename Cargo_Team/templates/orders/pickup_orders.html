@@ -53,17 +53,10 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select a city to get pickup orders in your area.</span
+        >Please apply 'Today' filter to see your pickup orders on today.</span
       >
     </p>
-    <div class="col-lg-3">
-      <select class="form-select mt-1 mb-1" name="pickup_city" id="pickup_city">
-        <option value="" hidden>Select city</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
-      </select>
-    </div>
+
     <div class="col-lg-3">
       <select class="form-select mt-1 mb-1" name="filter_date" id="filter_date">
         <option value="All">All</option>
@@ -92,6 +85,7 @@
               <th class="text-white">Details</th>
             </tr>
           </thead>
+          <div id="ordersContainer" data-dash-details-id="{{ details.id }}"></div>
           <tbody id="ordersTable">
             {% for i in orders %}
             <tr class="borderstyle">
@@ -323,19 +317,19 @@
 
 <script>
   $(document).ready(function() {
-    $('#pickup_city, #filter_date').change(fetchOrders);
+    $('#filter_date').change(fetchOrders);
   });
 
   function fetchOrders() {
-    var city = $("#pickup_city").val();
     var filterDate = $("#filter_date").val();
+    var dashDetailsId = $("#ordersContainer").data("dash-details-id");
 
     $.ajax({
       url: '{% url "pickup_orders_by_city" %}',
       type: "GET",
       data: {
-        city: city,
-        filter_date: filterDate
+        filter_date: filterDate,
+        log_id: dashDetailsId,
       },
       success: function(response) {
         var ordersTable = $("#ordersTable");
