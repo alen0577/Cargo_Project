@@ -215,7 +215,7 @@
 .steps .step.completed .step-icon {
     border-color: rgb(66, 28, 82);
     background-color:rgb(66, 28, 82);
-    color: #fff
+    color: rgb(255, 255, 255);
 }
 
 .bgcolour{

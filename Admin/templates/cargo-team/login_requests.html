@@ -59,6 +59,7 @@ Cargo Team - Requests
                             <th class="text-white">Email</th>
                             <th class="text-white">Joining Date</th>
                             <th class="text-white">Designation</th>
+                            <th class="text-white">Center</th>
                             <th class="text-white">Action</th>
 
 
@@ -76,6 +77,7 @@ Cargo Team - Requests
                             <td class="text-white">{{i.email}}</td>
                             <td class="text-white">{{i.Joining_date}}</td>
                             <td class="text-white">{{i.designation}}</td>
+                            <td class="text-white">{{i.work_center.name}}</td>
                             <td>
                                 <a href="{% url 'accept_request' i.id %}"  class="btn2 p-2"><i class="fas fa-check-circle"></i></a>
                                 <a href="{% url 'cancel_request' i.id %}" class="btn2 p-2"><i class="fas fa-times-circle"></i></a>

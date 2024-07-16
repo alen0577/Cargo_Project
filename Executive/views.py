@@ -218,7 +218,7 @@ def return_shipment_status(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=False)
+        orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=False).order_by('return_processed_date')
         
         context = {
             'details': dash_details,

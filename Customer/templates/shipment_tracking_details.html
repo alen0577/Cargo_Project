@@ -59,67 +59,103 @@
 <!-- start tracking details section -->
 
 <section id="tracking-details-section">
-<div class="row mt-lg-5 mb-lg-5">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-4 mt-2 mt-lg-4 col-6">
+      <a class="text-decoration-none" href="{% url 'tracking' %}"><span class="main-heading ms-2"><< Back</span></a>
+    </div>
+    
+  </div>
+  <div class="row mt-lg-5 mb-lg-5">
     <div class="col-lg-1"></div>
     <div class="col-lg-10 mt-lg-5 mb-lg-5">
       
+      
       <div class="container padding-bottom-3x mb-1">
           <div class="card mt-3 mb-5 shadow  bg-body-tertiary rounded">
-              <div class="p-4 text-center text-white text-lg bgcolour rounded-top"><span class="text-uppercase">Tracking Number - </span><span class="text-medium">{{data.tracking_number}}</span></div>
-              <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
-              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Number:</span> {{data.shipment.booking_order_number}}</div>
-              {% if data.is_returned %}
-              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Return Status:</span> {{data.return_status}}</div>
-              {% else %}
-              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status:</span> {{data.status}}</div>
-              {% endif %}
-              <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> {{data.estimated_delivery_date}}</div>
+            <div class="p-4 text-center text-white text-lg bgcolour rounded-top"><span class="text-uppercase">Tracking Number - </span><span class="text-medium">{{data.tracking_number}}</span></div>
+            <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Order Number:</span> {{data.shipment.booking_order_number}}</div>
+            {% if data.is_returned %}
+              <div class="w-100 text-center py-1 px-2">
+                <span class="text-medium">Return Status:</span>
+                {% if data.return_status == 'processing' %}Processing
+                {% elif data.return_status == 'packed' %}Packed
+                {% elif data.return_status == 'dispatched' %}Dispatched
+                {% elif data.return_status == 'in_transit' %}In Transit
+                {% elif data.return_status == 'arrived_at_destination_hub' %}Arrived at Destination Hub
+                {% elif data.return_status == 'out_for_delivery' %}Out for Delivery
+                {% elif data.return_status == 'delivered' %}Delivered
+                {% elif data.return_status == 'returned' %}Returned
+                {% elif data.return_status == 'canceled' %}Canceled
+                {% elif data.return_status == 'delayed' %}Delayed
+                {% else %}Unknown Status
+                {% endif %}
               </div>
-              <div class="card-body">
-              <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
-                  <div class="step completed" id="step1">
-                  <div class="step-icon-wrap">
-                      <div class="step-icon"><i class="fas fa-box"></i></div>
-                  </div>
-                  <h4 class="step-title">Processing</h4>
-                  </div>
-                  <div class="step" id="step2">
-                  <div class="step-icon-wrap">
-                      <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
-                  </div>
-                  <h4 class="step-title">Dispatched</h4>
-                  </div>
-                  <div class="step" id="step3">
-                  <div class="step-icon-wrap">
-                      <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
-                  </div>
-                  <h4 class="step-title">In Transit</h4>
-                  </div>
-                  <div class="step" id="step4">
-                  <div class="step-icon-wrap">
-                      <div class="step-icon"><i class="fas fa-warehouse"></i></div>
-                  </div>
-                  <h4 class="step-title">Arrived at Destination Hub</h4>
-                  </div>
-                  <div class="step" id="step5">
-                      <div class="step-icon-wrap">
-                          <div class="step-icon"><i class="fas fa-route"></i></div>
-                      </div>
-                      <h4 class="step-title">Out for delivery</h4>
-                      </div>
-                  <div class="step" id="step6">
-                  <div class="step-icon-wrap">
-                      <div class="step-icon"><i class="fas fa-home"></i></div>
-                  </div>
-                  <h4 class="step-title">Delivered</h4>
-                  </div>
+            {% else %}
+              <div class="w-100 text-center py-1 px-2">
+                <span class="text-medium">Status:</span>
+                {% if data.status == 'processing' %}Processing
+                {% elif data.status == 'packed' %}Packed
+                {% elif data.status == 'dispatched' %}Dispatched
+                {% elif data.status == 'in_transit' %}In Transit
+                {% elif data.status == 'arrived_at_destination_hub' %}Arrived at Destination Hub
+                {% elif data.status == 'out_for_delivery' %}Out for Delivery
+                {% elif data.status == 'delivered' %}Delivered
+                {% elif data.status == 'returned' %}Returned
+                {% elif data.status == 'canceled' %}Canceled
+                {% elif data.status == 'delayed' %}Delayed
+                {% else %}Unknown Status
+                {% endif %}
               </div>
-              </div>
+            {% endif %}
+            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date:</span> {{data.estimated_delivery_date}}</div>
+            </div>
+            <div class="card-body">
+            <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                <div class="step completed" id="step1">
+                <div class="step-icon-wrap">
+                    <div class="step-icon"><i class="fas fa-box"></i></div>
+                </div>
+                <h4 class="step-title">Processing</h4>
+                </div>
+                <div class="step" id="step2">
+                <div class="step-icon-wrap">
+                    <div class="step-icon"><i class="fas fa-paper-plane"></i></div>
+                </div>
+                <h4 class="step-title">Dispatched</h4>
+                </div>
+                <div class="step" id="step3">
+                <div class="step-icon-wrap">
+                    <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                </div>
+                <h4 class="step-title">In Transit</h4>
+                </div>
+                <div class="step" id="step4">
+                <div class="step-icon-wrap">
+                    <div class="step-icon"><i class="fas fa-warehouse"></i></div>
+                </div>
+                <h4 class="step-title">Arrived at Destination Hub</h4>
+                </div>
+                <div class="step" id="step5">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fas fa-route"></i></div>
+                    </div>
+                    <h4 class="step-title">Out for delivery</h4>
+                    </div>
+                <div class="step" id="step6">
+                <div class="step-icon-wrap">
+                    <div class="step-icon"><i class="fas fa-home"></i></div>
+                </div>
+                <h4 class="step-title">Delivered</h4>
+                </div>
+            </div>
+            </div>
           </div>
           <div class="d-flex flex-wrap flex-md-nowrap justify-content-center justify-content-sm-between align-items-center mt-2 mb-5">
             <div class="text-end"><a class="btn1 btn-rounded btn-sm text-decoration-none" href="" data-bs-toggle="modal" data-bs-target="#detailsmodal"><span class="mx-2">More Details</span></a></div>
             <small class="text-end text-muted mt-2 mt-lg-0">Last Updated : <span>{{data.last_updated_date}}, {{data.last_updated_time}}</span></small>
-             
+              
           </div>
           
       </div>
@@ -127,7 +163,7 @@
     </div>
     <div class="col-lg-1"></div>
 
-</div>    
+  </div>    
 </section>
 
 <!-- end tracking section -->
@@ -216,7 +252,7 @@
               </div>
               <div class="row">
                 <div class="col-5">Shipping Center</div>
-                <div class="col-7">{{data.shipment.shipping_center}}</div>
+                <div class="col-7">{{data.shipment.shipping_center.name}}</div>
               </div>
             </div>
             <div class="col-6"></div>
@@ -380,14 +416,7 @@
               {% endif %}
               {% endif %}
 
-               {% if data.is_returned == False  %}
-               {% if data.is_arrived == False  %}
-                <div class="row">
-                    <div class="col-6">Current Location</div>
-                    <div class="col-6">{{ data.current_location }}</div>
-                </div>
-                {% endif %}
-                {% endif %}
+               
 
               {% if data.shipped_date %}
               <div class="row">
@@ -396,6 +425,17 @@
                  {{data.shipped_date}}
                 </div>
               </div>
+              {% endif %}
+
+              {% if data.is_returned == False  %}
+               {% if data.is_arrived == False  %}
+               {% if data.current_location %}
+                <div class="row">
+                    <div class="col-6">Current Location</div>
+                    <div class="col-6">{{ data.current_location }}</div>
+                </div>
+                {% endif %}
+                {% endif %}
               {% endif %}
 
               {% if data.destination_hub_arrival_date %}

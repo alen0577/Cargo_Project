@@ -54,12 +54,12 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select city to get delivery orders in your area.</span
+        >Please select your center to get delivery orders.</span
       >
     </p>
 
     <div class="col-lg-3" id="cityDiv">
-      <label class="main-heading">City</label>
+      <label class="main-heading">Center</label>
       <select
         class="form-select city-select"
         name="city"
@@ -241,6 +241,10 @@
                 <div class="col-5">No. of Packages</div>
                 <div class="col-7">{{i.shipment.number_of_packages}}</div>
               </div>
+              <div class="row">
+                <div class="col-5">Shipping Center</div>
+                <div class="col-7">{{i.shipment.shipping_center.name}}</div>
+              </div>
             </div>
             <div class="col-6"></div>
           </div>
@@ -400,12 +404,7 @@
               </div>
               {% endif %}
 
-              {% if i.current_location %}
-              <div class="row">
-                <div class="col-6">Current Location</div>
-                <div class="col-6">{{i.current_location}}</div>
-              </div>
-              {% endif %}
+              
 
               {% if i.shipped_date %}
               <div class="row">
@@ -413,6 +412,13 @@
                 <div class="col-6">
                  {{i.shipped_date}}
                 </div>
+              </div>
+              {% endif %}
+
+              {% if i.current_location %}
+              <div class="row">
+                <div class="col-6">Current Location</div>
+                <div class="col-6">{{i.current_location}}</div>
               </div>
               {% endif %}
 

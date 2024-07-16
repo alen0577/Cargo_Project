@@ -54,12 +54,12 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select city to update delivery status of orders in your area.</span
+        >Please select your center to update delivery status.</span
       >
     </p>
 
     <div class="col-lg-3" id="cityDiv">
-      <label class="main-heading">City</label>
+      <label class="main-heading">Center</label>
       <select class="form-select city-select" name="city" id="city">
         <option value="" hidden>Select</option>
         {% for i in city %}
@@ -248,6 +248,10 @@
               <div class="row">
                 <div class="col-5">No. of Packages</div>
                 <div class="col-7">{{i.shipment.number_of_packages}}</div>
+              </div>
+              <div class="row">
+                <div class="col-5">Shipping Center</div>
+                <div class="col-7">{{i.shipment.shipping_center.name}}</div>
               </div>
             </div>
             <div class="col-6"></div>

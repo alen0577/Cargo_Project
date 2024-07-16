@@ -344,7 +344,7 @@ def order_rejection(request,pk):
             Here are the details of your order:
 
             - Order Number: {order_number}
-            - Rejection Date: {rejection_date}
+            - Rejection Date: {rejected_date}
             - Reason for Rejection: {reason_for_rejection}
 
             We apologize for any inconvenience this may have caused and appreciate your understanding.
@@ -801,12 +801,11 @@ def delivery_management(request):
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
-       
-
         
         context = {
             'details': dash_details,
             'noti_count':noti_count,
+
         }
         return render(request, 'delivery/delivery_management.html', context)
     else:
@@ -821,14 +820,15 @@ def pending_deliveries(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        city=City.objects.filter(is_active=True)
+        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
+
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
-            'city':city,
+            'city':center,
             'noti_count':noti_count,
             
         }
@@ -1007,14 +1007,14 @@ def all_deliveries(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_arrived=True).order_by('-destination_hub_arrival_date')
-        city=City.objects.filter(is_active=True)
+        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
-            'city':city,
+            'city':center,
             'noti_count':noti_count,
         }
         return render(request, 'delivery/all_deliveries.html', context)
@@ -1093,14 +1093,15 @@ def pending_returns(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-        city=City.objects.filter(is_active=True)
+        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
+
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
    
         context = {
             'details': dash_details,
             'orders': orders,
-            'city':city,
+            'city':center,
             'noti_count':noti_count,
             
         }
@@ -1112,7 +1113,7 @@ def pending_returns_by_city(request):
     if request.method == 'POST':
        
         city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__sender_city=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+        orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
         orders_data = [{
             'id': order.id,
             'date': order.return_processed_date.strftime('%d-%m-%Y'),
@@ -1128,13 +1129,13 @@ def pending_returns_by_date(request):
         to_date = request.POST.get('to_date')
 
         if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__range=[from_date, to_date],shipment__sender_city=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+            orders = ShipmentTracking.objects.filter(return_processed_date__range=[from_date, to_date],shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
         elif from_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__gte=from_date,shipment__sender_city=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+            orders = ShipmentTracking.objects.filter(return_processed_date__gte=from_date,shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
         elif to_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__lte=to_date,shipment__sender_city=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+            orders = ShipmentTracking.objects.filter(return_processed_date__lte=to_date,shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
         elif city:
-            orders = ShipmentTracking.objects.filter(shipment__sender_city=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+            orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
         else:
             orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
 
@@ -1242,14 +1243,14 @@ def all_returns(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
-        city=City.objects.filter(is_active=True)
+        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
         context = {
             'details': dash_details,
             'orders': orders,
-            'city':city,
+            'city':center,
             'noti_count':noti_count,
         }
         return render(request, 'return/all_returns.html', context)
@@ -1261,7 +1262,7 @@ def all_returns_by_city(request):
     if request.method == 'POST':
        
         city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+        orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         orders_data = [{
             'id': order.id,
             'date': order.return_processed_date.strftime('%d-%m-%Y'),
@@ -1278,13 +1279,13 @@ def all_returns_by_date(request):
         to_date = request.POST.get('to_date')
 
         if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__range=[from_date, to_date],shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+            orders = ShipmentTracking.objects.filter(return_processed_date__range=[from_date, to_date],shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         elif from_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__gte=from_date,shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+            orders = ShipmentTracking.objects.filter(return_processed_date__gte=from_date,shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         elif to_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__lte=to_date,shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+            orders = ShipmentTracking.objects.filter(return_processed_date__lte=to_date,shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         elif city:
-            orders = ShipmentTracking.objects.filter(shipment__sender_city=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
+            orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         else:
             orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
         

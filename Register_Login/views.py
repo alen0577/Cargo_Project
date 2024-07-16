@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, logout, login
 from . models import *
+from Admin.models import City
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
@@ -68,7 +69,11 @@ def login_save(request):
 #------------------ Registration Section-------------------------
 
 def register_page(request):
-    return render(request,'register/registration.html')
+    city=City.objects.filter(is_active=True)
+    context={
+        'city':city
+    }
+    return render(request,'register/registration.html',context)
 
 
 def team_register(request):
@@ -79,10 +84,13 @@ def team_register(request):
         username=request.POST.get('username')
         password=request.POST.get('password')
         designation=request.POST.get('designation')
+        center_id=request.POST.get('center')
+        work_center=City.objects.get(id=center_id)
 
         data=CargoTeam(
             first_name=first_name,last_name=last_name,
-            email=email,username=username,password=password,designation=designation
+            email=email,username=username,password=password,designation=designation,
+            work_center=work_center
         )
         data.save()
         messages.success(request,'Account Created, wait for approval...')

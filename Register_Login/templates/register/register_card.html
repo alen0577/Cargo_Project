@@ -46,13 +46,32 @@
                         <input type="password" name="password" class="form-control " placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*]).{8,}" title="*password must be at least 8 characters long and include uppercase , lowercase, special characters and numbers." aria-label="password" aria-describedby="addon-wrapping" required>
                     </div>
 
-                    <div class="input-group flex-nowrap mt-4 mb-1">
-                        <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-briefcase"></i></span>
-                        <select name="designation" class="form-select" aria-label="username" aria-describedby="addon-wrapping" required>
-                            <option value="" class="" hidden>Designation</option>
-                            <option value="Team Member">Team Member</option>
-                            <option value="Executive Member">Executive Member</option>
-                        </select>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group flex-nowrap mt-4 mb-1">
+                                <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-briefcase"></i></span>
+                                <select name="designation" class="form-select" aria-label="username" aria-describedby="addon-wrapping" required>
+                                    <option value="" class="" hidden>Designation</option>
+                                    <option value="Team Member">Team Member</option>
+                                    <option value="Executive Member">Executive Member</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group flex-nowrap mt-4 mb-1">
+                                <span class="input-group-text icon1" id="addon-wrapping"><i class="fas fa-building"></i></span>
+                                <select name="center" class="form-select" aria-label="center" aria-describedby="addon-wrapping" required>
+                                    <option value="" class="" hidden>Work Center</option>
+                                    {% for i in city %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                   
+                                </select>
+                            </div>
+                            
+                        </div>
                     </div>
                     
                     <button type="submit" id="submit-btn" class="btn1  form-control mt-4 mb-3 fw-bold"><span class="ms-1">Create Account</span></button>
