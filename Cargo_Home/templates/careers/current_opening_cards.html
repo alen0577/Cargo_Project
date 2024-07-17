@@ -1,4 +1,5 @@
 <div class="row row-cols-1 row-cols-md-1 g-4 mt-3">
+  {% if openings %}
   {% for job in openings %}
   <div class="col">
     <div class="card h-100 p-3">
@@ -21,6 +22,9 @@
     </div>
   </div>
   {% endfor %}
+  {% else %}
+  <h6 class="main-heading fw-bold">No Openings Available</h6>
+  {% endif %}
 </div>
 
 <style>

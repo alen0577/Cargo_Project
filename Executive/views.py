@@ -115,8 +115,10 @@ def update_order_status(request,pk):
             expected_date = request.POST['estimated_delivery_date']
             today=date.today()
             order = ShipmentTracking.objects.get(id=order_id)
-            order.status = status
-            order.current_location=location
+            if status:
+                order.status = status
+            if location:
+                order.current_location=location
             if expected_date:
                 order.estimated_delivery_date=expected_date
             if status == 'dispatched':
@@ -244,8 +246,10 @@ def update_return_order_status(request,pk):
             expected_date = request.POST['estimated_delivery_date']
             today=date.today()
             order = ShipmentTracking.objects.get(id=order_id)
-            order.return_status = status
-            order.current_return_location=location
+            if status:
+               order.return_status = status
+            if location:
+                order.current_return_location=location
             if expected_date:
                 order.estimated_delivery_date=expected_date
             if status == 'dispatched':

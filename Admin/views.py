@@ -429,6 +429,47 @@ def edit_location(request,pk):
     else:
         return redirect('location_hub')
 
+@login_required(login_url='login_page')
+def edit_city(request,pk):
+    if request.method == 'POST':
+        data=City.objects.get(id=pk)
+        name=request.POST.get('name')
+
+        data.name=name
+
+        data.save()
+        messages.success(request,'Updated')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def edit_country(request,pk):
+    if request.method == 'POST':
+        data=Country.objects.get(id=pk)
+        name=request.POST.get('name')
+
+        data.name=name
+
+        data.save()
+        messages.success(request,'Updated')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
+
+@login_required(login_url='login_page')
+def edit_state(request,pk):
+    if request.method == 'POST':
+        data=State.objects.get(id=pk)
+        name=request.POST.get('name')
+
+        data.name=name
+
+        data.save()
+        messages.success(request,'Updated')
+        return redirect('location_hub')
+    else:
+        return redirect('location_hub')
 
 @login_required(login_url='login_page')
 def delete_country(request,pk):

@@ -109,13 +109,13 @@ def order_booking(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        city = City.objects.filter(is_active=True)
+        center = City.objects.filter(name=dash_details.work_center.name,is_active=True)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
        
         context = {
             'details': dash_details,
-            'city':city,
+            'city':center,
             'noti_count':noti_count,
         }
         return render(request, 'order_booking.html', context)
@@ -839,8 +839,15 @@ def pending_deliveries(request):
 def pending_deliveries_by_city(request):
     if request.method == 'POST':
        
-        city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+        city_name = request.POST.get('city')
+        CITY=City.objects.get(name=city_name)
+       
+        locations=ServiceLocation.objects.filter(city=CITY)
+        
+        # Get list of pincodes from locations
+        pincodes = [location.postal_code for location in locations]
+        
+        orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         orders_data = [{
             'id': order.id,
             'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
@@ -851,18 +858,26 @@ def pending_deliveries_by_city(request):
 
 def pending_deliveries_by_date(request):
     if request.method == 'POST':
-        city = request.POST.get('city')
+       
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
 
+        city_name = request.POST.get('city')
+        CITY=City.objects.get(name=city_name)
+       
+        locations=ServiceLocation.objects.filter(city=CITY)
+        
+        # Get list of pincodes from locations
+        pincodes = [location.postal_code for location in locations]
+
         if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         elif from_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         elif to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        elif city:
-            orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+        elif city_name:
+            orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
         else:
             orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
 
@@ -1025,8 +1040,15 @@ def all_deliveries(request):
 def all_deliveries_by_city(request):
     if request.method == 'POST':
        
-        city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+        city_name = request.POST.get('city')
+        CITY=City.objects.get(name=city_name)
+       
+        locations=ServiceLocation.objects.filter(city=CITY)
+        
+        # Get list of pincodes from locations
+        pincodes = [location.postal_code for location in locations]
+
+        orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
         orders_data = [{
             'id': order.id,
             'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
@@ -1038,18 +1060,27 @@ def all_deliveries_by_city(request):
 
 def all_deliveries_by_date(request):
     if request.method == 'POST':
-        city = request.POST.get('city')
+        
         from_date = request.POST.get('from_date')
         to_date = request.POST.get('to_date')
 
+        city_name = request.POST.get('city')
+        CITY=City.objects.get(name=city_name)
+       
+        locations=ServiceLocation.objects.filter(city=CITY)
+        
+        # Get list of pincodes from locations
+        pincodes = [location.postal_code for location in locations]
+
+
         if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
         elif from_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
         elif to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
         else:
-            orders = ShipmentTracking.objects.filter(shipment__receiver_city=city,is_arrived=True).order_by('-destination_hub_arrival_date')
+            orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
         
         orders_data = [{
             'id': order.id,

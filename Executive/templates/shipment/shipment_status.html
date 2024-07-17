@@ -359,12 +359,7 @@
               </div>
               {% endif %}
 
-              {% if i.current_location %}
-              <div class="row">
-                <div class="col-6">Current Location</div>
-                <div class="col-6">{{i.current_location}}</div>
-              </div>
-              {% endif %}
+              
 
               {% if i.shipped_date %}
               <div class="row">
@@ -372,6 +367,13 @@
                 <div class="col-6">
                  {{i.shipped_date}}
                 </div>
+              </div>
+              {% endif %}
+
+              {% if i.current_location %}
+              <div class="row">
+                <div class="col-6">Current Location</div>
+                <div class="col-6">{{i.current_location}}</div>
               </div>
               {% endif %}
 

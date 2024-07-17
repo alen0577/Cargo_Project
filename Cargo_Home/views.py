@@ -105,7 +105,6 @@ def check_service_availability(request):
         else:
             locations = ServiceLocation.objects.filter(city__name__icontains=search_query,is_active=True)
         
-        print(locations.values)
         if locations.exists():
             data = {
                 'available': True,

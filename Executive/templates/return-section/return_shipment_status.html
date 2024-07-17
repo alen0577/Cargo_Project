@@ -205,6 +205,10 @@
                 <div class="col-5">No. of Packages</div>
                 <div class="col-7">{{i.shipment.number_of_packages}}</div>
               </div>
+              <div class="row">
+                <div class="col-5">Shipping Center</div>
+                <div class="col-7">{{i.shipment.shipping_center.name}}</div>
+              </div>
             </div>
             <div class="col-6"></div>
           </div>
@@ -367,12 +371,7 @@
               {% endif %}
               {% endif %}
 
-              {% if i.current_location %}
-              <div class="row">
-                <div class="col-6">Current Location</div>
-                <div class="col-6">{{i.current_location}}</div>
-              </div>
-              {% endif %}
+              
 
               {% if i.shipped_date %}
               <div class="row">
@@ -381,6 +380,15 @@
                  {{i.shipped_date}}
                 </div>
               </div>
+              {% endif %}
+
+              {% if i.is_returned == False %}
+              {% if i.current_location %}
+              <div class="row">
+                <div class="col-6">Current Location</div>
+                <div class="col-6">{{i.current_location}}</div>
+              </div>
+              {% endif %}
               {% endif %}
 
               {% if i.destination_hub_arrival_date %}

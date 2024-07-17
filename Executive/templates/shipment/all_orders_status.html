@@ -396,12 +396,7 @@
                 </div>
                 {% endif %}
 
-                {% if i.current_location %}
-                <div class="row">
-                  <div class="col-6">Current Location</div>
-                  <div class="col-6">{{i.current_location}}</div>
-                </div>
-                {% endif %}
+                
 
                 {% if i.shipped_date %}
                 <div class="row">
@@ -412,11 +407,31 @@
                 </div>
                 {% endif %}
 
+                {% if i.is_returned == False %}
+                {% if i.is_delivered == False %}
+                {% if i.current_location %}
+                <div class="row">
+                  <div class="col-6">Current Location</div>
+                  <div class="col-6">{{i.current_location}}</div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+
                 {% if i.destination_hub_arrival_date %}
                 <div class="row">
                   <div class="col-6">Destination Hub Arrival Date</div>
                   <div class="col-6">
                     {{i.destination_hub_arrival_date}}
+                  </div>
+                </div>
+                {% endif %}
+
+                {% if i.delivery_date %}
+                <div class="row">
+                  <div class="col-6">Delivered Date</div>
+                  <div class="col-6">
+                    {{i.delivery_date}}
                   </div>
                 </div>
                 {% endif %}

@@ -115,7 +115,7 @@
               <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
               <th class="text-white">Tracking Number</th>
-              <th class="text-white">Shipment Status</th>
+              <th class="text-white">Return Status</th>
               <th class="text-white">Details</th>
             </tr>
           </thead>
@@ -401,12 +401,7 @@
               {% endif %}
               {% endif %}
 
-              {% if i.current_location %}
-              <div class="row">
-                <div class="col-6">Current Location</div>
-                <div class="col-6">{{i.current_location}}</div>
-              </div>
-              {% endif %}
+              
 
               {% if i.shipped_date %}
               <div class="row">
@@ -415,6 +410,15 @@
                  {{i.shipped_date}}
                 </div>
               </div>
+              {% endif %}
+
+              {% if i.is_returned == False %}
+              {% if i.current_location %}
+              <div class="row">
+                <div class="col-6">Current Location</div>
+                <div class="col-6">{{i.current_location}}</div>
+              </div>
+              {% endif %}
               {% endif %}
 
               {% if i.destination_hub_arrival_date %}
@@ -468,11 +472,13 @@
               </div>
               {% endif %}
 
+              {% if i.returned == False %}
               {% if i.current_return_location %}
               <div class="row">
                 <div class="col-6">Current Location</div>
                 <div class="col-6">{{i.current_return_location}}</div>
               </div>
+              {% endif %}
               {% endif %}
 
               {% if i.destination_hub_return_arrival_date %}

@@ -43,9 +43,9 @@ Admin-Location Hub
   <div class="row mt-5">
     <div class="d-grid gap-2 d-md-block">
       <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addlocationmodal"><i class="fas fa-plus"></i> Service Location</button>
-      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcountrymodal"><i class="fas fa-plus"></i> Country</button>
-      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addstatemodal"><i class="fas fa-plus"></i> State</button>
       <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcitymodal"><i class="fas fa-plus"></i> City</button>
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addstatemodal"><i class="fas fa-plus"></i> State</button>
+      <button class="btn1 p-2" data-bs-toggle="modal" data-bs-target="#addcountrymodal"><i class="fas fa-plus"></i> Country</button>
 
     </div>
 
@@ -238,6 +238,19 @@ Admin-Location Hub
       <div class="modal-body rounded-2 shadow">
         <form action="{% url 'edit_location' i.id %}" method="post" enctype="multipart/form-data">
           {% csrf_token %}
+          <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+              {% if i.is_active %}
+              <a href="{% url 'inactive_location' i.id %}" class="btn2" title="Inactive"><i class="fas fa-times-circle"></i></a>
+              {% else %}
+              <a href="{% url 'active_location' i.id %}" class="btn2" title="Active"><i class="fas fa-check-circle"></i></a>
+              {% endif %}
+  
+              <a href="{% url 'delete_location' i.id %}" class="btn2" title="Delete"><i class="fas fa-trash"></i></a>
+
+            </div>
+          </div>
           <label for="">Country</label>
           <select name="country" class="form-select  mt-2 mb-2" required>
             <option value="{{i.country.id}}" hidden>{{i.country.name}}</option>
@@ -279,6 +292,148 @@ Admin-Location Hub
   </div>
 </div>
 {% endfor %}
+
+
+{% for i in all_city %}
+<div class="modal fade " id="editcitymodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> City</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'edit_city' i.id %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+              {% if i.is_active %}
+              <a href="{% url 'inactive_city' i.id %}" class="btn2 w-25" title="Inactive"><i class="fas fa-times-circle"></i></a>
+              {% else %}
+                <a href="{% url 'active_city' i.id %}" class="btn2 w-25" title="active"><i class="fas fa-check-circle"></i></a>
+              {% endif %}
+              <a href="{% url 'delete_city' i.id %}" class="btn2 w-25" title="Delete"><i class="fas fa-trash"></i></a>
+
+            </div>
+          </div>
+          <label for="">City</label>
+          <input type="text" name="name" class="form-control" value="{{i.name}}">
+          
+          
+          <div class="row">
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+              <button type="submit" class="btn1 w-100 mt-2 mb-2">Update <i class="fas fa-save ms-1"></i></button>
+            </div>
+            
+    
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{% for i in all_country %}
+<div class="modal fade " id="editcountrymodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> Country</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'edit_country' i.id %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+              {% if i.is_active == 1 %}
+              <a href="{% url 'inactive_country' i.id %}" class="btn2 w-25" title="Inactive"><i class="fas fa-times-circle"></i></a>
+              {% else %}
+              <a href="{% url 'active_country' i.id %}" class="btn2 w-25" title="Active"><i class="fas fa-check-circle"></i></a>
+              {% endif %}
+    
+              <a  href="{% url 'delete_country' i.id %}" class="btn2 w-25" title="Delete"><i class="fas fa-trash"></i></a>
+
+            </div>
+          </div>
+          <label for="">Country</label>
+          <input type="text" name="name" class="form-control" value="{{i.name}}">
+          
+          
+          <div class="row">
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+              <button type="submit" class="btn1 w-100 mt-2 mb-2">Update <i class="fas fa-save ms-1"></i></button>
+            </div>
+            
+    
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{% for i in all_state %}
+<div class="modal fade " id="editstatemodal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="fas fa-edit"></i> State</h1>
+      </div>
+      <div class="modal-body rounded-2 shadow">
+        <form action="{% url 'edit_state' i.id %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+              {% if i.is_active %}
+              <a href="{% url 'inactive_state' i.id %}" class="btn2 w-25" title="Inactive"><i class="fas fa-times-circle"></i></a>
+              {% else %}
+              <a href="{% url 'active_state' i.id %}" class="btn2 w-25" title="Active"><i class="fas fa-check-circle"></i></a>
+              {% endif %}
+    
+              <a href="{% url 'delete_state' i.id %}" class="btn2 w-25" title="Delete"><i class="fas fa-trash"></i></a>
+
+            </div>
+          </div>
+          <label for="">State</label>
+          <input type="text" name="name" class="form-control" value="{{i.name}}">
+          
+          
+          <div class="row">
+            <div class="col-lg-8"></div>
+            <div class="col-lg-4">
+              <button type="submit" class="btn1 w-100 mt-2 mb-2">Update <i class="fas fa-save ms-1"></i></button>
+            </div>
+            
+    
+          </div>
+        </form>
+          
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
 
 
 
