@@ -257,9 +257,10 @@ def tracking_details(request):
 def query_submission(request):
     if request.method == 'POST':
         name=request.POST.get('name')
+        email=request.POST.get('email')
         number=request.POST.get('tracking_number')
         query=request.POST.get('query')
-        data=OrderQueries(name=name,tracking_number=number,queries=query)
+        data=OrderQueries(name=name,email=email,tracking_number=number,queries=query)
         data.save()
         messages.success(request,'Query submitted')
         return redirect('tracking')

@@ -171,6 +171,7 @@ class OrderQueries(models.Model):
     date = models.DateField(auto_now_add=True,null=True,blank=True)
     time = models.TimeField(auto_now_add=True,null=True,blank=True)
     name = models.CharField(max_length=100,null=True,blank=True)
+    email = models.EmailField(max_length = 254,null=True,blank=True)
     tracking_number = models.CharField(max_length=100,null=True,blank=True)
     queries = models.TextField(null=True,blank=True)
     response = models.TextField(null=True,blank=True)

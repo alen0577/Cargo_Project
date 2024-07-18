@@ -23,10 +23,14 @@ def executive_dashboard(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders_count = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False).count()
-
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
+        
         context = {
             'details': dash_details,
             'orders_count':orders_count,
+            'issue_count':issue_count,
+            'query_count':query_count,
             
         }
         return render(request, 'executive_dashboard.html', context)
@@ -42,9 +46,13 @@ def executive_profile(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         
         context = {
             'details': dash_details,
+            'issue_count':issue_count,
+            'query_count':query_count,
         }
         return render(request, 'executive_profile.html', context)
     else:
@@ -92,10 +100,14 @@ def shipment_status_update(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_arrived=False,is_delivered=False,is_returned=False)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         
         context = {
             'details': dash_details,
             'orders': orders,
+            'issue_count':issue_count,
+            'query_count':query_count,
         }
         return render(request, 'shipment/shipment_status.html', context)
     else:
@@ -145,9 +157,6 @@ def update_order_status(request,pk):
     else:
         return redirect('/')
 
-        
-        
-
     return JsonResponse({'success': False, 'error': 'Invalid request'})
 
 def all_shipment_orders(request):
@@ -157,11 +166,15 @@ def all_shipment_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         orders = ShipmentTracking.objects.filter(arrived_for_return=False).order_by('-shipment__date')
         
         context = {
             'details': dash_details,
             'orders': orders,
+            'issue_count':issue_count,
+            'query_count':query_count,
         }
         return render(request, 'shipment/all_orders_status.html', context)
     else:
@@ -201,11 +214,15 @@ def executive_return_management(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         orders_count = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=False).count()
         
         context = {
             'details': dash_details,
             'orders_count':orders_count,
+            'issue_count':issue_count,
+            'query_count':query_count,
             
         }
         return render(request, 'return-section/return_management.html', context)
@@ -220,11 +237,15 @@ def return_shipment_status(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=False).order_by('return_processed_date')
         
         context = {
             'details': dash_details,
             'orders': orders,
+            'issue_count':issue_count,
+            'query_count':query_count,
         }
         return render(request, 'return-section/return_shipment_status.html', context)
     else:
@@ -288,11 +309,15 @@ def all_return_orders(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         orders = ShipmentTracking.objects.filter(is_returned=True).order_by('-return_processed_date')
         
         context = {
             'details': dash_details,
             'orders': orders,
+            'issue_count':issue_count,
+            'query_count':query_count,
         }
         return render(request, 'return-section/all_return_orders.html', context)
     else:
@@ -335,11 +360,15 @@ def query_section(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        query_count = OrderQueries.objects.filter(action_taken=0).count()
+        query_counts = OrderQueries.objects.filter(action_taken=0).count()
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
+        
 
         context = {
             'details': dash_details,
-            'query_count':query_count
+            'query_counts':query_counts,
+            'issue_count':issue_count,
+            
         }
         
         return render(request, 'order_queries/query_section.html', context)
@@ -353,11 +382,14 @@ def pending_queries(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
         pending_queries = OrderQueries.objects.filter(action_taken=0).order_by('date','time')
         
         context = {
             'details': dash_details,
             'queries':pending_queries,
+            'issue_count':issue_count,
+           
         }
         return render(request, 'order_queries/pending_queries.html', context)
     else:
@@ -382,8 +414,7 @@ def query_action_taken(request,pk):
             queries=query.queries
             response=query.response
             tracking_number=query.tracking_number
-            order=ShipmentTracking.objects.get(tracking_number=tracking_number)
-            email=order.shipment.email
+            email=query.email
 
             subject = f'Response to Your Order Query {tracking_number}'
             message = f'''
@@ -428,11 +459,14 @@ def all_queries(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        issue_count = CustomerIssues.objects.filter(action_taken=0).count()
         all_queries = OrderQueries.objects.all().order_by('-date','-time')
         
         context = {
             'details': dash_details,
             'queries':all_queries,
+            'issue_count':issue_count,
+           
         }
         return render(request, 'order_queries/all_queries.html', context)
     else:
@@ -448,6 +482,7 @@ def customer_support(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         issues_count = CustomerIssues.objects.filter(action_taken=0).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
         
@@ -455,6 +490,7 @@ def customer_support(request):
             'details': dash_details,
             'issues_count':issues_count,
             'noti_count':noti_count,
+            'query_count':query_count,
         }
         return render(request, 'customersupport/customer_support.html', context)
     else:
@@ -471,11 +507,13 @@ def pending_issues(request):
         pending_issues = CustomerIssues.objects.filter(action_taken=0).order_by('date','time')
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
        
         context = {
             'details': dash_details,
             'issues':pending_issues,
             'noti_count':noti_count,
+            'query_count':query_count,
         }
         return render(request, 'customersupport/pending_issues.html', context)
     else:
@@ -548,11 +586,13 @@ def solved_issues(request):
         solved_issues = CustomerIssues.objects.filter(action_taken=1).order_by('-date','-time')
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
+        query_count = OrderQueries.objects.filter(action_taken=0).count()
         
         context = {
             'details': dash_details,
             'issues':solved_issues,
             'noti_count':noti_count,
+            'query_count':query_count,
         }
         return render(request, 'customersupport/solved_issues.html', context)
     else:
