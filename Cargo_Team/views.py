@@ -819,9 +819,16 @@ def pending_deliveries(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
+        center=City.objects.get(name=dash_details.work_center.name,is_active=True)
+       
+        locations=ServiceLocation.objects.filter(city=center)
 
+        # Get list of pincodes from locations
+        pincodes = [location.postal_code for location in locations]
+        
+        orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+
+       
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
@@ -836,181 +843,139 @@ def pending_deliveries(request):
     else:
         return redirect('/')
 
-def pending_deliveries_by_city(request):
-    if request.method == 'POST':
-       
-        city_name = request.POST.get('city')
-        CITY=City.objects.get(name=city_name)
-       
-        locations=ServiceLocation.objects.filter(city=CITY)
-        
-        # Get list of pincodes from locations
-        pincodes = [location.postal_code for location in locations]
-        
-        orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        orders_data = [{
-            'id': order.id,
-            'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.status,
-        } for order in orders]
-        return JsonResponse({'success': True,'orders': orders_data})
 
-def pending_deliveries_by_date(request):
-    if request.method == 'POST':
-       
-        from_date = request.POST.get('from_date')
-        to_date = request.POST.get('to_date')
-
-        city_name = request.POST.get('city')
-        CITY=City.objects.get(name=city_name)
-       
-        locations=ServiceLocation.objects.filter(city=CITY)
+def update_pending_order_status(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
         
-        # Get list of pincodes from locations
-        pincodes = [location.postal_code for location in locations]
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        if request.method == 'POST':
+            order_id = pk
+            status = request.POST.get('status')
 
-        if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__range=[from_date, to_date],shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        elif from_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__gte=from_date,shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        elif to_date:
-            orders = ShipmentTracking.objects.filter(destination_hub_arrival_date__lte=to_date,shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-        elif city_name:
-            orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
+            order = ShipmentTracking.objects.get(id=order_id)
+            today=date.today()
+            order.status = status
+            if status == 'out_for_delivery':
+
+                # mail sending section
+
+                customer_name=order.shipment.full_name
+                order_number=order.shipment.booking_order_number
+                delivery_date=date.today()
+                tracking_number=order.tracking_number
+
+                subject = f'Your Cargo Delivery Order {order_number} is Out for Delivery!'
+                message = f'''
+                Dear {customer_name},
+
+                We are excited to inform you that your cargo delivery order {order_number}, 
+                is now out for delivery and will be arriving soon.
+
+                Here are the details of your order:
+
+                - Order Number: {order_number}
+                - Tracking Number: {tracking_number}
+                - Out for Delivery Date: {delivery_date}
+                
+            
+                Thank you for choosing our services. We look forward to serving you again.
+
+                Best regards,
+                Cargo
+                info@altostechnologies.com
+                +91 90741 56818
+                '''
+
+                recipient_email = order.shipment.email
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+
+
+            if status == 'delivered':
+                order.is_delivered=True
+                order.delivery_date=today
+
+                # mail sending section
+                customer_name=order.shipment.full_name
+                order_number=order.shipment.booking_order_number
+                delivery_date=date.today()
+                tracking_number=order.tracking_number
+
+                subject = f'Your Cargo Delivery Order {order_number} Has Been Delivered!'
+                message = f'''
+                Dear {customer_name},
+
+                We are pleased to inform you that your cargo delivery order {order_number} has been successfully delivered.
+
+                Here are the details of your order:
+
+                - Order Number: {order_number}
+                - Tracking Number: {tracking_number}
+                - Delivery Date: {delivery_date}
+                
+                We hope you are satisfied with our service. 
+                If you have any questions or feedback regarding your delivery experience,
+                please do not hesitate to contact our customer support team at support@example.com or (123) 456-7890.
+
+                Thank you for choosing our services. We look forward to serving you again.
+
+                Best regards,
+                Cargo
+                info@altostechnologies.com
+                +91 90741 56818
+                '''
+
+                recipient_email = order.shipment.email
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+
+            if status == 'returned':
+                order.is_returned=True
+                order.return_processed_date=today
+                order.estimated_delivery_date=None
+
+                # mail sending section
+                customer_name=order.shipment.full_name
+                order_number=order.shipment.booking_order_number
+                return_date=date.today()
+                tracking_number=order.tracking_number
+
+                subject = f'Your Cargo Delivery Order {order_number} Has Been Returned'
+                message = f'''
+                Dear {customer_name},
+
+                We regret to inform you that your cargo delivery order {order_number} has been returned.
+
+                Here are the details of your order:
+
+                - Order Number: {order_number}
+                - Tracking Number: {tracking_number}
+                - Return Date: {return_date}
+                
+                If you have any questions or need further assistance, please do not hesitate to contact our customer support team
+                at support@example.com or (123) 456-7890.
+
+                We apologize for any inconvenience this may have caused and appreciate your understanding.
+
+                Best regards,
+                Cargo
+                info@altostechnologies.com
+                +91 90741 56818
+                '''
+
+                recipient_email = order.shipment.email
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+
+            order.save()
+
+            messages.success(request,'Updated')
+            return redirect(pending_deliveries)
         else:
-            orders = ShipmentTracking.objects.filter(is_arrived=True,is_returned=False,is_delivered=False).order_by('destination_hub_arrival_date')
-
-        
-        orders_data = [{
-            'id': order.id,
-            'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.status,
-        } for order in orders]
-        
-        return JsonResponse({'success': True,'orders': orders_data})
-
-def update_pending_order_status(request):
-    if request.method == 'POST':
-        order_id = request.POST.get('order_id')
-        status = request.POST.get('status')
-
-        order = ShipmentTracking.objects.get(id=order_id)
-        today=date.today()
-        order.status = status
-        if status == 'out_for_delivery':
-
-            # mail sending section
-            customer_name=order.shipment.full_name
-            order_number=order.shipment.booking_order_number
-            delivery_date=date.today()
-            tracking_number=order.tracking_number
-
-            subject = f'Your Cargo Delivery Order {order_number} is Out for Delivery!'
-            message = f'''
-            Dear {customer_name},
-
-            We are excited to inform you that your cargo delivery order {order_number}, 
-            is now out for delivery and will be arriving soon.
-
-            Here are the details of your order:
-
-            - Order Number: {order_number}
-            - Tracking Number: {tracking_number}
-            - Out for Delivery Date: {delivery_date}
-            
-           
-            Thank you for choosing our services. We look forward to serving you again.
-
-            Best regards,
-            Cargo
-            info@altostechnologies.com
-            +91 90741 56818
-            '''
-
-            recipient_email = order.shipment.email
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
-
-
-        if status == 'delivered':
-            order.is_delivered=True
-            order.delivery_date=today
-
-            # mail sending section
-            customer_name=order.shipment.full_name
-            order_number=order.shipment.booking_order_number
-            delivery_date=date.today()
-            tracking_number=order.tracking_number
-
-            subject = f'Your Cargo Delivery Order {order_number} Has Been Delivered!'
-            message = f'''
-            Dear {customer_name},
-
-            We are pleased to inform you that your cargo delivery order {order_number} has been successfully delivered.
-
-            Here are the details of your order:
-
-            - Order Number: {order_number}
-            - Tracking Number: {tracking_number}
-            - Delivery Date: {delivery_date}
-            
-            We hope you are satisfied with our service. 
-            If you have any questions or feedback regarding your delivery experience,
-            please do not hesitate to contact our customer support team at support@example.com or (123) 456-7890.
-
-            Thank you for choosing our services. We look forward to serving you again.
-
-            Best regards,
-            Cargo
-            info@altostechnologies.com
-            +91 90741 56818
-            '''
-
-            recipient_email = order.shipment.email
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
-
-        if status == 'returned':
-            order.is_returned=True
-            order.return_processed_date=today
-            order.estimated_delivery_date=None
-
-            # mail sending section
-            customer_name=order.shipment.full_name
-            order_number=order.shipment.booking_order_number
-            return_date=date.today()
-            tracking_number=order.tracking_number
-
-            subject = f'Your Cargo Delivery Order {order_number} Has Been Returned'
-            message = f'''
-            Dear {customer_name},
-
-            We regret to inform you that your cargo delivery order {order_number} has been returned.
-
-            Here are the details of your order:
-
-            - Order Number: {order_number}
-            - Tracking Number: {tracking_number}
-            - Return Date: {return_date}
-            
-            If you have any questions or need further assistance, please do not hesitate to contact our customer support team
-            at support@example.com or (123) 456-7890.
-
-            We apologize for any inconvenience this may have caused and appreciate your understanding.
-
-            Best regards,
-            Cargo
-            info@altostechnologies.com
-            +91 90741 56818
-            '''
-
-            recipient_email = order.shipment.email
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
-
-        order.save()
-
-        
-        return JsonResponse({'success': True,})
+            return redirect('pending_deliveries')
+    else:
+        return redirect('/')
+    
 
 
 
@@ -1021,8 +986,14 @@ def all_deliveries(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.filter(is_arrived=True).order_by('-destination_hub_arrival_date')
-        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
+        center=City.objects.get(name=dash_details.work_center.name,is_active=True)
+       
+        locations=ServiceLocation.objects.filter(city=center)
+
+        # Get list of pincodes from locations
+        pincodes = [location.postal_code for location in locations]
+
+        orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
@@ -1035,28 +1006,6 @@ def all_deliveries(request):
         return render(request, 'delivery/all_deliveries.html', context)
     else:
         return redirect('/')
-
-
-def all_deliveries_by_city(request):
-    if request.method == 'POST':
-       
-        city_name = request.POST.get('city')
-        CITY=City.objects.get(name=city_name)
-       
-        locations=ServiceLocation.objects.filter(city=CITY)
-        
-        # Get list of pincodes from locations
-        pincodes = [location.postal_code for location in locations]
-
-        orders = ShipmentTracking.objects.filter(shipment__receiver_pincode__in=pincodes,is_arrived=True).order_by('-destination_hub_arrival_date')
-        orders_data = [{
-            'id': order.id,
-            'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.status,
-        } for order in orders]
-        return JsonResponse({'success': True,'orders': orders_data})
-
 
 def all_deliveries_by_date(request):
     if request.method == 'POST':
@@ -1086,13 +1035,13 @@ def all_deliveries_by_date(request):
             'id': order.id,
             'date': order.destination_hub_arrival_date.strftime('%d-%m-%Y'),
             'booking_order_number': order.shipment.booking_order_number,
+            'tracking_number': order.tracking_number,
             'status': order.status,
         } for order in orders]
         
         return JsonResponse({'success': True,'orders': orders_data})
 
 # end
-
 
 # return management section
 def return_management(request):
@@ -1123,8 +1072,10 @@ def pending_returns(request):
             return redirect('/')
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
-        orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
+        center=City.objects.get(name=dash_details.work_center.name,is_active=True)
+       
+        orders = ShipmentTracking.objects.filter(shipment__shipping_center=center,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+        
 
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
@@ -1140,129 +1091,100 @@ def pending_returns(request):
     else:
         return redirect('/')
 
-def pending_returns_by_city(request):
-    if request.method == 'POST':
-       
-        city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-        orders_data = [{
-            'id': order.id,
-            'date': order.return_processed_date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.return_status,
-        } for order in orders]
-        return JsonResponse({'success': True,'orders': orders_data})
+def update_pending_return_status(request,pk):
+    if 'login_id' in request.session:
+        log_id = request.session['login_id']
+        if 'login_id' not in request.session:
+            return redirect('/')
+        
+        dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
+        if request.method == 'POST':
+            order_id = pk
+            status = request.POST.get('status')
 
-def pending_returns_by_date(request):
-    if request.method == 'POST':
-        city = request.POST.get('city')
-        from_date = request.POST.get('from_date')
-        to_date = request.POST.get('to_date')
+            order = ShipmentTracking.objects.get(id=order_id)
+            today=date.today()
+            order.return_status = status
+            if status == 'out_for_delivery':
+            
+                # mail sending section
+                customer_name=order.shipment.full_name
+                order_number=order.shipment.booking_order_number
+                delivery_date=date.today()
+                tracking_number=order.tracking_number
 
-        if from_date and to_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__range=[from_date, to_date],shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-        elif from_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__gte=from_date,shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-        elif to_date:
-            orders = ShipmentTracking.objects.filter(return_processed_date__lte=to_date,shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-        elif city:
-            orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
+                subject = f'Your Returned Cargo Delivery Order {order_number} is Out for Delivery'
+                message = f'''
+                Dear {customer_name},
+
+                We are writing to inform you that your returned cargo delivery order,
+                {order_number} is now out for delivery back to the sender.
+
+                Here are the details of your order:
+
+                - Order Number: {order_number}
+                - Tracking Number: {tracking_number}
+                - Out for Delivery Date: {delivery_date}
+                
+            
+                Thank you for choosing our services. We look forward to serving you again.
+
+                Best regards,
+                Cargo
+                info@altostechnologies.com
+                +91 90741 56818
+                '''
+
+                recipient_email = order.shipment.email
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+
+            if status == 'delivered':
+                order.returned=True
+                order.returned_date=today
+
+                # mail sending section
+                customer_name=order.shipment.full_name
+                order_number=order.shipment.booking_order_number
+                delivery_date=date.today()
+                tracking_number=order.tracking_number
+
+                subject = f'Your Returned Cargo Delivery Order {order_number} Has Been Delivered'
+                message = f'''
+                Dear {customer_name},
+
+                We are pleased to inform you that your returned cargo delivery order,
+                {order_number} has been successfully delivered back to the sender.
+
+                Here are the details of your order:
+
+                - Order Number: {order_number}
+                - Tracking Number: {tracking_number}
+                - Delivery Date: {delivery_date}
+                
+                We hope you are satisfied with our service. 
+                If you have any questions or feedback regarding your delivery experience,
+                please do not hesitate to contact our customer support team at support@example.com or (123) 456-7890.
+
+                Thank you for choosing our services. We look forward to serving you again.
+
+                Best regards,
+                Cargo
+                info@altostechnologies.com
+                +91 90741 56818
+                '''
+
+                recipient_email = order.shipment.email
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
+            
+            order.save()
+            messages.success(request,'Updated')
+            return redirect('pending_returns')
         else:
-            orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True,returned=False).order_by('return_processed_date')
-
+            return('pending_returns')
         
-        orders_data = [{
-            'id': order.id,
-            'date': order.return_processed_date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.return_status,
-        } for order in orders]
         
-        return JsonResponse({'success': True,'orders': orders_data})
-
-def update_pending_return_status(request):
-    if request.method == 'POST':
-        order_id = request.POST.get('order_id')
-        status = request.POST.get('status')
-
-        order = ShipmentTracking.objects.get(id=order_id)
-        today=date.today()
-        order.return_status = status
-        if status == 'out_for_delivery':
-
-            # mail sending section
-            customer_name=order.shipment.full_name
-            order_number=order.shipment.booking_order_number
-            delivery_date=date.today()
-            tracking_number=order.tracking_number
-
-            subject = f'Your Returned Cargo Delivery Order {order_number} is Out for Delivery'
-            message = f'''
-            Dear {customer_name},
-
-            We are writing to inform you that your returned cargo delivery order,
-            {order_number} is now out for delivery back to the sender.
-
-            Here are the details of your order:
-
-            - Order Number: {order_number}
-            - Tracking Number: {tracking_number}
-            - Out for Delivery Date: {delivery_date}
-            
-           
-            Thank you for choosing our services. We look forward to serving you again.
-
-            Best regards,
-            Cargo
-            info@altostechnologies.com
-            +91 90741 56818
-            '''
-
-            recipient_email = order.shipment.email
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
-
-        if status == 'delivered':
-            order.returned=True
-            order.returned_date=today
-
-            # mail sending section
-            customer_name=order.shipment.full_name
-            order_number=order.shipment.booking_order_number
-            delivery_date=date.today()
-            tracking_number=order.tracking_number
-
-            subject = f'Your Returned Cargo Delivery Order {order_number} Has Been Delivered'
-            message = f'''
-            Dear {customer_name},
-
-            We are pleased to inform you that your returned cargo delivery order,
-            {order_number} has been successfully delivered back to the sender.
-
-            Here are the details of your order:
-
-            - Order Number: {order_number}
-            - Tracking Number: {tracking_number}
-            - Delivery Date: {delivery_date}
-            
-            We hope you are satisfied with our service. 
-            If you have any questions or feedback regarding your delivery experience,
-            please do not hesitate to contact our customer support team at support@example.com or (123) 456-7890.
-
-            Thank you for choosing our services. We look forward to serving you again.
-
-            Best regards,
-            Cargo
-            info@altostechnologies.com
-            +91 90741 56818
-            '''
-
-            recipient_email = order.shipment.email
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [recipient_email])
-        
-        order.save()
-
-        
-        return JsonResponse({'success': True,})
+    else:
+        return redirect('/')
 
 
 
@@ -1274,7 +1196,7 @@ def all_returns(request):
         
         dash_details = CargoTeam.objects.get(id=log_id,admin_approval=1,is_active=1)
         orders = ShipmentTracking.objects.filter(is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
-        center=City.objects.filter(name=dash_details.work_center.name,is_active=True)
+        center=City.objects.get(name=dash_details.work_center.name,is_active=True)
         today=date.today()
         noti_count = Notifications.objects.filter(recipient_center=dash_details.work_center,date_created=today).count()
 
@@ -1287,20 +1209,6 @@ def all_returns(request):
         return render(request, 'return/all_returns.html', context)
     else:
         return redirect('/')
-
-
-def all_returns_by_city(request):
-    if request.method == 'POST':
-       
-        city = request.POST.get('city')
-        orders = ShipmentTracking.objects.filter(shipment__shipping_center__name=city,is_returned=True,arrived_for_return=True).order_by('-return_processed_date')
-        orders_data = [{
-            'id': order.id,
-            'date': order.return_processed_date.strftime('%d-%m-%Y'),
-            'booking_order_number': order.shipment.booking_order_number,
-            'status': order.return_status,
-        } for order in orders]
-        return JsonResponse({'success': True,'orders': orders_data})
 
 
 def all_returns_by_date(request):
@@ -1324,6 +1232,7 @@ def all_returns_by_date(request):
             'id': order.id,
             'date': order.return_processed_date.strftime('%d-%m-%Y'),
             'booking_order_number': order.shipment.booking_order_number,
+            'tracking_number': order.tracking_number,
             'status': order.return_status,
         } for order in orders]
         

@@ -54,25 +54,22 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select your center to get return orders.</span
+        >Please select a date range to filter return delivery orders.</span
       >
     </p>
 
     <div class="col-lg-3" id="cityDiv">
-      <label class="main-heading">City</label>
+      <label class="main-heading">Center</label>
       <select
         class="form-select city-select"
         name="city"
         id="city"
       >
-        <option value="" hidden>Select</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
+      <option selected value="{{city.name}}">{{city.name}}</option>
       </select>
     </div>
 
-    <div class="col-lg-3" id="fdate1" style="display: none;">
+    <div class="col-lg-3" id="fdate1" >
       <label class="main-heading">From</label>
       <input
         type="date"
@@ -82,7 +79,7 @@
         required
       />
     </div>
-    <div class="col-lg-3" id="tdate1" style="display: none;">
+    <div class="col-lg-3" id="tdate1" >
       <label class="main-heading">To</label>
       <input
         type="date"
@@ -92,7 +89,7 @@
         required
       />
     </div>
-    <div class="col-lg-2" id="btn1" style="display: none;">
+    <div class="col-lg-2" id="btn1">
       <button
         class="btn1 mt-4"
         type="button"
@@ -105,7 +102,7 @@
   </div>
   <!-- search option -->
   <div class="row mt-3">
-    <div class="col-lg-3" id="searchDiv" style="display: none;">
+    <div class="col-lg-3" id="searchDiv" >
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"
@@ -129,6 +126,7 @@
               <th class="text-white">Sl.No</th>
               <th class="text-white">Return Processed Date</th>
               <th class="text-white">Order.No</th>
+              <th class="text-white">Tracking Number</th>
               <th class="text-white">Delivery Status</th>
               <th class="text-white">Details</th>
             </tr>
@@ -142,7 +140,7 @@
                 {{i.return_processed_date|date:"d-m-Y"}}
               </td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
-
+              <td class="text-white">{{i.tracking_number}}</td>
               {% if i.return_status == 'arrived_at_destination_hub' %}
               <td class="text-danger">Arrived at Destination Hub</td>
               {% elif i.return_status == 'out_for_delivery' %}
@@ -391,7 +389,7 @@
               <h6 class="main-heading">Delivery Status</h6>
               <div class="row">
                 <div class="col-6">Status</div>
-                <div class="col-6 fw-bold">{{i.status|title}}</div>
+                <div class="col-6 fw-bold">{{i.status}}</div>
               </div>
               {% if i.is_returned == False %}
               <div class="row">
@@ -448,7 +446,7 @@
               <h6 class="main-heading">Return Status</h6>
               <div class="row">
                 <div class="col-6">Status</div>
-                <div class="col-6 fw-bold">{{i.return_status|title}}</div>
+                <div class="col-6 fw-bold">{{i.return_status}}</div>
               </div>
               
               <div class="row">
@@ -473,11 +471,13 @@
               </div>
               {% endif %}
 
+              {% if i.returned == False %}
               {% if i.current_return_location %}
               <div class="row">
                 <div class="col-6">Current Location</div>
                 <div class="col-6">{{i.current_return_location}}</div>
               </div>
+              {% endif %}
               {% endif %}
 
               {% if i.destination_hub_return_arrival_date %}
@@ -513,50 +513,6 @@
 
 
 <script>
-  function showOptions() {
-    var cityDiv = document.getElementById("cityDiv");
-    var fdate1 = document.getElementById("fdate1");
-    var tdate1 = document.getElementById("tdate1");
-    var btn1 = document.getElementById("btn1");
-    var searchDiv = document.getElementById("searchDiv");
-    
-
-    // Clear date inputs
-    document.getElementById("fromdate").value = "";
-    document.getElementById("todate").value = "";
-        
-    cityDiv.style.display = "block";
-    fdate1.style.display = "block";
-    tdate1.style.display = "block";
-    btn1.style.display = "block";
-    searchDiv.style.display = "block";
-    
-  } 
-    
-  
-
-  // AJAX function to update city wise
-  function updateOrderTable(city) {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'all_returns_by_city' %}", // Update this URL with your actual URL
-      data: {
-        city: city,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      success: function (response) {
-        if (response.success) {
-          // Update HTML table with new values from JSON response
-          updateTable(response.orders);
-        } else {
-          console.error("Failed to filter table.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
 
   // AJAX function to update date wise
   function updatedateTabledatewise() {
@@ -619,6 +575,9 @@
         "</td>" +
         '<td class="text-white">' +
         order.booking_order_number +
+        "</td>" +
+        '<td class="text-white">' +
+        order.tracking_number +
         "</td>" +
         orderStatus +
         '<td class="text-white">' +

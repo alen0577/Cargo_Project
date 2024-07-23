@@ -54,7 +54,7 @@
     <p style="text-align: justify">
       Note* -
       <span class="text-warning-emphasis"
-        >Please select your center to get delivery orders.</span
+        >Please select a date range to filter delivery orders.</span
       >
     </p>
 
@@ -65,14 +65,12 @@
         name="city"
         id="city"
       >
-        <option value="" hidden>Select</option>
-        {% for i in city %}
-        <option value="{{i.name}}">{{i.name}}</option>
-        {% endfor %}
+        <option selected value="{{city.name}}">{{city.name}}</option>
+       
       </select>
     </div>
 
-    <div class="col-lg-3" id="fdate1" style="display: none;">
+    <div class="col-lg-3" id="fdate1">
       <label class="main-heading">From</label>
       <input
         type="date"
@@ -82,7 +80,7 @@
         required
       />
     </div>
-    <div class="col-lg-3" id="tdate1" style="display: none;">
+    <div class="col-lg-3" id="tdate1">
       <label class="main-heading">To</label>
       <input
         type="date"
@@ -92,7 +90,7 @@
         required
       />
     </div>
-    <div class="col-lg-2" id="btn1" style="display: none;">
+    <div class="col-lg-2" id="btn1">
       <button
         class="btn1 mt-4"
         type="button"
@@ -105,7 +103,7 @@
   </div>
   <!-- search option -->
   <div class="row mt-3">
-    <div class="col-lg-3" id="searchDiv" style="display: none;">
+    <div class="col-lg-3" id="searchDiv">
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"
@@ -129,6 +127,7 @@
               <th class="text-white">Sl.No</th>
               <th class="text-white">Arrived Date</th>
               <th class="text-white">Order.No</th>
+              <th class="text-white">Tracking Number</th>
               <th class="text-white">Delivery Status</th>
               <th class="text-white">Details</th>
             </tr>
@@ -142,7 +141,7 @@
                 {{i.destination_hub_arrival_date|date:"d-m-Y"}}
               </td>
               <td class="text-white">{{i.shipment.booking_order_number}}</td>
-
+              <td class="text-white">{{i.tracking_number}}</td>
               {% if i.status == 'arrived_at_destination_hub' %}
               <td class="text-danger">Arrived at Destination Hub</td>
               {% elif i.status == 'out_for_delivery' %}
@@ -391,7 +390,7 @@
             <div class="col-6">
               <div class="row">
                 <div class="col-6">Status</div>
-                <div class="col-6 fw-bold">{{i.status|title}}</div>
+                <div class="col-6 fw-bold">{{i.status}}</div>
               </div>
               <div class="row">
                 <div class="col-6">Tracking Number</div>
@@ -415,11 +414,15 @@
               </div>
               {% endif %}
 
+              {% if i.is_returned == False %}
+              {% if i.is_delivered == False %}
               {% if i.current_location %}
               <div class="row">
                 <div class="col-6">Current Location</div>
                 <div class="col-6">{{i.current_location}}</div>
               </div>
+              {% endif %}
+              {% endif %}
               {% endif %}
 
               {% if i.destination_hub_arrival_date %}
@@ -465,51 +468,7 @@
 
 
 <script>
-  function showOptions() {
-    var cityDiv = document.getElementById("cityDiv");
-    var fdate1 = document.getElementById("fdate1");
-    var tdate1 = document.getElementById("tdate1");
-    var btn1 = document.getElementById("btn1");
-    var searchDiv = document.getElementById("searchDiv");
-    
-
-    // Clear date inputs
-    document.getElementById("fromdate").value = "";
-    document.getElementById("todate").value = "";
-        
-    cityDiv.style.display = "block";
-    fdate1.style.display = "block";
-    tdate1.style.display = "block";
-    btn1.style.display = "block";
-    searchDiv.style.display = "block";
-    
-  } 
-    
   
-
-  // AJAX function to update city wise
-  function updateOrderTable(city) {
-    $.ajax({
-      type: "POST",
-      url: "{% url 'all_deliveries_by_city' %}", // Update this URL with your actual URL
-      data: {
-        city: city,
-        csrfmiddlewaretoken: "{{ csrf_token }}",
-      },
-      success: function (response) {
-        if (response.success) {
-          // Update HTML table with new values from JSON response
-          updateTable(response.orders);
-        } else {
-          console.error("Failed to filter table.");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error occurred:", error);
-      },
-    });
-  }
-
   // AJAX function to update date wise
   function updatedateTabledatewise() {
     var city = document.getElementById("city").value;
@@ -572,6 +531,9 @@
         '<td class="text-white">' +
         order.booking_order_number +
         "</td>" +
+        '<td class="text-white">' +
+        order.tracking_number +
+        "</td>" +
         orderStatus +
         '<td class="text-white">' +
         '<a href="" class="btn1" data-bs-toggle="modal" data-bs-target="#detailsmodal' +
@@ -585,13 +547,7 @@
     });
   }
 
-  // Event listener for status select change
-  $(document).on("change", ".city-select", function () {
-    
-    var city = $(this).val();
-    showOptions()
-    updateOrderTable(city);
-  });
+  
 </script>
 
 <script>
